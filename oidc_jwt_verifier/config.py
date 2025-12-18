@@ -229,10 +229,8 @@ class AuthConfig:
             >>> config.audiences
             ('https://api.example.com',)
         """
-        audience = self.audience
-        if isinstance(audience, str):
-            return (audience,)
-        return tuple(audience)
+        # __post_init__ normalizes audience to tuple
+        return self.audience  # type: ignore[return-value]
 
     @property
     def allowed_algorithms(self) -> tuple[str, ...]:
@@ -255,10 +253,8 @@ class AuthConfig:
             >>> config.allowed_algorithms
             ('RS256', 'ES256')
         """
-        allowed_algs = self.allowed_algs
-        if isinstance(allowed_algs, str):
-            return (allowed_algs,)
-        return tuple(allowed_algs)
+        # __post_init__ normalizes allowed_algs to tuple
+        return self.allowed_algs  # type: ignore[return-value]
 
     @property
     def required_scope_set(self) -> set[str]:

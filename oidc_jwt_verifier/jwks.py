@@ -152,6 +152,12 @@ class JWKSClient:
                 ) from exc
 
             # Handle other PyJWKClient errors (key not found, malformed JWKS).
+            # NOTE: PyJWT does not provide a dedicated exception class for "key not
+            # found" errors. PyJWKClientError is raised for both kid lookup failures
+            # and other client issues. We differentiate by matching error message
+            # substrings ("unable to find", "kid"). This creates coupling to PyJWT's
+            # internal message format - verify these patterns when upgrading PyJWT.
+            # See tests/test_jwks.py for regression tests that validate these patterns.
             if PyJWKClientError is not None and isinstance(exc, PyJWKClientError):
                 message = str(exc).lower()
                 if "unable to find" in message or "kid" in message:

@@ -48,7 +48,7 @@ def _parse_scope_claim(value: Any) -> set[str]:
     if isinstance(value, str):
         return {s for s in value.split() if s}
     if isinstance(value, list):
-        return {str(s) for s in value if str(s)}
+        return {s for s in (str(item) for item in value if item is not None) if s}
     return set()
 
 
@@ -81,7 +81,7 @@ def _parse_permissions_claim(value: Any) -> set[str]:
     if value is None:
         return set()
     if isinstance(value, list):
-        return {str(p) for p in value if str(p)}
+        return {p for p in (str(item) for item in value if item is not None) if p}
     if isinstance(value, str):
         return {p for p in value.split() if p}
     return set()
