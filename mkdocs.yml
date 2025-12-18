@@ -107,6 +107,7 @@ nav:
   - Home: index.md
   - Alternatives: alternatives.md
   - API Reference: reference.md
+  - Changelog: ../CHANGELOG.md
 
 # Watch for live reload during development
 watch:

@@ -72,6 +72,22 @@ conservative verification policy (claims, algorithms, header handling) and autho
 For comparisons against common alternatives (PyJWT directly, discovery-driven verifiers, framework
 integrations), see `docs/alternatives.md`.
 
+## Contributing
+
+We use [Conventional Commits](https://www.conventionalcommits.org/) to automate releases via release-please.
+
+**Commit prefixes:**
+- `feat:` - New feature (bumps PATCH pre-v1.0)
+- `feat!:` - Breaking change (bumps MINOR pre-v1.0)
+- `fix:` - Bug fix (bumps PATCH)
+- `docs:` - Documentation only
+- `chore:` - Maintenance tasks
+- `refactor:` - Code refactoring
+- `test:` - Test changes
+- `perf:` - Performance improvements
+
+PRs without conventional commit prefixes will not trigger releases.
+
 ## References
 
 - Auth0: Validate Access Tokens: `https://auth0.com/docs/secure/tokens/access-tokens/validate-access-tokens`
