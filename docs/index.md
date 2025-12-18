@@ -45,6 +45,14 @@ The verifier:
 
 Auth0 guidance for API token validation calls out validating the JWT and then checking `aud` and scopes in the `scope` claim. See the [Auth0 docs](https://auth0.com/docs/secure/tokens/access-tokens/validate-access-tokens) for details.
 
+## Why this library
+
+This project focuses on making *server-side* access token verification reproducible across multiple
+apps and frameworks by centralizing conservative verification and authorization policy.
+
+If you’re deciding between this library and other JWT/OIDC tooling, see [Alternatives and
+rationale](alternatives.md).
+
 ## Error handling
 
 The public exception type is [`AuthError`][oidc_jwt_verifier.AuthError].

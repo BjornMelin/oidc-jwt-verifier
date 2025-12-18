@@ -62,6 +62,16 @@ except AuthError as err:
     www_authenticate = err.www_authenticate_header()
 ```
 
+## Why this library
+
+JWT verification for APIs is easy to get mostly right while still missing important security and
+interoperability details. This library is a small, framework-agnostic core that centralizes
+conservative verification policy (claims, algorithms, header handling) and authorization checks
+(scopes/permissions) so you can reuse it across projects.
+
+For comparisons against common alternatives (PyJWT directly, discovery-driven verifiers, framework
+integrations), see `docs/alternatives.md`.
+
 ## References
 
 - Auth0: Validate Access Tokens: `https://auth0.com/docs/secure/tokens/access-tokens/validate-access-tokens`
