@@ -315,7 +315,7 @@ class JWTVerifier:
         # Parse the header without verifying the signature.
         try:
             header = jwt.get_unverified_header(token)
-        except Exception as exc:
+        except jwt.DecodeError as exc:
             raise AuthError(
                 code="malformed_token",
                 message="Malformed token",
@@ -417,7 +417,7 @@ class JWTVerifier:
                 code="insufficient_permissions",
                 message="Insufficient permissions",
                 status_code=403,
-                required_scopes=tuple(sorted(missing_permissions)),
+                required_permissions=tuple(sorted(missing_permissions)),
             )
 
         return payload

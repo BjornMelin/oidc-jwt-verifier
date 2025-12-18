@@ -63,6 +63,9 @@ class AuthError(Exception):
         required_scopes: A tuple of scope strings that were required but
             missing from the token. Populated for ``insufficient_scope``
             errors; empty for other error types.
+        required_permissions: A tuple of permission strings that were required
+            but missing from the token. Populated for ``insufficient_permissions``
+            errors; empty for other error types.
 
     Raises:
         ValueError: If ``status_code`` is not 401 or 403.
@@ -111,7 +114,7 @@ class AuthError(Exception):
         ValueError: status_code must be 401 or 403
     """
 
-    __slots__ = ("code", "message", "required_scopes", "status_code")
+    __slots__ = ("code", "message", "required_permissions", "required_scopes", "status_code")
 
     def __init__(
         self,
@@ -120,6 +123,7 @@ class AuthError(Exception):
         message: str,
         status_code: int,
         required_scopes: Iterable[str] = (),
+        required_permissions: Iterable[str] = (),
     ) -> None:
         """Initialize an authentication or authorization error.
 
@@ -128,6 +132,8 @@ class AuthError(Exception):
             message: A human-readable error description.
             status_code: The HTTP status code (must be 401 or 403).
             required_scopes: Scopes that were required but missing.
+                Defaults to an empty tuple.
+            required_permissions: Permissions that were required but missing.
                 Defaults to an empty tuple.
 
         Raises:
@@ -140,6 +146,7 @@ class AuthError(Exception):
         self.message = message
         self.status_code = status_code
         self.required_scopes = tuple(required_scopes)
+        self.required_permissions = tuple(required_permissions)
 
     def www_authenticate_header(self, *, realm: str | None = None) -> str:
         """Generate an RFC 6750-compliant WWW-Authenticate header value.
@@ -209,5 +216,9 @@ class AuthError(Exception):
         if self.required_scopes:
             scope_str = " ".join(self.required_scopes)
             params.append(f"scope={_quote_rfc6750_value(scope_str)}")
+
+        if self.required_permissions:
+            permissions_str = " ".join(self.required_permissions)
+            params.append(f"permissions={_quote_rfc6750_value(permissions_str)}")
 
         return "Bearer " + ", ".join(params)

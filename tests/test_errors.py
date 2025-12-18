@@ -57,6 +57,24 @@ def test_auth_error_empty_required_scopes_default() -> None:
     assert error.required_scopes == ()
 
 
+def test_auth_error_required_permissions_stored_as_tuple() -> None:
+    """AuthError stores required_permissions as a tuple."""
+    error = AuthError(
+        code="insufficient_permissions",
+        message="Insufficient permissions",
+        status_code=403,
+        required_permissions=["admin", "write:users"],
+    )
+    assert error.required_permissions == ("admin", "write:users")
+    assert isinstance(error.required_permissions, tuple)
+
+
+def test_auth_error_empty_required_permissions_default() -> None:
+    """AuthError defaults required_permissions to empty tuple."""
+    error = AuthError(code="invalid_token", message="Bad token", status_code=401)
+    assert error.required_permissions == ()
+
+
 # ============================================================================
 # WWW-Authenticate Header Generation
 # ============================================================================
@@ -112,19 +130,18 @@ def test_www_authenticate_header_403_includes_scope_parameter() -> None:
     assert 'scope="read:users write:users"' in header
 
 
-def test_www_authenticate_header_401_no_scope_parameter() -> None:
-    """401 errors do not include scope parameter even with required_scopes."""
+def test_www_authenticate_header_401_includes_scope_when_set() -> None:
+    """401 errors include scope parameter when required_scopes is set."""
     error = AuthError(
         code="invalid_token",
         message="Bad token",
         status_code=401,
-        required_scopes=["read:users"],  # Will still be stored but not used
+        required_scopes=["read:users"],
     )
     header = error.www_authenticate_header()
 
-    # Scope IS included if required_scopes is set, per the implementation
-    # Let's verify the actual behavior
     assert 'error="invalid_token"' in header
+    assert 'scope="read:users"' in header
 
 
 def test_www_authenticate_header_with_realm_and_scopes() -> None:
@@ -154,6 +171,33 @@ def test_www_authenticate_header_no_scopes_no_scope_param() -> None:
     header = error.www_authenticate_header()
 
     assert "scope=" not in header
+
+
+def test_www_authenticate_header_403_includes_permissions_parameter() -> None:
+    """403 errors with required_permissions include permissions parameter."""
+    error = AuthError(
+        code="insufficient_permissions",
+        message="Insufficient permissions",
+        status_code=403,
+        required_permissions=["admin", "write:users"],
+    )
+    header = error.www_authenticate_header()
+
+    assert 'error="insufficient_scope"' in header
+    assert 'permissions="admin write:users"' in header
+
+
+def test_www_authenticate_header_no_permissions_no_permissions_param() -> None:
+    """Header without required_permissions does not include permissions parameter."""
+    error = AuthError(
+        code="insufficient_permissions",
+        message="Insufficient permissions",
+        status_code=403,
+        required_permissions=[],  # Empty
+    )
+    header = error.www_authenticate_header()
+
+    assert "permissions=" not in header
 
 
 # ============================================================================
