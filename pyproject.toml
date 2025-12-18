@@ -1,0 +1,168 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "oidc-jwt-verifier"
+version = "0.1.0"
+description = "Shared, hardened JWT verification core for OIDC/JWKS issuers"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pyjwt[crypto]>=2.10.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2.2",
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.8.0",
+    "mypy>=1.13.0",
+    "bandit[toml]>=1.7.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["oidc_jwt_verifier*"]
+
+[tool.setuptools.package-data]
+oidc_jwt_verifier = ["py.typed"]
+
+# --- Pytest ---
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-q", "--strict-markers", "--strict-config"]
+filterwarnings = ["error"]
+
+# --- Coverage ---
+
+[tool.coverage.run]
+source = ["oidc_jwt_verifier"]
+branch = true
+parallel = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@abstractmethod",
+]
+fail_under = 80
+show_missing = true
+
+# --- Ruff ---
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+indent-width = 4
+exclude = [".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "build", "dist", "venv"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "B",        # bugbear
+    "I",        # isort
+    "N",        # pep8-naming
+    "UP",       # pyupgrade
+    "PL",       # pylint
+    "SIM",      # simplify
+    "RUF",      # ruff-specific
+    "D",        # pydocstyle
+    "S",        # bandit (subset)
+    "C4",       # comprehensions
+    "PT",       # pytest-style
+    "RET",      # return checks
+    "TC",       # type-checking imports
+]
+ignore = [
+    "D100",     # module docstring - noise for __init__.py
+    "D104",     # package docstring
+    "D107",     # __init__ docstring - duplicates class docstring
+    "E501",     # line length - formatter handles this
+    "PLR0913",  # too many args - explicit params > **kwargs
+    "PLR2004",  # magic values - obvious constants (401, 403) are fine
+    "PLR0911",  # too many returns - early returns are good
+    "PLR0912",  # too many branches
+    "RUF012",   # mutable class attrs - too aggressive
+    "S105",     # hardcoded password - false positives on param names
+    "S106",     # same as S105
+    "TC001",    # TYPE_CHECKING imports - hurts readability
+    "TC002",
+    "TC003",
+]
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["S101", "D", "PLR2004", "PT004", "PT011", "B011"]
+"scripts/**/*" = ["T20"]
+"examples/**/*" = ["T20"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = ["oidc_jwt_verifier"]
+force-single-line = false
+lines-after-imports = 2
+
+[tool.ruff.lint.pylint]
+max-args = 10
+max-branches = 15
+max-returns = 8
+max-statements = 60
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+# --- Mypy ---
+
+[tool.mypy]
+python_version = "3.9"
+check_untyped_defs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+no_implicit_optional = true
+warn_return_any = true
+warn_unused_ignores = true
+warn_unreachable = true
+warn_redundant_casts = true
+show_error_codes = true
+strict_equality = true
+ignore_missing_imports = true  # third-party libs often lack stubs
+files = ["oidc_jwt_verifier"]
+exclude = ["^\\.venv", "^build", "^dist", "tests"]
+
+# --- Bandit ---
+
+[tool.bandit]
+targets = ["oidc_jwt_verifier"]
+exclude_dirs = ["tests", ".venv", "build", "dist"]
+skips = []  # add "B101" to allow asserts
+recursive = true
+format = "txt"
+severity = "low"
+confidence = "low"
