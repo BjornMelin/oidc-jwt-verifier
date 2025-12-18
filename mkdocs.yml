@@ -19,9 +19,11 @@ theme:
   name: material
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
     - navigation.tracking
     - navigation.footer
+    - toc.integrate
     - search.suggest
     - search.highlight
     - content.code.copy
@@ -89,8 +91,8 @@ plugins:
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
-      line_spans: __span
       pygments_lang_class: true
+      use_pygments: true
   - pymdownx.inlinehilite
   - pymdownx.snippets:
       base_path: ["."]
