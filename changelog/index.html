@@ -92,7 +92,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="oidc-jwt-verifier" class="md-header__button md-logo" aria-label="oidc-jwt-verifier" data-md-component="logo">
       
@@ -209,14 +211,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -302,7 +298,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -319,7 +321,9 @@
   
 
 
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="oidc-jwt-verifier" class="md-nav__button md-logo" aria-label="oidc-jwt-verifier" data-md-component="logo">
       
@@ -441,6 +445,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -458,6 +480,131 @@
 
       </a>
       
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#013-2025-12-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.1.3 (2025-12-18)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.1.3 (2025-12-18)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#012-2025-12-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.1.2 (2025-12-18)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.1.2 (2025-12-18)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#011-2025-12-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.1.1 (2025-12-18)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.1.1 (2025-12-18)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.1.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -468,24 +615,6 @@
                 </div>
               </div>
             
-            
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-</nav>
-                  </div>
-                </div>
-              </div>
             
           
           
@@ -506,9 +635,13 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h1 id="changelog_1">Changelog<a class="headerlink" href="#changelog_1" title="Permanent link">&para;</a></h1>
-<h2 id="012-2025-12-18"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.1...v0.1.2">0.1.2</a> (2025-12-18)<a class="headerlink" href="#012-2025-12-18" title="Permanent link">&para;</a></h2>
+<h2 id="013-2025-12-18"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.2...v0.1.3">0.1.3</a> (2025-12-18)<a class="headerlink" href="#013-2025-12-18" title="Permanent link">&para;</a></h2>
 <h3 id="bug-fixes">Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>docs:</strong> add missing Documentation badge to docs/index.md (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/dfdf6ae2f9c96ca1a1974c9af6d204241b6e1c69">dfdf6ae</a>)</li>
+</ul>
+<h2 id="012-2025-12-18"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.1...v0.1.2">0.1.2</a> (2025-12-18)<a class="headerlink" href="#012-2025-12-18" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_1">Bug Fixes<a class="headerlink" href="#bug-fixes_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>docs:</strong> resolve MkDocs Material rendering issues and modernize deployment (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/89fefb02c1e5d5b56428a79c90aacec0c72e3574">89fefb0</a>)</li>
 <li><strong>docs:</strong> resolve MkDocs Material rendering issues and modernize deployment (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/201892060a9ee52d508bd0da2b5a50dca7b103f7">2018920</a>)</li>
@@ -519,7 +652,7 @@
 <li>add core JWT verification library with automated release pipeline (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/61862b5c86e5eb4bcaa30ee42ea10c9240f3d582">61862b5</a>)</li>
 <li><strong>jwt-verifier:</strong> add core JWT verification library (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/cf676291eb18400e52424b7efe6d63ef343ace20">cf67629</a>)</li>
 </ul>
-<h3 id="bug-fixes_1">Bug Fixes<a class="headerlink" href="#bug-fixes_1" title="Permanent link">&para;</a></h3>
+<h3 id="bug-fixes_2">Bug Fixes<a class="headerlink" href="#bug-fixes_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li>address additional PR review comments (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/f8132f8f86eb6e3a1a12baaf32f485eb6a85436a">f8132f8</a>)</li>
 <li>address PR review comments (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/b12bf0a4db21d0647e95139d32b1641812beebf4">b12bf0a</a>)</li>
@@ -615,7 +748,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.top", "navigation.tracking", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.footer", "toc.integrate", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>

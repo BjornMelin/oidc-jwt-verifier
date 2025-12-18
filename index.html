@@ -92,7 +92,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="." title="oidc-jwt-verifier" class="md-header__button md-logo" aria-label="oidc-jwt-verifier" data-md-component="logo">
       
@@ -209,14 +211,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -302,7 +298,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -319,7 +321,9 @@
   
 
 
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="." title="oidc-jwt-verifier" class="md-nav__button md-logo" aria-label="oidc-jwt-verifier" data-md-component="logo">
       
@@ -572,98 +576,6 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quickstart" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quickstart
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#secure-by-default-behavior" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Secure-by-default behavior
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-library" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this library
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#error-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Error handling
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        References
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           
             <div class="md-content" data-md-component="content">
@@ -683,28 +595,34 @@
 
 
 <h1 id="oidc-jwt-verifier">oidc-jwt-verifier<a class="headerlink" href="#oidc-jwt-verifier" title="Permanent link">&para;</a></h1>
+<p><a href="https://pypi.org/project/oidc-jwt-verifier/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/oidc-jwt-verifier" /></a>
+<a href="https://pypi.org/project/oidc-jwt-verifier/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/oidc-jwt-verifier" /></a>
+<a href="https://github.com/BjornMelin/oidc-jwt-verifier/actions/workflows/ci.yml"><img alt="Tests" src="https://github.com/BjornMelin/oidc-jwt-verifier/actions/workflows/ci.yml/badge.svg" /></a>
+<a href="https://codecov.io/gh/BjornMelin/oidc-jwt-verifier"><img alt="codecov" src="https://codecov.io/gh/BjornMelin/oidc-jwt-verifier/branch/main/graph/badge.svg" /></a>
+<a href="https://oidc-jwt-verifier.bjornmelin.io/"><img alt="Documentation" src="https://img.shields.io/badge/docs-live-blue" /></a>
+<a href="https://github.com/BjornMelin/oidc-jwt-verifier/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/BjornMelin/oidc-jwt-verifier" /></a></p>
 <p>A small, framework-agnostic JWT verification core for OIDC/JWKS issuers.</p>
 <p><code>oidc-jwt-verifier</code> is designed to be shared by higher-level adapters (Dash, Bottle, Lambda, FastAPI) while keeping security decisions centralized and consistent.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>oidc-jwt-verifier
-</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>oidc-jwt-verifier
+</code></pre></div>
 <p>For development with documentation tools:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>oidc-jwt-verifier<span class="o">[</span>docs<span class="o">]</span>
-</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>oidc-jwt-verifier<span class="o">[</span>docs<span class="o">]</span>
+</code></pre></div>
 <h2 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthConfig</span><span class="p">,</span> <span class="n">JWTVerifier</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">AuthConfig</span><span class="p">(</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">issuer</span><span class="o">=</span><span class="s2">&quot;https://example-issuer/&quot;</span><span class="p">,</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">audience</span><span class="o">=</span><span class="s2">&quot;https://example-api&quot;</span><span class="p">,</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">jwks_url</span><span class="o">=</span><span class="s2">&quot;https://example-issuer/.well-known/jwks.json&quot;</span><span class="p">,</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">allowed_algs</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;RS256&quot;</span><span class="p">,),</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">required_scopes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;read:users&quot;</span><span class="p">,),</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">)</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">verifier</span> <span class="o">=</span> <span class="n">JWTVerifier</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">claims</span> <span class="o">=</span> <span class="n">verifier</span><span class="o">.</span><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
-</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthConfig</span><span class="p">,</span> <span class="n">JWTVerifier</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">AuthConfig</span><span class="p">(</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">issuer</span><span class="o">=</span><span class="s2">&quot;https://example-issuer/&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">audience</span><span class="o">=</span><span class="s2">&quot;https://example-api&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">jwks_url</span><span class="o">=</span><span class="s2">&quot;https://example-issuer/.well-known/jwks.json&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">allowed_algs</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;RS256&quot;</span><span class="p">,),</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">required_scopes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;read:users&quot;</span><span class="p">,),</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">)</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">verifier</span> <span class="o">=</span> <span class="n">JWTVerifier</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">claims</span> <span class="o">=</span> <span class="n">verifier</span><span class="o">.</span><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="secure-by-default-behavior">Secure-by-default behavior<a class="headerlink" href="#secure-by-default-behavior" title="Permanent link">&para;</a></h2>
 <p>The verifier:</p>
 <ul>
@@ -728,14 +646,14 @@ rationale</a>.</p>
 <li><code>status_code</code>: <code>401</code> (authentication) or <code>403</code> (authorization)</li>
 <li><code>www_authenticate_header()</code>: an RFC 6750 compatible <code>WWW-Authenticate</code> value for Bearer auth</li>
 </ul>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthError</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">try</span><span class="p">:</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">claims</span> <span class="o">=</span> <span class="n">verifier</span><span class="o">.</span><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">except</span> <span class="n">AuthError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">status</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">status_code</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">www_authenticate</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">www_authenticate_header</span><span class="p">()</span>
-</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthError</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">claims</span> <span class="o">=</span> <span class="n">verifier</span><span class="o">.</span><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">except</span> <span class="n">AuthError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">status</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">status_code</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">www_authenticate</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">www_authenticate_header</span><span class="p">()</span>
+</code></pre></div>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://auth0.com/docs/secure/tokens/access-tokens/validate-access-tokens">Auth0: Validate Access Tokens</a></li>
@@ -827,7 +745,7 @@ rationale</a>.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.top", "navigation.tracking", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.footer", "toc.integrate", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
