@@ -7,21 +7,21 @@ name = "oidc-jwt-verifier"
 version = "0.1.0"
 description = "Shared, hardened JWT verification core for OIDC/JWKS issuers"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Typing :: Typed",
 ]
 dependencies = [
-    "pyjwt[crypto]>=2.10.0",
+    "pyjwt[crypto]>=2.10.1",
 ]
 
 [project.optional-dependencies]
@@ -32,6 +32,11 @@ dev = [
     "ruff>=0.8.0",
     "mypy>=1.13.0",
     "bandit[toml]>=1.7.0",
+]
+docs = [
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.27.0",
+    "mkdocs-autorefs>=1.2.0",
 ]
 
 [tool.setuptools.packages.find]
@@ -68,7 +73,7 @@ show_missing = true
 # --- Ruff ---
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py310"
 line-length = 100
 indent-width = 4
 exclude = [".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "build", "dist", "venv"]
@@ -103,6 +108,7 @@ ignore = [
     "RUF012",   # mutable class attrs - too aggressive
     "S105",     # hardcoded password - false positives on param names
     "S106",     # same as S105
+    "SIM108",   # ternary operator - if/else often clearer for string assignments
     "TC001",    # TYPE_CHECKING imports - hurts readability
     "TC002",
     "TC003",
@@ -141,7 +147,7 @@ docstring-code-line-length = "dynamic"
 # --- Mypy ---
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.10"
 check_untyped_defs = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
