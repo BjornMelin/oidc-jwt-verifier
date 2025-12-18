@@ -19,7 +19,6 @@ theme:
   name: material
   features:
     - navigation.tabs
-    - navigation.sections
     - navigation.top
     - navigation.tracking
     - navigation.footer
@@ -75,14 +74,14 @@ plugins:
             show_submodules: false
             # Docstrings
             docstring_style: google
-            docstring_section_style: spacy
+            docstring_section_style: table
             merge_init_into_class: true
             show_if_no_docstring: false
             # Signatures
             show_signature: true
             show_signature_annotations: true
-            separate_signature: true
-            line_length: 80
+            separate_signature: false
+            line_length: 100
             signature_crossrefs: true
   - autorefs
 
@@ -93,7 +92,8 @@ markdown_extensions:
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.inlinehilite
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      base_path: ["."]
   - pymdownx.superfences
   - admonition
   - pymdownx.details
@@ -107,7 +107,7 @@ nav:
   - Home: index.md
   - Alternatives: alternatives.md
   - API Reference: reference.md
-  - Changelog: ../CHANGELOG.md
+  - Changelog: changelog.md
 
 # Watch for live reload during development
 watch:
