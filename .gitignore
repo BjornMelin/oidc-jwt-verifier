@@ -1,6 +1,7 @@
 .venv/
 __pycache__/
 *.py[cod]
+.coverage
 
 .pytest_cache/
 .ruff_cache/
@@ -9,3 +10,6 @@ __pycache__/
 build/
 dist/
 *.egg-info/
+
+# Documentation
+site/

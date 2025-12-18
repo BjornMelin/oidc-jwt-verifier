@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 from oidc_jwt_verifier import AuthConfig, AuthError, JWTVerifier
+from oidc_jwt_verifier.verifier import _parse_permissions_claim, _parse_scope_claim
 from tests.conftest import jwks_server
 
 
@@ -501,3 +502,293 @@ def test_key_not_found_fails_closed() -> None:
         assert excinfo.value.code == "key_not_found"
         assert excinfo.value.status_code == 401
         assert local.request_count.value >= 1
+
+
+# ============================================================================
+# Security-Critical Tests
+# ============================================================================
+
+
+@pytest.mark.parametrize("empty_token", ["", "   ", "\t\n", "  \n  "])
+def test_empty_or_whitespace_token_raises_missing_token(empty_token: str) -> None:
+    """Empty or whitespace-only tokens produce missing_token error."""
+    verifier = JWTVerifier(
+        AuthConfig(
+            issuer="https://issuer.example/",
+            audience="https://api.example",
+            jwks_url="http://127.0.0.1:1/jwks.json",
+            jwks_timeout_s=1,
+        )
+    )
+
+    with pytest.raises(AuthError) as excinfo:
+        verifier.verify_access_token(empty_token)
+
+    assert excinfo.value.code == "missing_token"
+    assert excinfo.value.status_code == 401
+
+
+def test_token_signed_with_wrong_key_rejected() -> None:
+    """Token signed with a different RSA key than JWKS serves is rejected."""
+    # Key pair 1: served by JWKS
+    _, public_key_1 = _make_rsa_keypair()
+    kid = "key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key_1, kid=kid)]}
+
+    # Key pair 2: used to sign token (DIFFERENT key)
+    private_pem_2, _ = _make_rsa_keypair()
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+    }
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1,
+            )
+        )
+        # Sign with wrong key, but use correct kid
+        token = _encode_rs256(payload, private_pem=private_pem_2, kid=kid)
+
+        with pytest.raises(AuthError) as excinfo:
+            verifier.verify_access_token(token)
+
+        # PyJWT raises DecodeError for signature failures, mapped to malformed_token
+        assert excinfo.value.code == "malformed_token"
+        assert excinfo.value.status_code == 401
+
+
+# ============================================================================
+# Authorization Tests
+# ============================================================================
+
+
+def test_insufficient_permissions_returns_403() -> None:
+    """Missing required permissions produces insufficient_permissions (403)."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+        "scope": "read:users write:users",  # Scopes are fine
+        "permissions": ["read:users"],  # Missing write:users
+    }
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1,
+                required_scopes=("read:users",),  # Satisfied
+                required_permissions=("read:users", "write:users"),  # NOT satisfied
+            )
+        )
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        with pytest.raises(AuthError) as excinfo:
+            verifier.verify_access_token(token)
+
+        assert excinfo.value.code == "insufficient_permissions"
+        assert excinfo.value.status_code == 403
+
+
+def test_custom_scope_claim_name() -> None:
+    """Verifier respects custom scope_claim configuration."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+        "scp": "read:users",  # Custom claim name
+    }
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1,
+                required_scopes=("read:users",),
+                scope_claim="scp",  # Custom claim name
+            )
+        )
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        # Should succeed - custom claim name is respected
+        claims = verifier.verify_access_token(token)
+        assert claims["scp"] == "read:users"
+
+
+def test_custom_permissions_claim_name() -> None:
+    """Verifier respects custom permissions_claim configuration."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+        "grants": ["admin"],  # Custom claim name
+    }
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1,
+                required_permissions=("admin",),
+                permissions_claim="grants",  # Custom claim name
+            )
+        )
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        claims = verifier.verify_access_token(token)
+        assert claims["grants"] == ["admin"]
+
+
+def test_leeway_allows_recently_expired_token() -> None:
+    """Token expired within leeway window is accepted."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+
+    # Token expired 5 seconds ago
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now - timedelta(seconds=5)).timestamp()),
+    }
+
+    with jwks_server(jwks) as local:
+        # With 10 second leeway, should accept
+        verifier_with_leeway = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1,
+                leeway_s=10,
+            )
+        )
+        # Without leeway, should reject
+        verifier_strict = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1,
+                leeway_s=0,
+            )
+        )
+
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        # Strict verifier rejects
+        with pytest.raises(AuthError) as excinfo:
+            verifier_strict.verify_access_token(token)
+        assert excinfo.value.code == "token_expired"
+
+        # Leeway verifier accepts
+        claims = verifier_with_leeway.verify_access_token(token)
+        assert claims["iss"] == issuer
+
+
+def test_token_array_aud_no_match_rejected() -> None:
+    """Token with array aud where NO element matches config is rejected."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        "iss": issuer,
+        "aud": ["https://api-1.example", "https://api-2.example"],  # Neither matches
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+    }
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=("https://api-3.example", "https://api-4.example"),  # No overlap
+                jwks_url=local.url,
+                jwks_timeout_s=1,
+            )
+        )
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        with pytest.raises(AuthError) as excinfo:
+            verifier.verify_access_token(token)
+
+        assert excinfo.value.code == "invalid_audience"
+        assert excinfo.value.status_code == 401
+
+
+# ============================================================================
+# Scope/Permission Parsing Edge Cases
+# ============================================================================
+
+
+@pytest.mark.parametrize(
+    ("scope_value", "expected"),
+    [
+        ("read:users write:users", {"read:users", "write:users"}),  # space-delimited
+        (["read:users", "write:users"], {"read:users", "write:users"}),  # array
+        (None, set()),  # null
+        (12345, set()),  # wrong type
+        (["read:users", "", "write:users"], {"read:users", "write:users"}),  # empty in array
+    ],
+)
+def test_parse_scope_claim_edge_cases(scope_value: Any, expected: set[str]) -> None:
+    """Scope claim parsing handles various input formats."""
+    assert _parse_scope_claim(scope_value) == expected
+
+
+@pytest.mark.parametrize(
+    ("perms_value", "expected"),
+    [
+        (["admin", "editor"], {"admin", "editor"}),  # array
+        ("admin editor", {"admin", "editor"}),  # space-delimited
+        (None, set()),  # null
+        ({"nested": "object"}, set()),  # wrong type
+        (["admin", "", "editor"], {"admin", "editor"}),  # empty in array
+    ],
+)
+def test_parse_permissions_claim_edge_cases(perms_value: Any, expected: set[str]) -> None:
+    """Permissions claim parsing handles various input formats."""
+    assert _parse_permissions_claim(perms_value) == expected

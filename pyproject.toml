@@ -33,6 +33,11 @@ dev = [
     "mypy>=1.13.0",
     "bandit[toml]>=1.7.0",
 ]
+docs = [
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.27.0",
+    "mkdocs-autorefs>=1.2.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]
