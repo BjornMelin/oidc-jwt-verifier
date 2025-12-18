@@ -39,6 +39,13 @@ docs = [
     "mkdocs-autorefs>=1.2.0",
 ]
 
+[project.urls]
+Homepage = "https://oidc-jwt-verifier.bjornmelin.io/"
+Documentation = "https://oidc-jwt-verifier.bjornmelin.io/"
+Repository = "https://github.com/BjornMelin/oidc-jwt-verifier"
+Issues = "https://github.com/BjornMelin/oidc-jwt-verifier/issues"
+Changelog = "https://github.com/BjornMelin/oidc-jwt-verifier/blob/main/CHANGELOG.md"
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["oidc_jwt_verifier*"]

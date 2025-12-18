@@ -1,5 +1,11 @@
 # oidc-jwt-verifier
 
+[![PyPI version](https://img.shields.io/pypi/v/oidc-jwt-verifier)](https://pypi.org/project/oidc-jwt-verifier/)
+[![Python versions](https://img.shields.io/pypi/pyversions/oidc-jwt-verifier)](https://pypi.org/project/oidc-jwt-verifier/)
+[![Tests](https://github.com/BjornMelin/oidc-jwt-verifier/actions/workflows/ci.yml/badge.svg)](https://github.com/BjornMelin/oidc-jwt-verifier/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/BjornMelin/oidc-jwt-verifier/branch/main/graph/badge.svg)](https://codecov.io/gh/BjornMelin/oidc-jwt-verifier)
+[![License](https://img.shields.io/github/license/BjornMelin/oidc-jwt-verifier)](https://github.com/BjornMelin/oidc-jwt-verifier/blob/main/LICENSE)
+
 A small, framework-agnostic JWT verification core for OIDC/JWKS issuers.
 
 `oidc-jwt-verifier` is designed to be shared by higher-level adapters (Dash, Bottle, Lambda, FastAPI) while keeping security decisions centralized and consistent.
