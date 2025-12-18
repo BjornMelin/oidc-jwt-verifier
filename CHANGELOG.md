@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.1...v0.1.2) (2025-12-18)
+
+
+### Bug Fixes
+
+* **docs:** resolve MkDocs Material rendering issues and modernize deployment ([89fefb0](https://github.com/BjornMelin/oidc-jwt-verifier/commit/89fefb02c1e5d5b56428a79c90aacec0c72e3574))
+* **docs:** resolve MkDocs Material rendering issues and modernize deployment ([2018920](https://github.com/BjornMelin/oidc-jwt-verifier/commit/201892060a9ee52d508bd0da2b5a50dca7b103f7))
+
 ## [0.1.1](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.0...v0.1.1) (2025-12-18)
 
 
