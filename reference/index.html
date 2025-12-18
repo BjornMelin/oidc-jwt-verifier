@@ -18,6 +18,8 @@
         <link rel="prev" href="../alternatives/">
       
       
+        <link rel="next" href="../changelog/">
+      
       
         
       
@@ -286,7 +288,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../CHANGELOG.md" class="md-tabs__link">
+      <a href="../changelog/" class="md-tabs__link">
         
   
   
@@ -651,7 +653,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../CHANGELOG.md" class="md-nav__link">
+      <a href="../changelog/" class="md-nav__link">
         
   
   
@@ -899,14 +901,13 @@
 <h2 id="public-api">Public API<a class="headerlink" href="#public-api" title="Permanent link">&para;</a></h2>
 <p>The library exports three main components:</p>
 <ul>
-<li><a class="autorefs autorefs-internal" title="            AuthConfig
-
+<li><a class="autorefs autorefs-internal" title="              AuthConfig(issuer: str, audience: str | Sequence[str], jwks_url: str, allowed_algs: Sequence[str] = ('RS256',), leeway_s: int = 0, jwks_timeout_s: int = 3, jwks_cache_ttl_s: int = 300, jwks_max_cached_keys: int = 16, required_scopes: Sequence[str] = (), required_permissions: Sequence[str] = (), scope_claim: str = 'scope', permissions_claim: str = 'permissions')
 
   
       dataclass
   " href="#oidc_jwt_verifier.AuthConfig"><code>AuthConfig</code></a> - Configuration dataclass for JWT verification settings</li>
-<li><a class="autorefs autorefs-internal" title="            AuthError" href="#oidc_jwt_verifier.AuthError"><code>AuthError</code></a> - Exception type for authentication/authorization failures</li>
-<li><a class="autorefs autorefs-internal" title="            JWTVerifier" href="#oidc_jwt_verifier.JWTVerifier"><code>JWTVerifier</code></a> - Main verifier class for validating JWTs</li>
+<li><a class="autorefs autorefs-internal" title="              AuthError(*, code: str, message: str, status_code: int, required_scopes: Iterable[str] = (), required_permissions: Iterable[str] = ())" href="#oidc_jwt_verifier.AuthError"><code>AuthError</code></a> - Exception type for authentication/authorization failures</li>
+<li><a class="autorefs autorefs-internal" title="              JWTVerifier(config: AuthConfig)" href="#oidc_jwt_verifier.JWTVerifier"><code>JWTVerifier</code></a> - Main verifier class for validating JWTs</li>
 </ul>
 <hr />
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
@@ -917,16 +918,14 @@
 
 
 <h2 id="oidc_jwt_verifier.AuthConfig" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AuthConfig</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>              <code class="highlight language-python"><span class="n">AuthConfig</span><span class="p">(</span><span class="n">issuer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">audience</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">jwks_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">allowed_algs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;RS256&#39;</span><span class="p">,),</span> <span class="n">leeway_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">jwks_timeout_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">jwks_cache_ttl_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">jwks_max_cached_keys</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">required_scopes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">required_permissions</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">scope_claim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;scope&#39;</span><span class="p">,</span> <span class="n">permissions_claim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;permissions&#39;</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
   </span>
 
 <a href="#oidc_jwt_verifier.AuthConfig" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">AuthConfig</span><span class="p">(</span><span class="n">issuer</span><span class="p">:</span> <span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="n">audience</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="n"><span title="collections.abc.Sequence">Sequence</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">],</span> <span class="n">jwks_url</span><span class="p">:</span> <span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="n">allowed_algs</span><span class="p">:</span> <span class="n"><span title="collections.abc.Sequence">Sequence</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;RS256&#39;</span><span class="p">,),</span> <span class="n">leeway_s</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">jwks_timeout_s</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">jwks_cache_ttl_s</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">jwks_max_cached_keys</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">required_scopes</span><span class="p">:</span> <span class="n"><span title="collections.abc.Sequence">Sequence</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">required_permissions</span><span class="p">:</span> <span class="n"><span title="collections.abc.Sequence">Sequence</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">scope_claim</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">=</span> <span class="s1">&#39;scope&#39;</span><span class="p">,</span> <span class="n">permissions_claim</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">=</span> <span class="s1">&#39;permissions&#39;</span><span class="p">)</span>
-</span></code></pre></div>
+
 
     <div class="doc doc-contents first">
 
@@ -940,219 +939,184 @@ and uses slots for memory efficiency.</p>
 validation. Sequences are normalized to tuples.</p>
 
 
-<table>
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">ATTRIBUTE</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.issuer">issuer</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The expected <code>iss</code> claim value. Must match the token issuer
 exactly. Typically the OIDC provider URL (e.g.,
 <code>https://example.auth0.com/</code>).</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="str">str</span></code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.audience">audience</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="str">str</span> | <span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>One or more expected <code>aud</code> claim values. The token must
 contain at least one matching audience. Accepts a single string
 or a sequence of strings.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="str">str</span> | <span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>]</code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.jwks_url">jwks_url</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The URL to fetch the JSON Web Key Set from. This URL is
 used for all key lookups; the verifier never derives JWKS URLs
 from token headers.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="str">str</span></code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.allowed_algs">allowed_algs</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Permitted signing algorithms. Defaults to <code>("RS256",)</code>.
 The <code>none</code> algorithm is always rejected regardless of this
 setting.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>]</code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.leeway_s">leeway_s</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Clock skew tolerance in seconds for <code>exp</code> and <code>nbf</code>
 claim validation. Defaults to 0.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="int">int</span></code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.jwks_timeout_s">jwks_timeout_s</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>HTTP timeout in seconds for JWKS fetches.
 Defaults to 3.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="int">int</span></code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.jwks_cache_ttl_s">jwks_cache_ttl_s</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Time-to-live in seconds for cached JWKS data.
 Must be in the range (0, 86400]. Defaults to 300.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="int">int</span></code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.jwks_max_cached_keys">jwks_max_cached_keys</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Maximum number of signing keys to cache.
 Must be in the range (0, 1024]. Defaults to 16.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="int">int</span></code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.required_scopes">required_scopes</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Scopes that must be present in the token for
 authorization to succeed. Checked against the <code>scope_claim</code>.
 Defaults to an empty tuple (no scope requirements).</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>]</code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.required_permissions">required_permissions</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Permissions that must be present in the token.
 Checked against the <code>permissions_claim</code>. Defaults to an empty
 tuple.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>]</code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.scope_claim">scope_claim</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The claim name containing OAuth 2.0 scopes. Defaults
 to <code>"scope"</code>.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="str">str</span></code>
-                  </span>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.permissions_claim">permissions_claim</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The claim name containing permissions (commonly
 used by Auth0). Defaults to <code>"permissions"</code>.</p>
               </div>
-              <p>
-                  <span class="doc-attribute-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="str">str</span></code>
-                  </span>
-              </p>
             </td>
           </tr>
       </tbody>
     </table>
 
 
-<table>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RAISES</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-              <span class="doc-raises-annotation">
                   <code><span title="ValueError">ValueError</span></code>
-              </span>
             </td>
-            <td class="doc-raises-details">
+            <td>
               <div class="doc-md-description">
                 <p>If any validation constraint is violated during
 construction. Specific conditions include:
@@ -1232,16 +1196,14 @@ construction. Specific conditions include:
 
 
 <h3 id="oidc_jwt_verifier.AuthConfig.audiences" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">audiences</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">audiences</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 <a href="#oidc_jwt_verifier.AuthConfig.audiences" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">audiences</span><span class="p">:</span> <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-</span></code></pre></div>
+
 
     <div class="doc doc-contents ">
 
@@ -1251,21 +1213,20 @@ the <code>audience</code> attribute was initialized with a single string or
 a sequence.</p>
 
 
-<table>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RETURNS</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <span class="doc-returns-annotation">
-                    <code><span title="tuple">tuple</span>[<span title="str">str</span>, ...]</code>
-                </span>
+                  <code><span title="tuple">tuple</span>[<span title="str">str</span>, ...]</code>
             </td>
-            <td class="doc-returns-details">
+            <td>
               <div class="doc-md-description">
                 <p>A tuple of audience strings.</p>
               </div>
@@ -1294,16 +1255,14 @@ a sequence.</p>
 
 
 <h3 id="oidc_jwt_verifier.AuthConfig.allowed_algorithms" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">allowed_algorithms</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">allowed_algorithms</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 <a href="#oidc_jwt_verifier.AuthConfig.allowed_algorithms" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">allowed_algorithms</span><span class="p">:</span> <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-</span></code></pre></div>
+
 
     <div class="doc doc-contents ">
 
@@ -1313,21 +1272,20 @@ the <code>allowed_algs</code> attribute was initialized with a single string
 or a sequence.</p>
 
 
-<table>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RETURNS</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <span class="doc-returns-annotation">
-                    <code><span title="tuple">tuple</span>[<span title="str">str</span>, ...]</code>
-                </span>
+                  <code><span title="tuple">tuple</span>[<span title="str">str</span>, ...]</code>
             </td>
-            <td class="doc-returns-details">
+            <td>
               <div class="doc-md-description">
                 <p>A tuple of algorithm name strings.</p>
               </div>
@@ -1357,16 +1315,14 @@ or a sequence.</p>
 
 
 <h3 id="oidc_jwt_verifier.AuthConfig.required_scope_set" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">required_scope_set</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">required_scope_set</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 <a href="#oidc_jwt_verifier.AuthConfig.required_scope_set" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">required_scope_set</span><span class="p">:</span> <span class="n"><span title="set">set</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">]</span>
-</span></code></pre></div>
+
 
     <div class="doc doc-contents ">
 
@@ -1374,21 +1330,20 @@ or a sequence.</p>
 <p>Empty strings in the <code>required_scopes</code> sequence are filtered out.</p>
 
 
-<table>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RETURNS</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <span class="doc-returns-annotation">
-                    <code><span title="set">set</span>[<span title="str">str</span>]</code>
-                </span>
+                  <code><span title="set">set</span>[<span title="str">str</span>]</code>
             </td>
-            <td class="doc-returns-details">
+            <td>
               <div class="doc-md-description">
                 <p>A set of non-empty scope strings.</p>
               </div>
@@ -1418,16 +1373,14 @@ or a sequence.</p>
 
 
 <h3 id="oidc_jwt_verifier.AuthConfig.required_permission_set" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">required_permission_set</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">required_permission_set</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 <a href="#oidc_jwt_verifier.AuthConfig.required_permission_set" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">required_permission_set</span><span class="p">:</span> <span class="n"><span title="set">set</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">]</span>
-</span></code></pre></div>
+
 
     <div class="doc doc-contents ">
 
@@ -1435,21 +1388,20 @@ or a sequence.</p>
 <p>Empty strings in the <code>required_permissions</code> sequence are filtered out.</p>
 
 
-<table>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RETURNS</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <span class="doc-returns-annotation">
-                    <code><span title="set">set</span>[<span title="str">str</span>]</code>
-                </span>
+                  <code><span title="set">set</span>[<span title="str">str</span>]</code>
             </td>
-            <td class="doc-returns-details">
+            <td>
               <div class="doc-md-description">
                 <p>A set of non-empty permission strings.</p>
               </div>
@@ -1481,12 +1433,10 @@ or a sequence.</p>
 
 
 <h3 id="oidc_jwt_verifier.AuthConfig.__post_init__" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">__post_init__</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">__post_init__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#oidc_jwt_verifier.AuthConfig.__post_init__" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">__post_init__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span>
-</span></code></pre></div>
+
 
     <div class="doc doc-contents ">
 
@@ -1496,21 +1446,20 @@ strips whitespace from string values, normalizes sequences to tuples,
 and validates all constraints.</p>
 
 
-<table>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RAISES</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-              <span class="doc-raises-annotation">
                   <code><span title="ValueError">ValueError</span></code>
-              </span>
             </td>
-            <td class="doc-raises-details">
+            <td>
               <div class="doc-md-description">
                 <p>If any validation constraint is violated.</p>
               </div>
@@ -1666,12 +1615,10 @@ and validates all constraints.</p>
 
 
 <h2 id="oidc_jwt_verifier.AuthError" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AuthError</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>              <code class="highlight language-python"><span class="n">AuthError</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">required_scopes</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">required_permissions</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span></code>
 
 <a href="#oidc_jwt_verifier.AuthError" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">AuthError</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="n">status_code</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span> <span class="n">required_scopes</span><span class="p">:</span> <span class="n"><span title="collections.abc.Iterable">Iterable</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">required_permissions</span><span class="p">:</span> <span class="n"><span title="collections.abc.Iterable">Iterable</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span>
-</span></code></pre></div>
+
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
@@ -1688,93 +1635,94 @@ to generate RFC 6750-compliant WWW-Authenticate header values.</p>
 or the <code>message</code> attribute.</p>
 
 
-<table>
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">ATTRIBUTE</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthError.code">code</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>A stable string identifier for the error type. Common values
 include <code>"invalid_token"</code>, <code>"token_expired"</code>,
 <code>"insufficient_scope"</code>, and <code>"missing_token"</code>. Suitable for
 programmatic error handling and logging.</p>
               </div>
-              <p>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthError.message">message</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>A human-readable description of the error. This is also
 set as the exception message.</p>
               </div>
-              <p>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthError.status_code">status_code</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The HTTP status code to return. Must be 401
 (Unauthorized) for authentication errors or 403 (Forbidden)
 for authorization errors.</p>
               </div>
-              <p>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthError.required_scopes">required_scopes</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>A tuple of scope strings that were required but
 missing from the token. Populated for <code>insufficient_scope</code>
 errors; empty for other error types.</p>
               </div>
-              <p>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthError.required_permissions">required_permissions</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>A tuple of permission strings that were required
 but missing from the token. Populated for <code>insufficient_permissions</code>
 errors; empty for other error types.</p>
               </div>
-              <p>
-              </p>
             </td>
           </tr>
       </tbody>
     </table>
 
 
-<table>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RAISES</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-              <span class="doc-raises-annotation">
                   <code><span title="ValueError">ValueError</span></code>
-              </span>
             </td>
-            <td class="doc-raises-details">
+            <td>
               <div class="doc-md-description">
                 <p>If <code>status_code</code> is not 401 or 403.</p>
               </div>
@@ -1827,11 +1775,14 @@ errors; empty for other error types.</p>
         <p>Initialize an authentication or authorization error.</p>
 
 
-<table>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">PARAMETER</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
       </thead>
       <tbody>
@@ -1839,111 +1790,102 @@ errors; empty for other error types.</p>
             <td>
                 <code>code</code>
             </td>
-            <td class="doc-param-details">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>A stable string identifier for the error type.</p>
               </div>
-              <p>
-                  <span class="doc-param-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="str">str</span></code>
-                  </span>
-              </p>
+            </td>
+            <td>
+                <em>required</em>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td>
                 <code>message</code>
             </td>
-            <td class="doc-param-details">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>A human-readable error description.</p>
               </div>
-              <p>
-                  <span class="doc-param-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="str">str</span></code>
-                  </span>
-              </p>
+            </td>
+            <td>
+                <em>required</em>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td>
                 <code>status_code</code>
             </td>
-            <td class="doc-param-details">
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The HTTP status code (must be 401 or 403).</p>
               </div>
-              <p>
-                  <span class="doc-param-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="int">int</span></code>
-                  </span>
-              </p>
+            </td>
+            <td>
+                <em>required</em>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td>
                 <code>required_scopes</code>
             </td>
-            <td class="doc-param-details">
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Scopes that were required but missing.
 Defaults to an empty tuple.</p>
               </div>
-              <p>
-                  <span class="doc-param-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
-                  </span>
-                  <span class="doc-param-default">
-                    <b>DEFAULT:</b>
-                      <code>()</code>
-                  </span>
-              </p>
+            </td>
+            <td>
+                  <code>()</code>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td>
                 <code>required_permissions</code>
             </td>
-            <td class="doc-param-details">
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Permissions that were required but missing.
 Defaults to an empty tuple.</p>
               </div>
-              <p>
-                  <span class="doc-param-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
-                  </span>
-                  <span class="doc-param-default">
-                    <b>DEFAULT:</b>
-                      <code>()</code>
-                  </span>
-              </p>
+            </td>
+            <td>
+                  <code>()</code>
             </td>
           </tr>
       </tbody>
     </table>
 
 
-<table>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RAISES</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-              <span class="doc-raises-annotation">
                   <code><span title="ValueError">ValueError</span></code>
-              </span>
             </td>
-            <td class="doc-raises-details">
+            <td>
               <div class="doc-md-description">
                 <p>If <code>status_code</code> is not 401 or 403.</p>
               </div>
@@ -2042,12 +1984,10 @@ Defaults to an empty tuple.</p>
 
 
 <h3 id="oidc_jwt_verifier.AuthError.www_authenticate_header" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">www_authenticate_header</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">www_authenticate_header</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">realm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#oidc_jwt_verifier.AuthError.www_authenticate_header" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">www_authenticate_header</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">realm</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="str">str</span></span>
-</span></code></pre></div>
+
 
     <div class="doc doc-contents ">
 
@@ -2062,11 +2002,14 @@ the error type (mapped to RFC 6750 error codes) and a description.</p>
 included listing the missing scopes.</p>
 
 
-<table>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">PARAMETER</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
       </thead>
       <tbody>
@@ -2074,43 +2017,38 @@ included listing the missing scopes.</p>
             <td>
                 <code>realm</code>
             </td>
-            <td class="doc-param-details">
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Optional protection space identifier. If provided, it
 appears first in the challenge parameters. Common values
 include the API name or domain.</p>
               </div>
-              <p>
-                  <span class="doc-param-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="str">str</span> | None</code>
-                  </span>
-                  <span class="doc-param-default">
-                    <b>DEFAULT:</b>
-                      <code>None</code>
-                  </span>
-              </p>
+            </td>
+            <td>
+                  <code>None</code>
             </td>
           </tr>
       </tbody>
     </table>
 
 
-<table>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RETURNS</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <span class="doc-returns-annotation">
-                    <code><span title="str">str</span></code>
-                </span>
+                  <code><span title="str">str</span></code>
             </td>
-            <td class="doc-returns-details">
+            <td>
               <div class="doc-md-description">
                 <p>A string suitable for use as the WWW-Authenticate header value.</p>
               </div>
@@ -2118,11 +2056,9 @@ include the API name or domain.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <span class="doc-returns-annotation">
-                    <code><span title="str">str</span></code>
-                </span>
+                  <code><span title="str">str</span></code>
             </td>
-            <td class="doc-returns-details">
+            <td>
               <div class="doc-md-description">
                 <p>The format is <code>Bearer param1="value1", param2="value2", ...</code>.</p>
               </div>
@@ -2331,17 +2267,10 @@ include the API name or domain.</p>
 
 
 <h2 id="oidc_jwt_verifier.JWTVerifier" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">JWTVerifier</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>              <code class="highlight language-python"><span class="n">JWTVerifier</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">AuthConfig</span><span class="p">)</span></code>
 
 <a href="#oidc_jwt_verifier.JWTVerifier" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">JWTVerifier</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            AuthConfig
 
-
-  
-      dataclass
-   (oidc_jwt_verifier.config.AuthConfig)" href="#oidc_jwt_verifier.AuthConfig">AuthConfig</a></span><span class="p">)</span>
-</span></code></pre></div>
 
     <div class="doc doc-contents first">
 
@@ -2365,32 +2294,34 @@ include the API name or domain.</p>
 across multiple token verifications.</p>
 
 
-<table>
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">ATTRIBUTE</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.JWTVerifier._config">_config</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The authentication configuration.</p>
               </div>
-              <p>
-              </p>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.JWTVerifier._jwks">_jwks</span></code></td>
-            <td class="doc-attribute-details">
+            <td>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The JWKS client for signing key retrieval.</p>
               </div>
-              <p>
-              </p>
             </td>
           </tr>
       </tbody>
@@ -2439,11 +2370,14 @@ across multiple token verifications.</p>
 from the provided configuration.</p>
 
 
-<table>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">PARAMETER</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
       </thead>
       <tbody>
@@ -2451,23 +2385,22 @@ from the provided configuration.</p>
             <td>
                 <code>config</code>
             </td>
-            <td class="doc-param-details">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="              AuthConfig(issuer: str, audience: str | Sequence[str], jwks_url: str, allowed_algs: Sequence[str] = ('RS256',), leeway_s: int = 0, jwks_timeout_s: int = 3, jwks_cache_ttl_s: int = 300, jwks_max_cached_keys: int = 16, required_scopes: Sequence[str] = (), required_permissions: Sequence[str] = (), scope_claim: str = 'scope', permissions_claim: str = 'permissions')
+
+  
+      dataclass
+   (oidc_jwt_verifier.config.AuthConfig)" href="#oidc_jwt_verifier.AuthConfig">AuthConfig</a></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The authentication configuration specifying the
 issuer, audience, JWKS URL, allowed algorithms, and
 authorization requirements.</p>
               </div>
-              <p>
-                  <span class="doc-param-annotation">
-                    <b>TYPE:</b>
-                      <code><a class="autorefs autorefs-internal" title="            AuthConfig
-
-
-  
-      dataclass
-   (oidc_jwt_verifier.config.AuthConfig)" href="#oidc_jwt_verifier.AuthConfig">AuthConfig</a></code>
-                  </span>
-              </p>
+            </td>
+            <td>
+                <em>required</em>
             </td>
           </tr>
       </tbody>
@@ -2556,12 +2489,10 @@ authorization requirements.</p>
 
 
 <h3 id="oidc_jwt_verifier.JWTVerifier.verify_access_token" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">verify_access_token</span>
-
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#oidc_jwt_verifier.JWTVerifier.verify_access_token" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="n"><span title="str">str</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]</span>
-</span></code></pre></div>
+
 
     <div class="doc doc-contents ">
 
@@ -2581,11 +2512,14 @@ authorization requirements.</p>
 audience matches any audience in the token.</p>
 
 
-<table>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">PARAMETER</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
       </thead>
       <tbody>
@@ -2593,38 +2527,37 @@ audience matches any audience in the token.</p>
             <td>
                 <code>token</code>
             </td>
-            <td class="doc-param-details">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The encoded JWT access token string. Leading and
 trailing whitespace is stripped.</p>
               </div>
-              <p>
-                  <span class="doc-param-annotation">
-                    <b>TYPE:</b>
-                      <code><span title="str">str</span></code>
-                  </span>
-              </p>
+            </td>
+            <td>
+                <em>required</em>
             </td>
           </tr>
       </tbody>
     </table>
 
 
-<table>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RETURNS</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <span class="doc-returns-annotation">
-                    <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
-                </span>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
             </td>
-            <td class="doc-returns-details">
+            <td>
               <div class="doc-md-description">
                 <p>The decoded token payload as a dictionary. Contains all</p>
               </div>
@@ -2632,11 +2565,9 @@ trailing whitespace is stripped.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <span class="doc-returns-annotation">
-                    <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
-                </span>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
             </td>
-            <td class="doc-returns-details">
+            <td>
               <div class="doc-md-description">
                 <p>claims from the token including registered claims (<code>iss</code>,</p>
               </div>
@@ -2644,11 +2575,9 @@ trailing whitespace is stripped.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <span class="doc-returns-annotation">
-                    <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
-                </span>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
             </td>
-            <td class="doc-returns-details">
+            <td>
               <div class="doc-md-description">
                 <p><code>sub</code>, <code>aud</code>, <code>exp</code>, etc.) and any custom claims.</p>
               </div>
@@ -2658,21 +2587,20 @@ trailing whitespace is stripped.</p>
     </table>
 
 
-<table>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">RAISES</span></th>
-          <th><span>DESCRIPTION</span></th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
             <td>
-              <span class="doc-raises-annotation">
-                  <code><a class="autorefs autorefs-internal" title="            AuthError (oidc_jwt_verifier.errors.AuthError)" href="#oidc_jwt_verifier.AuthError">AuthError</a></code>
-              </span>
+                  <code><a class="autorefs autorefs-internal" title="              AuthError(*, code: str, message: str, status_code: int, required_scopes: Iterable[str] = (), required_permissions: Iterable[str] = ()) (oidc_jwt_verifier.errors.AuthError)" href="#oidc_jwt_verifier.AuthError">AuthError</a></code>
             </td>
-            <td class="doc-raises-details">
+            <td>
               <div class="doc-md-description">
                 <p>On any verification failure. The error's
 <code>status_code</code> indicates the appropriate HTTP response:
@@ -3170,6 +3098,22 @@ trailing whitespace is stripped.</p>
           </a>
         
         
+          
+          <a href="../changelog/" class="md-footer__link md-footer__link--next" aria-label="Next: Changelog">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Changelog
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
       </nav>
     
   
@@ -3202,7 +3146,7 @@ trailing whitespace is stripped.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.top", "navigation.tracking", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
