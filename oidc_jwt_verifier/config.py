@@ -204,10 +204,15 @@ class AuthConfig:
             tuple(p.strip() for p in _normalize_str_sequence(self.required_permissions)),
         )
 
-        if not self.scope_claim.strip():
+        scope_claim = self.scope_claim.strip()
+        if not scope_claim:
             raise ValueError("scope_claim must be non-empty")
-        if not self.permissions_claim.strip():
+        object.__setattr__(self, "scope_claim", scope_claim)
+
+        permissions_claim = self.permissions_claim.strip()
+        if not permissions_claim:
             raise ValueError("permissions_claim must be non-empty")
+        object.__setattr__(self, "permissions_claim", permissions_claim)
 
     @property
     def audiences(self) -> tuple[str, ...]:

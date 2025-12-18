@@ -192,10 +192,14 @@ def test_config_whitespace_stripping() -> None:
         issuer="  https://issuer.example/  ",
         audience="  https://api.example  ",
         jwks_url="  https://issuer.example/.well-known/jwks.json  ",
+        scope_claim="  custom_scope  ",
+        permissions_claim="  custom_permissions  ",
     )
     assert config.issuer == "https://issuer.example/"
     assert config.jwks_url == "https://issuer.example/.well-known/jwks.json"
     assert config.audiences == ("https://api.example",)
+    assert config.scope_claim == "custom_scope"
+    assert config.permissions_claim == "custom_permissions"
 
 
 def test_config_sequence_to_tuple_normalization() -> None:
