@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.2...v0.1.3) (2025-12-18)
+
+
+### Bug Fixes
+
+* **docs:** add missing Documentation badge to docs/index.md ([dfdf6ae](https://github.com/BjornMelin/oidc-jwt-verifier/commit/dfdf6ae2f9c96ca1a1974c9af6d204241b6e1c69))
+
 ## [0.1.2](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.1...v0.1.2) (2025-12-18)
 
 
