@@ -388,7 +388,7 @@ class JWTVerifier:
             except jwt.InvalidAudienceError as exc:
                 last_exc = exc
                 continue
-            except Exception as exc:
+            except jwt.PyJWTError as exc:
                 raise _map_decode_error(exc) from exc
 
         if payload is None:
