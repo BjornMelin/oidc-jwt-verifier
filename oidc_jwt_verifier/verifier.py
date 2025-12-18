@@ -315,7 +315,7 @@ class JWTVerifier:
         # Parse the header without verifying the signature.
         try:
             header = jwt.get_unverified_header(token)
-        except jwt.DecodeError as exc:
+        except jwt.exceptions.DecodeError as exc:
             raise AuthError(
                 code="malformed_token",
                 message="Malformed token",

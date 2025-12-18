@@ -438,6 +438,26 @@ def test_alg_none_and_missing_alg_rejected() -> None:
     assert excinfo.value.code == "malformed_token"
 
 
+@pytest.mark.parametrize("token", ["abc", "abc.def"])
+def test_malformed_token_structure_rejected(token: str) -> None:
+    """Tokens that cannot be parsed are rejected as malformed_token."""
+    verifier = JWTVerifier(
+        AuthConfig(
+            issuer="https://issuer.example/",
+            audience="https://api.example",
+            jwks_url="http://127.0.0.1:1/jwks.json",
+            allowed_algs=("RS256",),
+            jwks_timeout_s=0.1,
+        )
+    )
+
+    with pytest.raises(AuthError) as excinfo:
+        verifier.verify_access_token(token)
+
+    assert excinfo.value.code == "malformed_token"
+    assert excinfo.value.status_code == 401
+
+
 @pytest.mark.parametrize("missing_claim", ["exp", "iss", "aud"])
 def test_missing_required_claims_rejected(missing_claim: str) -> None:
     private_pem, public_key = _make_rsa_keypair()
