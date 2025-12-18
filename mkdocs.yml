@@ -4,7 +4,7 @@
 site_name: oidc-jwt-verifier
 site_description: Framework-agnostic JWT verification for OIDC/JWKS issuers
 site_author: Bjorn Melin
-site_url: https://bjornmelin.github.io/oidc-jwt-verifier/
+site_url: https://oidc-jwt-verifier.bjornmelin.io/
 
 # Repository
 repo_name: BjornMelin/oidc-jwt-verifier
