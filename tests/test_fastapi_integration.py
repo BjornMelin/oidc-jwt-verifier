@@ -8,7 +8,9 @@ import pytest
 
 from oidc_jwt_verifier import AuthConfig
 from oidc_jwt_verifier.async_verifier import AsyncJWTVerifier
-from oidc_jwt_verifier.integrations.fastapi import create_async_bearer_dependency
+from oidc_jwt_verifier.integrations.fastapi import (
+    create_async_bearer_dependency,
+)
 from tests.conftest import jwks_server
 from tests.jwt_test_utils import (
     encode_rs256,
@@ -38,7 +40,12 @@ async def test_fastapi_async_dependency_accepts_valid_token() -> None:
 
     with jwks_server(jwks) as local:
         verifier = AsyncJWTVerifier(
-            AuthConfig(issuer=issuer, audience=audience, jwks_url=local.url, jwks_timeout_s=1.0)
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+            )
         )
         auth_dep = create_async_bearer_dependency(verifier, realm="api")
         app = FastAPI()
@@ -51,8 +58,12 @@ async def test_fastapi_async_dependency_accepts_valid_token() -> None:
 
         token = encode_rs256(payload, private_pem=private_pem, kid=kid)
         transport = httpx.ASGITransport(app=app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
-            response = await client.get("/protected", headers={"Authorization": f"Bearer {token}"})
+        async with httpx.AsyncClient(
+            transport=transport, base_url="http://testserver"
+        ) as client:
+            response = await client.get(
+                "/protected", headers={"Authorization": f"Bearer {token}"}
+            )
         await verifier.aclose()
 
     assert response.status_code == 200
@@ -60,7 +71,9 @@ async def test_fastapi_async_dependency_accepts_valid_token() -> None:
 
 
 @pytest.mark.asyncio
-async def test_fastapi_async_dependency_returns_rfc6750_headers_on_403() -> None:
+async def test_fastapi_async_dependency_returns_rfc6750_headers_on_403() -> (
+    None
+):
     """FastAPI helper maps AuthError to RFC 6750 WWW-Authenticate header."""
     import httpx
     from fastapi import Depends, FastAPI
@@ -97,8 +110,12 @@ async def test_fastapi_async_dependency_returns_rfc6750_headers_on_403() -> None
 
         token = encode_rs256(payload, private_pem=private_pem, kid=kid)
         transport = httpx.ASGITransport(app=app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
-            response = await client.get("/protected", headers={"Authorization": f"Bearer {token}"})
+        async with httpx.AsyncClient(
+            transport=transport, base_url="http://testserver"
+        ) as client:
+            response = await client.get(
+                "/protected", headers={"Authorization": f"Bearer {token}"}
+            )
         await verifier.aclose()
 
     assert response.status_code == 403

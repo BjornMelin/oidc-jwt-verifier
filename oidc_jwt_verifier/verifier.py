@@ -177,7 +177,9 @@ class JWTVerifier:
         ... )
         >>> verifier = JWTVerifier(config)  # doctest: +SKIP
         >>> # Token without required scopes raises AuthError with 403
-        >>> claims = verifier.verify_access_token(token_without_scopes)  # doctest: +SKIP
+        >>> claims = verifier.verify_access_token(
+        ...     token_without_scopes
+        ... )  # doctest: +SKIP
         Traceback (most recent call last):
             ...
         AuthError: Insufficient scope
@@ -206,7 +208,9 @@ class JWTVerifier:
         self._config = config
         self._jwks = JWKSClient.from_config(config)
         self._decoder = jwt.PyJWT(
-            options={"enforce_minimum_key_length": config.enforce_minimum_key_length}
+            options={
+                "enforce_minimum_key_length": config.enforce_minimum_key_length
+            }
         )
 
     def verify_access_token(self, token: str) -> dict[str, Any]:
@@ -265,7 +269,9 @@ class JWTVerifier:
         Examples:
             Successful verification:
 
-            >>> claims = verifier.verify_access_token(valid_token)  # doctest: +SKIP
+            >>> claims = verifier.verify_access_token(
+            ...     valid_token
+            ... )  # doctest: +SKIP
             >>> claims["sub"]  # doctest: +SKIP
             'auth0|123456789'
             >>> claims["aud"]  # doctest: +SKIP
@@ -287,7 +293,11 @@ class JWTVerifier:
         """
         token = token.strip()
         if not token:
-            raise AuthError(code="missing_token", message="Missing access token", status_code=401)
+            raise AuthError(
+                code="missing_token",
+                message="Missing access token",
+                status_code=401,
+            )
 
         _, alg = parse_and_validate_header(
             token, allowed_algorithms=self._config.allowed_algorithms

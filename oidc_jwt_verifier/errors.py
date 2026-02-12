@@ -114,7 +114,13 @@ class AuthError(Exception):
         ValueError: status_code must be 401 or 403
     """
 
-    __slots__ = ("code", "message", "required_permissions", "required_scopes", "status_code")
+    __slots__ = (
+        "code",
+        "message",
+        "required_permissions",
+        "required_scopes",
+        "status_code",
+    )
 
     def __init__(
         self,
@@ -219,6 +225,8 @@ class AuthError(Exception):
 
         if self.required_permissions:
             permissions_str = " ".join(self.required_permissions)
-            params.append(f"permissions={_quote_rfc6750_value(permissions_str)}")
+            params.append(
+                f"permissions={_quote_rfc6750_value(permissions_str)}"
+            )
 
         return "Bearer " + ", ".join(params)

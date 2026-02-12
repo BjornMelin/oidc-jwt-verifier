@@ -62,9 +62,13 @@ class AsyncJWTVerifier:
         """
         self._config = config
         self._decoder = jwt.PyJWT(
-            options={"enforce_minimum_key_length": config.enforce_minimum_key_length}
+            options={
+                "enforce_minimum_key_length": config.enforce_minimum_key_length
+            }
         )
-        self._jwks = jwks_client or AsyncJWKSClient.from_config(config, http_client=http_client)
+        self._jwks = jwks_client or AsyncJWKSClient.from_config(
+            config, http_client=http_client
+        )
         self._owns_jwks = jwks_client is None
 
     async def verify_access_token(self, token: str) -> dict[str, Any]:
@@ -81,7 +85,11 @@ class AsyncJWTVerifier:
         """
         normalized = token.strip()
         if not normalized:
-            raise AuthError(code="missing_token", message="Missing access token", status_code=401)
+            raise AuthError(
+                code="missing_token",
+                message="Missing access token",
+                status_code=401,
+            )
 
         _, algorithm = parse_and_validate_header(
             normalized,
@@ -116,6 +124,8 @@ class AsyncJWTVerifier:
         """
         return self
 
-    async def __aexit__(self, _exc_type: object, _exc: object, _tb: object) -> None:
+    async def __aexit__(
+        self, _exc_type: object, _exc: object, _tb: object
+    ) -> None:
         """Exit async context manager and close owned resources."""
         await self.aclose()

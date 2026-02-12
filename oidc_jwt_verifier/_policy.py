@@ -46,7 +46,11 @@ def parse_scope_claim(value: Any) -> set[str]:
     if isinstance(value, str):
         return {scope for scope in value.split() if scope}
     if isinstance(value, list):
-        return {scope for scope in (str(item) for item in value if item is not None) if scope}
+        return {
+            scope
+            for scope in (str(item) for item in value if item is not None)
+            if scope
+        }
     return set()
 
 
@@ -93,7 +97,9 @@ def map_decode_error(exc: Exception) -> AuthError:
         internal error code.
     """
     if isinstance(exc, jwt.ExpiredSignatureError):
-        return AuthError(code="token_expired", message="Token is expired", status_code=401)
+        return AuthError(
+            code="token_expired", message="Token is expired", status_code=401
+        )
     if isinstance(exc, jwt.ImmatureSignatureError):
         return AuthError(
             code="token_not_yet_valid",
@@ -101,13 +107,21 @@ def map_decode_error(exc: Exception) -> AuthError:
             status_code=401,
         )
     if isinstance(exc, jwt.InvalidIssuerError):
-        return AuthError(code="invalid_issuer", message="Invalid issuer", status_code=401)
+        return AuthError(
+            code="invalid_issuer", message="Invalid issuer", status_code=401
+        )
     if isinstance(exc, jwt.InvalidAudienceError):
-        return AuthError(code="invalid_audience", message="Invalid audience", status_code=401)
+        return AuthError(
+            code="invalid_audience", message="Invalid audience", status_code=401
+        )
     if isinstance(exc, jwt.MissingRequiredClaimError):
-        return AuthError(code="missing_claim", message=str(exc), status_code=401)
+        return AuthError(
+            code="missing_claim", message=str(exc), status_code=401
+        )
     if isinstance(exc, jwt.InvalidKeyError):
-        return AuthError(code="invalid_token", message="Invalid token", status_code=401)
+        return AuthError(
+            code="invalid_token", message="Invalid token", status_code=401
+        )
     if isinstance(exc, jwt.InvalidAlgorithmError):
         return AuthError(
             code="disallowed_alg",
@@ -115,10 +129,16 @@ def map_decode_error(exc: Exception) -> AuthError:
             status_code=401,
         )
     if isinstance(exc, jwt.DecodeError):
-        return AuthError(code="malformed_token", message="Malformed token", status_code=401)
+        return AuthError(
+            code="malformed_token", message="Malformed token", status_code=401
+        )
     if isinstance(exc, jwt.InvalidTokenError):
-        return AuthError(code="invalid_token", message="Invalid token", status_code=401)
-    return AuthError(code="invalid_token", message="Invalid token", status_code=401)
+        return AuthError(
+            code="invalid_token", message="Invalid token", status_code=401
+        )
+    return AuthError(
+        code="invalid_token", message="Invalid token", status_code=401
+    )
 
 
 def parse_and_validate_header(
@@ -161,7 +181,11 @@ def parse_and_validate_header(
 
     alg = header.get("alg")
     if not isinstance(alg, str) or not alg:
-        raise AuthError(code="malformed_token", message="Missing alg header", status_code=401)
+        raise AuthError(
+            code="malformed_token",
+            message="Missing alg header",
+            status_code=401,
+        )
     if alg.lower() == "none":
         raise AuthError(
             code="disallowed_alg",
@@ -177,7 +201,9 @@ def parse_and_validate_header(
 
     kid = header.get("kid")
     if not isinstance(kid, str) or not kid:
-        raise AuthError(code="missing_kid", message="Missing kid header", status_code=401)
+        raise AuthError(
+            code="missing_kid", message="Missing kid header", status_code=401
+        )
 
     return header, alg
 
@@ -246,12 +272,16 @@ def decode_and_validate_payload(
             raise map_decode_error(exc) from exc
 
     if payload is None:
-        raise map_decode_error(last_exc or jwt.InvalidAudienceError("invalid audience"))
+        raise map_decode_error(
+            last_exc or jwt.InvalidAudienceError("invalid audience")
+        )
 
     return payload
 
 
-def enforce_authorization_claims(payload: dict[str, Any], *, config: AuthConfig) -> None:
+def enforce_authorization_claims(
+    payload: dict[str, Any], *, config: AuthConfig
+) -> None:
     """Enforce required scopes and permissions.
 
     Args:
@@ -266,7 +296,9 @@ def enforce_authorization_claims(payload: dict[str, Any], *, config: AuthConfig)
     required_permissions = config.required_permission_set
 
     token_scopes = parse_scope_claim(payload.get(config.scope_claim))
-    token_permissions = parse_permissions_claim(payload.get(config.permissions_claim))
+    token_permissions = parse_permissions_claim(
+        payload.get(config.permissions_claim)
+    )
 
     missing_scopes = required_scopes - token_scopes
     if missing_scopes:

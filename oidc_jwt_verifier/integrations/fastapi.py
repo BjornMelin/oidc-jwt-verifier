@@ -37,7 +37,9 @@ def auth_error_to_http_exception(
     return HTTPException(
         status_code=error.status_code,
         detail=error.message,
-        headers={"WWW-Authenticate": error.www_authenticate_header(realm=realm)},
+        headers={
+            "WWW-Authenticate": error.www_authenticate_header(realm=realm)
+        },
     )
 
 
@@ -123,7 +125,9 @@ def create_sync_bearer_dependency(
             if offload_to_threadpool:
                 return cast(
                     "dict[str, Any]",
-                    await run_in_threadpool(verifier.verify_access_token, token),
+                    await run_in_threadpool(
+                        verifier.verify_access_token, token
+                    ),
                 )
             return verifier.verify_access_token(token)
         except AuthError as exc:

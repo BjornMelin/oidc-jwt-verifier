@@ -35,7 +35,9 @@ def _valid_config_kwargs() -> dict[str, Any]:
         ("jwks_url", "   "),
     ],
 )
-def test_config_empty_required_string_raises_valueerror(field: str, value: str) -> None:
+def test_config_empty_required_string_raises_valueerror(
+    field: str, value: str
+) -> None:
     """AuthConfig rejects empty or whitespace-only issuer and jwks_url."""
     kwargs = _valid_config_kwargs()
     kwargs[field] = value
@@ -55,7 +57,9 @@ def test_config_empty_required_string_raises_valueerror(field: str, value: str) 
         ["valid", ""],
     ],
 )
-def test_config_empty_audience_raises_valueerror(audience: str | list[str]) -> None:
+def test_config_empty_audience_raises_valueerror(
+    audience: str | list[str],
+) -> None:
     """AuthConfig rejects empty or whitespace-only audience values."""
     kwargs = _valid_config_kwargs()
     kwargs["audience"] = audience
@@ -97,7 +101,9 @@ def test_config_alg_none_in_list_rejected() -> None:
         ["   "],
     ],
 )
-def test_config_empty_allowed_algs_rejected(allowed_algs: str | list[str]) -> None:
+def test_config_empty_allowed_algs_rejected(
+    allowed_algs: str | list[str],
+) -> None:
     """AuthConfig rejects empty or whitespace-only allowed_algs."""
     kwargs = _valid_config_kwargs()
     kwargs["allowed_algs"] = allowed_algs
@@ -121,10 +127,26 @@ def test_config_empty_allowed_algs_rejected(allowed_algs: str | list[str]) -> No
         ("jwks_timeout_s", -0.1, "jwks_timeout_s must be > 0"),
         ("jwks_cache_ttl_s", 0, r"jwks_cache_ttl_s must be in \(0, 86400\]"),
         ("jwks_cache_ttl_s", 0.0, r"jwks_cache_ttl_s must be in \(0, 86400\]"),
-        ("jwks_cache_ttl_s", 86401, r"jwks_cache_ttl_s must be in \(0, 86400\]"),
-        ("jwks_cache_ttl_s", 86400.1, r"jwks_cache_ttl_s must be in \(0, 86400\]"),
-        ("jwks_max_cached_keys", 0, r"jwks_max_cached_keys must be in \(0, 1024\]"),
-        ("jwks_max_cached_keys", 1025, r"jwks_max_cached_keys must be in \(0, 1024\]"),
+        (
+            "jwks_cache_ttl_s",
+            86401,
+            r"jwks_cache_ttl_s must be in \(0, 86400\]",
+        ),
+        (
+            "jwks_cache_ttl_s",
+            86400.1,
+            r"jwks_cache_ttl_s must be in \(0, 86400\]",
+        ),
+        (
+            "jwks_max_cached_keys",
+            0,
+            r"jwks_max_cached_keys must be in \(0, 1024\]",
+        ),
+        (
+            "jwks_max_cached_keys",
+            1025,
+            r"jwks_max_cached_keys must be in \(0, 1024\]",
+        ),
     ],
 )
 def test_config_numeric_range_invalid_raises_valueerror(

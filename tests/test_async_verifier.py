@@ -82,7 +82,9 @@ async def test_async_jwks_client_accepts_bytes_token() -> None:
             )
         )
         token = encode_rs256(payload, private_pem=private_pem, kid=kid)
-        signing_key = await client.get_signing_key_from_jwt(token.encode("ascii"))
+        signing_key = await client.get_signing_key_from_jwt(
+            token.encode("ascii")
+        )
         await client.aclose()
 
     assert signing_key.key_id == kid
@@ -100,7 +102,12 @@ async def test_async_forbidden_header_rejected_before_jwks_fetch() -> None:
 
     with jwks_server(jwks) as local:
         verifier = AsyncJWTVerifier(
-            AuthConfig(issuer=issuer, audience=audience, jwks_url=local.url, jwks_timeout_s=1)
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1,
+            )
         )
         token = jwt.encode(
             payload,
@@ -163,7 +170,10 @@ async def test_async_and_sync_verifiers_return_same_claims() -> None:
 
     with jwks_server(jwks) as local:
         config = AuthConfig(
-            issuer=issuer, audience=audience, jwks_url=local.url, jwks_timeout_s=1.0
+            issuer=issuer,
+            audience=audience,
+            jwks_url=local.url,
+            jwks_timeout_s=1.0,
         )
         async_verifier = AsyncJWTVerifier(config)
         sync_verifier = JWTVerifier(config)
@@ -223,13 +233,20 @@ async def test_async_verifier_does_not_close_external_http_client() -> None:
     payload: dict[str, Any] = {
         "iss": issuer,
         "aud": audience,
-        "exp": int((datetime.now(tz=timezone.utc) + timedelta(seconds=60)).timestamp()),
+        "exp": int(
+            (datetime.now(tz=timezone.utc) + timedelta(seconds=60)).timestamp()
+        ),
     }
 
     with jwks_server(jwks) as local:
         client = httpx.AsyncClient(timeout=1.0)
         verifier = AsyncJWTVerifier(
-            AuthConfig(issuer=issuer, audience=audience, jwks_url=local.url, jwks_timeout_s=1.0),
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+            ),
             http_client=client,
         )
         token = encode_rs256(payload, private_pem=private_pem, kid=kid)

@@ -35,7 +35,9 @@ def auth_error_to_response(
     return JSONResponse(
         {"detail": error.message, "code": error.code},
         status_code=error.status_code,
-        headers={"WWW-Authenticate": error.www_authenticate_header(realm=realm)},
+        headers={
+            "WWW-Authenticate": error.www_authenticate_header(realm=realm)
+        },
     )
 
 
@@ -111,7 +113,9 @@ class BearerAuthMiddleware:
         self._exempt_paths = exempt_paths or set()
         self._claims_state_key = claims_state_key
 
-    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+    async def __call__(
+        self, scope: Scope, receive: Receive, send: Send
+    ) -> None:
         """Process request authentication.
 
         Args:
@@ -129,7 +133,9 @@ class BearerAuthMiddleware:
 
         request = Request(scope, receive=receive)
         try:
-            claims = await verify_request_bearer_token(request, verifier=self._verifier)
+            claims = await verify_request_bearer_token(
+                request, verifier=self._verifier
+            )
         except AuthError as exc:
             response = auth_error_to_response(exc, realm=self._realm)
             await response(scope, receive, send)

@@ -38,15 +38,24 @@ async def test_starlette_middleware_sets_claims_on_request_state() -> None:
 
     with jwks_server(jwks) as local:
         verifier = AsyncJWTVerifier(
-            AuthConfig(issuer=issuer, audience=audience, jwks_url=local.url, jwks_timeout_s=1.0)
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+            )
         )
         app = Starlette(routes=[Route("/protected", protected)])
         app.add_middleware(BearerAuthMiddleware, verifier=verifier, realm="api")
 
         token = encode_rs256(payload, private_pem=private_pem, kid=kid)
         transport = httpx.ASGITransport(app=app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
-            response = await client.get("/protected", headers={"Authorization": f"Bearer {token}"})
+        async with httpx.AsyncClient(
+            transport=transport, base_url="http://testserver"
+        ) as client:
+            response = await client.get(
+                "/protected", headers={"Authorization": f"Bearer {token}"}
+            )
         await verifier.aclose()
 
     assert response.status_code == 200
@@ -54,7 +63,9 @@ async def test_starlette_middleware_sets_claims_on_request_state() -> None:
 
 
 @pytest.mark.asyncio
-async def test_starlette_middleware_returns_rfc6750_header_on_missing_token() -> None:
+async def test_starlette_middleware_returns_rfc6750_header_on_missing_token() -> (
+    None
+):
     """Missing bearer token returns 401 with RFC 6750 header."""
     import httpx
     from starlette.applications import Starlette
@@ -77,7 +88,9 @@ async def test_starlette_middleware_returns_rfc6750_header_on_missing_token() ->
     app.add_middleware(BearerAuthMiddleware, verifier=verifier, realm="api")
 
     transport = httpx.ASGITransport(app=app)
-    async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+    async with httpx.AsyncClient(
+        transport=transport, base_url="http://testserver"
+    ) as client:
         response = await client.get("/protected")
     await verifier.aclose()
 

@@ -212,7 +212,9 @@ class AsyncJWKSClient:
             self._put_key_cache_unlocked(kid, key)
             return key
 
-    async def _find_key_via_jwks(self, kid: str, *, refresh: bool) -> PyJWK | None:
+    async def _find_key_via_jwks(
+        self, kid: str, *, refresh: bool
+    ) -> PyJWK | None:
         """Resolve key by fetching JWKS if necessary.
 
         Args:
