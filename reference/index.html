@@ -707,7 +707,7 @@
 <h2 id="public-api">Public API<a class="headerlink" href="#public-api" title="Permanent link">&para;</a></h2>
 <p>The library exports three main components:</p>
 <ul>
-<li><a class="autorefs autorefs-internal" title="              AuthConfig(issuer: str, audience: str | Sequence[str], jwks_url: str, allowed_algs: Sequence[str] = ('RS256',), leeway_s: int = 0, jwks_timeout_s: int = 3, jwks_cache_ttl_s: int = 300, jwks_max_cached_keys: int = 16, required_scopes: Sequence[str] = (), required_permissions: Sequence[str] = (), scope_claim: str = 'scope', permissions_claim: str = 'permissions')
+<li><a class="autorefs autorefs-internal" title="              AuthConfig(issuer: str, audience: str | Sequence[str], jwks_url: str, allowed_algs: Sequence[str] = ('RS256',), leeway_s: int = 0, jwks_timeout_s: float = 3.0, jwks_cache_ttl_s: float = 300.0, jwks_max_cached_keys: int = 16, enforce_minimum_key_length: bool = True, required_scopes: Sequence[str] = (), required_permissions: Sequence[str] = (), scope_claim: str = 'scope', permissions_claim: str = 'permissions')
 
   
       dataclass
@@ -724,7 +724,7 @@
 
 
 <h2 id="oidc_jwt_verifier.AuthConfig" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>              <code class="highlight language-python"><span class="n">AuthConfig</span><span class="p">(</span><span class="n">issuer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">audience</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">jwks_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">allowed_algs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;RS256&#39;</span><span class="p">,),</span> <span class="n">leeway_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">jwks_timeout_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">jwks_cache_ttl_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">jwks_max_cached_keys</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">required_scopes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">required_permissions</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">scope_claim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;scope&#39;</span><span class="p">,</span> <span class="n">permissions_claim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;permissions&#39;</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>              <code class="highlight language-python"><span class="n">AuthConfig</span><span class="p">(</span><span class="n">issuer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">audience</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">jwks_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">allowed_algs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;RS256&#39;</span><span class="p">,),</span> <span class="n">leeway_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">jwks_timeout_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">,</span> <span class="n">jwks_cache_ttl_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">300.0</span><span class="p">,</span> <span class="n">jwks_max_cached_keys</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">enforce_minimum_key_length</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">required_scopes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">required_permissions</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">scope_claim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;scope&#39;</span><span class="p">,</span> <span class="n">permissions_claim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;permissions&#39;</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -822,24 +822,25 @@ claim validation. Defaults to 0.</p>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.jwks_timeout_s">jwks_timeout_s</span></code></td>
             <td>
-                  <code><span title="int">int</span></code>
+                  <code><span title="float">float</span></code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>HTTP timeout in seconds for JWKS fetches.
-Defaults to 3.</p>
+Supports fractional seconds. Defaults to 3.0.</p>
               </div>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code><span title="oidc_jwt_verifier.AuthConfig.jwks_cache_ttl_s">jwks_cache_ttl_s</span></code></td>
             <td>
-                  <code><span title="int">int</span></code>
+                  <code><span title="float">float</span></code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>Time-to-live in seconds for cached JWKS data.
-Must be in the range (0, 86400]. Defaults to 300.</p>
+Supports fractional seconds and must be in the range
+(0, 86400]. Defaults to 300.0.</p>
               </div>
             </td>
           </tr>
@@ -852,6 +853,19 @@ Must be in the range (0, 86400]. Defaults to 300.</p>
               <div class="doc-md-description">
                 <p>Maximum number of signing keys to cache.
 Must be in the range (0, 1024]. Defaults to 16.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="oidc_jwt_verifier.AuthConfig.enforce_minimum_key_length">enforce_minimum_key_length</span></code></td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to reject JWTs signed with
+cryptographic keys below PyJWT minimum recommendations.
+Defaults to <code>True</code>.</p>
               </div>
             </td>
           </tr>
@@ -1277,12 +1291,7 @@ and validates all constraints.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>oidc_jwt_verifier/config.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-154">154</a></span>
-<span class="normal"><a href="#__codelineno-0-155">155</a></span>
-<span class="normal"><a href="#__codelineno-0-156">156</a></span>
-<span class="normal"><a href="#__codelineno-0-157">157</a></span>
-<span class="normal"><a href="#__codelineno-0-158">158</a></span>
-<span class="normal"><a href="#__codelineno-0-159">159</a></span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-159">159</a></span>
 <span class="normal"><a href="#__codelineno-0-160">160</a></span>
 <span class="normal"><a href="#__codelineno-0-161">161</a></span>
 <span class="normal"><a href="#__codelineno-0-162">162</a></span>
@@ -1338,68 +1347,73 @@ and validates all constraints.</p>
 <span class="normal"><a href="#__codelineno-0-212">212</a></span>
 <span class="normal"><a href="#__codelineno-0-213">213</a></span>
 <span class="normal"><a href="#__codelineno-0-214">214</a></span>
-<span class="normal"><a href="#__codelineno-0-215">215</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-154" name="__codelineno-0-154"></a><span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-155" name="__codelineno-0-155"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate and normalize configuration values after initialization.</span>
-<a id="__codelineno-0-156" name="__codelineno-0-156"></a>
-<a id="__codelineno-0-157" name="__codelineno-0-157"></a><span class="sd">    This method runs automatically after dataclass initialization. It</span>
-<a id="__codelineno-0-158" name="__codelineno-0-158"></a><span class="sd">    strips whitespace from string values, normalizes sequences to tuples,</span>
-<a id="__codelineno-0-159" name="__codelineno-0-159"></a><span class="sd">    and validates all constraints.</span>
-<a id="__codelineno-0-160" name="__codelineno-0-160"></a>
-<a id="__codelineno-0-161" name="__codelineno-0-161"></a><span class="sd">    Raises:</span>
-<a id="__codelineno-0-162" name="__codelineno-0-162"></a><span class="sd">        ValueError: If any validation constraint is violated.</span>
-<a id="__codelineno-0-163" name="__codelineno-0-163"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-164" name="__codelineno-0-164"></a>    <span class="n">issuer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issuer</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-165" name="__codelineno-0-165"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">issuer</span><span class="p">:</span>
-<a id="__codelineno-0-166" name="__codelineno-0-166"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;issuer must be non-empty&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-167" name="__codelineno-0-167"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;issuer&quot;</span><span class="p">,</span> <span class="n">issuer</span><span class="p">)</span>
-<a id="__codelineno-0-168" name="__codelineno-0-168"></a>
-<a id="__codelineno-0-169" name="__codelineno-0-169"></a>    <span class="n">jwks_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jwks_url</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-170" name="__codelineno-0-170"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">jwks_url</span><span class="p">:</span>
-<a id="__codelineno-0-171" name="__codelineno-0-171"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jwks_url must be non-empty&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-172" name="__codelineno-0-172"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;jwks_url&quot;</span><span class="p">,</span> <span class="n">jwks_url</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-215">215</a></span>
+<span class="normal"><a href="#__codelineno-0-216">216</a></span>
+<span class="normal"><a href="#__codelineno-0-217">217</a></span>
+<span class="normal"><a href="#__codelineno-0-218">218</a></span>
+<span class="normal"><a href="#__codelineno-0-219">219</a></span>
+<span class="normal"><a href="#__codelineno-0-220">220</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-159" name="__codelineno-0-159"></a><span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-160" name="__codelineno-0-160"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate and normalize configuration values after initialization.</span>
+<a id="__codelineno-0-161" name="__codelineno-0-161"></a>
+<a id="__codelineno-0-162" name="__codelineno-0-162"></a><span class="sd">    This method runs automatically after dataclass initialization. It</span>
+<a id="__codelineno-0-163" name="__codelineno-0-163"></a><span class="sd">    strips whitespace from string values, normalizes sequences to tuples,</span>
+<a id="__codelineno-0-164" name="__codelineno-0-164"></a><span class="sd">    and validates all constraints.</span>
+<a id="__codelineno-0-165" name="__codelineno-0-165"></a>
+<a id="__codelineno-0-166" name="__codelineno-0-166"></a><span class="sd">    Raises:</span>
+<a id="__codelineno-0-167" name="__codelineno-0-167"></a><span class="sd">        ValueError: If any validation constraint is violated.</span>
+<a id="__codelineno-0-168" name="__codelineno-0-168"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-169" name="__codelineno-0-169"></a>    <span class="n">issuer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issuer</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-170" name="__codelineno-0-170"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">issuer</span><span class="p">:</span>
+<a id="__codelineno-0-171" name="__codelineno-0-171"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;issuer must be non-empty&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-172" name="__codelineno-0-172"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;issuer&quot;</span><span class="p">,</span> <span class="n">issuer</span><span class="p">)</span>
 <a id="__codelineno-0-173" name="__codelineno-0-173"></a>
-<a id="__codelineno-0-174" name="__codelineno-0-174"></a>    <span class="n">audiences</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">_normalize_str_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">audience</span><span class="p">))</span>
-<a id="__codelineno-0-175" name="__codelineno-0-175"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">audiences</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">audiences</span><span class="p">):</span>
-<a id="__codelineno-0-176" name="__codelineno-0-176"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;audience must be non-empty&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-177" name="__codelineno-0-177"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;audience&quot;</span><span class="p">,</span> <span class="n">audiences</span><span class="p">)</span>
+<a id="__codelineno-0-174" name="__codelineno-0-174"></a>    <span class="n">jwks_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jwks_url</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-175" name="__codelineno-0-175"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">jwks_url</span><span class="p">:</span>
+<a id="__codelineno-0-176" name="__codelineno-0-176"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jwks_url must be non-empty&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-177" name="__codelineno-0-177"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;jwks_url&quot;</span><span class="p">,</span> <span class="n">jwks_url</span><span class="p">)</span>
 <a id="__codelineno-0-178" name="__codelineno-0-178"></a>
-<a id="__codelineno-0-179" name="__codelineno-0-179"></a>    <span class="n">allowed_algs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">_normalize_str_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allowed_algs</span><span class="p">))</span>
-<a id="__codelineno-0-180" name="__codelineno-0-180"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">allowed_algs</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">allowed_algs</span><span class="p">):</span>
-<a id="__codelineno-0-181" name="__codelineno-0-181"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;allowed_algs must be non-empty&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-182" name="__codelineno-0-182"></a>    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">allowed_algs</span><span class="p">):</span>
-<a id="__codelineno-0-183" name="__codelineno-0-183"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;allowed_algs must not include &#39;none&#39;&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-184" name="__codelineno-0-184"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;allowed_algs&quot;</span><span class="p">,</span> <span class="n">allowed_algs</span><span class="p">)</span>
-<a id="__codelineno-0-185" name="__codelineno-0-185"></a>
-<a id="__codelineno-0-186" name="__codelineno-0-186"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">leeway_s</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-0-187" name="__codelineno-0-187"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;leeway_s must be &gt;= 0&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-188" name="__codelineno-0-188"></a>
-<a id="__codelineno-0-189" name="__codelineno-0-189"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jwks_timeout_s</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-0-190" name="__codelineno-0-190"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jwks_timeout_s must be &gt; 0&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-191" name="__codelineno-0-191"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">jwks_cache_ttl_s</span> <span class="o">&lt;=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">:</span>
-<a id="__codelineno-0-192" name="__codelineno-0-192"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jwks_cache_ttl_s must be in (0, 86400]&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-193" name="__codelineno-0-193"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">jwks_max_cached_keys</span> <span class="o">&lt;=</span> <span class="mi">1024</span><span class="p">:</span>
-<a id="__codelineno-0-194" name="__codelineno-0-194"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jwks_max_cached_keys must be in (0, 1024]&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-195" name="__codelineno-0-195"></a>
-<a id="__codelineno-0-196" name="__codelineno-0-196"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
-<a id="__codelineno-0-197" name="__codelineno-0-197"></a>        <span class="bp">self</span><span class="p">,</span>
-<a id="__codelineno-0-198" name="__codelineno-0-198"></a>        <span class="s2">&quot;required_scopes&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-199" name="__codelineno-0-199"></a>        <span class="nb">tuple</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_normalize_str_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">required_scopes</span><span class="p">)),</span>
-<a id="__codelineno-0-200" name="__codelineno-0-200"></a>    <span class="p">)</span>
+<a id="__codelineno-0-179" name="__codelineno-0-179"></a>    <span class="n">audiences</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">_normalize_str_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">audience</span><span class="p">))</span>
+<a id="__codelineno-0-180" name="__codelineno-0-180"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">audiences</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">audiences</span><span class="p">):</span>
+<a id="__codelineno-0-181" name="__codelineno-0-181"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;audience must be non-empty&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;audience&quot;</span><span class="p">,</span> <span class="n">audiences</span><span class="p">)</span>
+<a id="__codelineno-0-183" name="__codelineno-0-183"></a>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a>    <span class="n">allowed_algs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">_normalize_str_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allowed_algs</span><span class="p">))</span>
+<a id="__codelineno-0-185" name="__codelineno-0-185"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">allowed_algs</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">allowed_algs</span><span class="p">):</span>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;allowed_algs must be non-empty&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-187" name="__codelineno-0-187"></a>    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">allowed_algs</span><span class="p">):</span>
+<a id="__codelineno-0-188" name="__codelineno-0-188"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;allowed_algs must not include &#39;none&#39;&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-189" name="__codelineno-0-189"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;allowed_algs&quot;</span><span class="p">,</span> <span class="n">allowed_algs</span><span class="p">)</span>
+<a id="__codelineno-0-190" name="__codelineno-0-190"></a>
+<a id="__codelineno-0-191" name="__codelineno-0-191"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">leeway_s</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;leeway_s must be &gt;= 0&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-193" name="__codelineno-0-193"></a>
+<a id="__codelineno-0-194" name="__codelineno-0-194"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jwks_timeout_s</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jwks_timeout_s must be &gt; 0&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-196" name="__codelineno-0-196"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">jwks_cache_ttl_s</span> <span class="o">&lt;=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">:</span>
+<a id="__codelineno-0-197" name="__codelineno-0-197"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jwks_cache_ttl_s must be in (0, 86400]&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-198" name="__codelineno-0-198"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">jwks_max_cached_keys</span> <span class="o">&lt;=</span> <span class="mi">1024</span><span class="p">:</span>
+<a id="__codelineno-0-199" name="__codelineno-0-199"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jwks_max_cached_keys must be in (0, 1024]&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-200" name="__codelineno-0-200"></a>
 <a id="__codelineno-0-201" name="__codelineno-0-201"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
 <a id="__codelineno-0-202" name="__codelineno-0-202"></a>        <span class="bp">self</span><span class="p">,</span>
-<a id="__codelineno-0-203" name="__codelineno-0-203"></a>        <span class="s2">&quot;required_permissions&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-204" name="__codelineno-0-204"></a>        <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">_normalize_str_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">required_permissions</span><span class="p">)),</span>
+<a id="__codelineno-0-203" name="__codelineno-0-203"></a>        <span class="s2">&quot;required_scopes&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-204" name="__codelineno-0-204"></a>        <span class="nb">tuple</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_normalize_str_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">required_scopes</span><span class="p">)),</span>
 <a id="__codelineno-0-205" name="__codelineno-0-205"></a>    <span class="p">)</span>
-<a id="__codelineno-0-206" name="__codelineno-0-206"></a>
-<a id="__codelineno-0-207" name="__codelineno-0-207"></a>    <span class="n">scope_claim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope_claim</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-208" name="__codelineno-0-208"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">scope_claim</span><span class="p">:</span>
-<a id="__codelineno-0-209" name="__codelineno-0-209"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;scope_claim must be non-empty&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-210" name="__codelineno-0-210"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;scope_claim&quot;</span><span class="p">,</span> <span class="n">scope_claim</span><span class="p">)</span>
+<a id="__codelineno-0-206" name="__codelineno-0-206"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+<a id="__codelineno-0-207" name="__codelineno-0-207"></a>        <span class="bp">self</span><span class="p">,</span>
+<a id="__codelineno-0-208" name="__codelineno-0-208"></a>        <span class="s2">&quot;required_permissions&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-209" name="__codelineno-0-209"></a>        <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">_normalize_str_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">required_permissions</span><span class="p">)),</span>
+<a id="__codelineno-0-210" name="__codelineno-0-210"></a>    <span class="p">)</span>
 <a id="__codelineno-0-211" name="__codelineno-0-211"></a>
-<a id="__codelineno-0-212" name="__codelineno-0-212"></a>    <span class="n">permissions_claim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">permissions_claim</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-213" name="__codelineno-0-213"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">permissions_claim</span><span class="p">:</span>
-<a id="__codelineno-0-214" name="__codelineno-0-214"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;permissions_claim must be non-empty&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-215" name="__codelineno-0-215"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;permissions_claim&quot;</span><span class="p">,</span> <span class="n">permissions_claim</span><span class="p">)</span>
+<a id="__codelineno-0-212" name="__codelineno-0-212"></a>    <span class="n">scope_claim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope_claim</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-213" name="__codelineno-0-213"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">scope_claim</span><span class="p">:</span>
+<a id="__codelineno-0-214" name="__codelineno-0-214"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;scope_claim must be non-empty&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-215" name="__codelineno-0-215"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;scope_claim&quot;</span><span class="p">,</span> <span class="n">scope_claim</span><span class="p">)</span>
+<a id="__codelineno-0-216" name="__codelineno-0-216"></a>
+<a id="__codelineno-0-217" name="__codelineno-0-217"></a>    <span class="n">permissions_claim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">permissions_claim</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-218" name="__codelineno-0-218"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">permissions_claim</span><span class="p">:</span>
+<a id="__codelineno-0-219" name="__codelineno-0-219"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;permissions_claim must be non-empty&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a>    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;permissions_claim&quot;</span><span class="p">,</span> <span class="n">permissions_claim</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2130,6 +2144,16 @@ across multiple token verifications.</p>
               </div>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="oidc_jwt_verifier.JWTVerifier._decoder">_decoder</span></code></td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A configured <code>jwt.PyJWT</code> instance used for token decoding.</p>
+              </div>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -2192,7 +2216,7 @@ from the provided configuration.</p>
                 <code>config</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="              AuthConfig(issuer: str, audience: str | Sequence[str], jwks_url: str, allowed_algs: Sequence[str] = ('RS256',), leeway_s: int = 0, jwks_timeout_s: int = 3, jwks_cache_ttl_s: int = 300, jwks_max_cached_keys: int = 16, required_scopes: Sequence[str] = (), required_permissions: Sequence[str] = (), scope_claim: str = 'scope', permissions_claim: str = 'permissions')
+                  <code><a class="autorefs autorefs-internal" title="              AuthConfig(issuer: str, audience: str | Sequence[str], jwks_url: str, allowed_algs: Sequence[str] = ('RS256',), leeway_s: int = 0, jwks_timeout_s: float = 3.0, jwks_cache_ttl_s: float = 300.0, jwks_max_cached_keys: int = 16, enforce_minimum_key_length: bool = True, required_scopes: Sequence[str] = (), required_permissions: Sequence[str] = (), scope_claim: str = 'scope', permissions_claim: str = 'permissions')
 
   
       dataclass
@@ -2232,12 +2256,7 @@ authorization requirements.</p>
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>oidc_jwt_verifier/verifier.py</code></summary>
-                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-212">212</a></span>
-<span class="normal"><a href="#__codelineno-0-213">213</a></span>
-<span class="normal"><a href="#__codelineno-0-214">214</a></span>
-<span class="normal"><a href="#__codelineno-0-215">215</a></span>
-<span class="normal"><a href="#__codelineno-0-216">216</a></span>
-<span class="normal"><a href="#__codelineno-0-217">217</a></span>
+                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-217">217</a></span>
 <span class="normal"><a href="#__codelineno-0-218">218</a></span>
 <span class="normal"><a href="#__codelineno-0-219">219</a></span>
 <span class="normal"><a href="#__codelineno-0-220">220</a></span>
@@ -2253,28 +2272,39 @@ authorization requirements.</p>
 <span class="normal"><a href="#__codelineno-0-230">230</a></span>
 <span class="normal"><a href="#__codelineno-0-231">231</a></span>
 <span class="normal"><a href="#__codelineno-0-232">232</a></span>
-<span class="normal"><a href="#__codelineno-0-233">233</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-212" name="__codelineno-0-212"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">AuthConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-213" name="__codelineno-0-213"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize a JWT verifier with the given configuration.</span>
-<a id="__codelineno-0-214" name="__codelineno-0-214"></a>
-<a id="__codelineno-0-215" name="__codelineno-0-215"></a><span class="sd">    Creates a JWKS client configured with the caching parameters</span>
-<a id="__codelineno-0-216" name="__codelineno-0-216"></a><span class="sd">    from the provided configuration.</span>
-<a id="__codelineno-0-217" name="__codelineno-0-217"></a>
-<a id="__codelineno-0-218" name="__codelineno-0-218"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-219" name="__codelineno-0-219"></a><span class="sd">        config: The authentication configuration specifying the</span>
-<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="sd">            issuer, audience, JWKS URL, allowed algorithms, and</span>
-<a id="__codelineno-0-221" name="__codelineno-0-221"></a><span class="sd">            authorization requirements.</span>
+<span class="normal"><a href="#__codelineno-0-233">233</a></span>
+<span class="normal"><a href="#__codelineno-0-234">234</a></span>
+<span class="normal"><a href="#__codelineno-0-235">235</a></span>
+<span class="normal"><a href="#__codelineno-0-236">236</a></span>
+<span class="normal"><a href="#__codelineno-0-237">237</a></span>
+<span class="normal"><a href="#__codelineno-0-238">238</a></span>
+<span class="normal"><a href="#__codelineno-0-239">239</a></span>
+<span class="normal"><a href="#__codelineno-0-240">240</a></span>
+<span class="normal"><a href="#__codelineno-0-241">241</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-217" name="__codelineno-0-217"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">AuthConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-218" name="__codelineno-0-218"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize a JWT verifier with the given configuration.</span>
+<a id="__codelineno-0-219" name="__codelineno-0-219"></a>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="sd">    Creates a JWKS client configured with the caching parameters</span>
+<a id="__codelineno-0-221" name="__codelineno-0-221"></a><span class="sd">    from the provided configuration.</span>
 <a id="__codelineno-0-222" name="__codelineno-0-222"></a>
-<a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="sd">    Examples:</span>
-<a id="__codelineno-0-224" name="__codelineno-0-224"></a><span class="sd">        &gt;&gt;&gt; from oidc_jwt_verifier import AuthConfig</span>
-<a id="__codelineno-0-225" name="__codelineno-0-225"></a><span class="sd">        &gt;&gt;&gt; config = AuthConfig(</span>
-<a id="__codelineno-0-226" name="__codelineno-0-226"></a><span class="sd">        ...     issuer=&quot;https://example.auth0.com/&quot;,</span>
-<a id="__codelineno-0-227" name="__codelineno-0-227"></a><span class="sd">        ...     audience=&quot;https://api.example.com&quot;,</span>
-<a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="sd">        ...     jwks_url=&quot;https://example.auth0.com/.well-known/jwks.json&quot;,</span>
-<a id="__codelineno-0-229" name="__codelineno-0-229"></a><span class="sd">        ... )</span>
-<a id="__codelineno-0-230" name="__codelineno-0-230"></a><span class="sd">        &gt;&gt;&gt; verifier = JWTVerifier(config)  # doctest: +SKIP</span>
-<a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-232" name="__codelineno-0-232"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
-<a id="__codelineno-0-233" name="__codelineno-0-233"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_jwks</span> <span class="o">=</span> <span class="n">JWKSClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-224" name="__codelineno-0-224"></a><span class="sd">        config: The authentication configuration specifying the</span>
+<a id="__codelineno-0-225" name="__codelineno-0-225"></a><span class="sd">            issuer, audience, JWKS URL, allowed algorithms, and</span>
+<a id="__codelineno-0-226" name="__codelineno-0-226"></a><span class="sd">            authorization requirements.</span>
+<a id="__codelineno-0-227" name="__codelineno-0-227"></a>
+<a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="sd">    Examples:</span>
+<a id="__codelineno-0-229" name="__codelineno-0-229"></a><span class="sd">        &gt;&gt;&gt; from oidc_jwt_verifier import AuthConfig</span>
+<a id="__codelineno-0-230" name="__codelineno-0-230"></a><span class="sd">        &gt;&gt;&gt; config = AuthConfig(</span>
+<a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="sd">        ...     issuer=&quot;https://example.auth0.com/&quot;,</span>
+<a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="sd">        ...     audience=&quot;https://api.example.com&quot;,</span>
+<a id="__codelineno-0-233" name="__codelineno-0-233"></a><span class="sd">        ...     jwks_url=&quot;https://example.auth0.com/.well-known/jwks.json&quot;,</span>
+<a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="sd">        ... )</span>
+<a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="sd">        &gt;&gt;&gt; verifier = JWTVerifier(config)  # doctest: +SKIP</span>
+<a id="__codelineno-0-236" name="__codelineno-0-236"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-237" name="__codelineno-0-237"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+<a id="__codelineno-0-238" name="__codelineno-0-238"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_jwks</span> <span class="o">=</span> <span class="n">JWKSClient</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-0-239" name="__codelineno-0-239"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_decoder</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">PyJWT</span><span class="p">(</span>
+<a id="__codelineno-0-240" name="__codelineno-0-240"></a>        <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;enforce_minimum_key_length&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">enforce_minimum_key_length</span><span class="p">}</span>
+<a id="__codelineno-0-241" name="__codelineno-0-241"></a>    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -2463,15 +2493,7 @@ trailing whitespace is stripped.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>oidc_jwt_verifier/verifier.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-235">235</a></span>
-<span class="normal"><a href="#__codelineno-0-236">236</a></span>
-<span class="normal"><a href="#__codelineno-0-237">237</a></span>
-<span class="normal"><a href="#__codelineno-0-238">238</a></span>
-<span class="normal"><a href="#__codelineno-0-239">239</a></span>
-<span class="normal"><a href="#__codelineno-0-240">240</a></span>
-<span class="normal"><a href="#__codelineno-0-241">241</a></span>
-<span class="normal"><a href="#__codelineno-0-242">242</a></span>
-<span class="normal"><a href="#__codelineno-0-243">243</a></span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-243">243</a></span>
 <span class="normal"><a href="#__codelineno-0-244">244</a></span>
 <span class="normal"><a href="#__codelineno-0-245">245</a></span>
 <span class="normal"><a href="#__codelineno-0-246">246</a></span>
@@ -2651,195 +2673,203 @@ trailing whitespace is stripped.</p>
 <span class="normal"><a href="#__codelineno-0-420">420</a></span>
 <span class="normal"><a href="#__codelineno-0-421">421</a></span>
 <span class="normal"><a href="#__codelineno-0-422">422</a></span>
-<span class="normal"><a href="#__codelineno-0-423">423</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="k">def</span><span class="w"> </span><span class="nf">verify_access_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<a id="__codelineno-0-236" name="__codelineno-0-236"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Verify an access token and return its claims.</span>
-<a id="__codelineno-0-237" name="__codelineno-0-237"></a>
-<a id="__codelineno-0-238" name="__codelineno-0-238"></a><span class="sd">    Performs the complete verification chain:</span>
-<a id="__codelineno-0-239" name="__codelineno-0-239"></a>
-<a id="__codelineno-0-240" name="__codelineno-0-240"></a><span class="sd">    1. Validates the token is non-empty.</span>
-<a id="__codelineno-0-241" name="__codelineno-0-241"></a><span class="sd">    2. Parses and validates the token header (rejects ``jku``, ``x5u``,</span>
-<a id="__codelineno-0-242" name="__codelineno-0-242"></a><span class="sd">       ``crit``; validates ``alg`` and ``kid``).</span>
-<a id="__codelineno-0-243" name="__codelineno-0-243"></a><span class="sd">    3. Fetches the signing key from the JWKS.</span>
-<a id="__codelineno-0-244" name="__codelineno-0-244"></a><span class="sd">    4. Decodes and verifies the token signature.</span>
-<a id="__codelineno-0-245" name="__codelineno-0-245"></a><span class="sd">    5. Validates standard claims (``iss``, ``aud``, ``exp``, ``nbf``).</span>
-<a id="__codelineno-0-246" name="__codelineno-0-246"></a><span class="sd">    6. Enforces required scopes and permissions.</span>
+<span class="normal"><a href="#__codelineno-0-423">423</a></span>
+<span class="normal"><a href="#__codelineno-0-424">424</a></span>
+<span class="normal"><a href="#__codelineno-0-425">425</a></span>
+<span class="normal"><a href="#__codelineno-0-426">426</a></span>
+<span class="normal"><a href="#__codelineno-0-427">427</a></span>
+<span class="normal"><a href="#__codelineno-0-428">428</a></span>
+<span class="normal"><a href="#__codelineno-0-429">429</a></span>
+<span class="normal"><a href="#__codelineno-0-430">430</a></span>
+<span class="normal"><a href="#__codelineno-0-431">431</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-243" name="__codelineno-0-243"></a><span class="k">def</span><span class="w"> </span><span class="nf">verify_access_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<a id="__codelineno-0-244" name="__codelineno-0-244"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Verify an access token and return its claims.</span>
+<a id="__codelineno-0-245" name="__codelineno-0-245"></a>
+<a id="__codelineno-0-246" name="__codelineno-0-246"></a><span class="sd">    Performs the complete verification chain:</span>
 <a id="__codelineno-0-247" name="__codelineno-0-247"></a>
-<a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="sd">    The method supports Auth0-style multi-audience tokens where the</span>
-<a id="__codelineno-0-249" name="__codelineno-0-249"></a><span class="sd">    ``aud`` claim is an array. Verification succeeds if any configured</span>
-<a id="__codelineno-0-250" name="__codelineno-0-250"></a><span class="sd">    audience matches any audience in the token.</span>
-<a id="__codelineno-0-251" name="__codelineno-0-251"></a>
-<a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-253" name="__codelineno-0-253"></a><span class="sd">        token: The encoded JWT access token string. Leading and</span>
-<a id="__codelineno-0-254" name="__codelineno-0-254"></a><span class="sd">            trailing whitespace is stripped.</span>
+<a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="sd">    1. Validates the token is non-empty.</span>
+<a id="__codelineno-0-249" name="__codelineno-0-249"></a><span class="sd">    2. Parses and validates the token header (rejects ``jku``, ``x5u``,</span>
+<a id="__codelineno-0-250" name="__codelineno-0-250"></a><span class="sd">       ``crit``; validates ``alg`` and ``kid``).</span>
+<a id="__codelineno-0-251" name="__codelineno-0-251"></a><span class="sd">    3. Fetches the signing key from the JWKS.</span>
+<a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="sd">    4. Decodes and verifies the token signature.</span>
+<a id="__codelineno-0-253" name="__codelineno-0-253"></a><span class="sd">    5. Validates standard claims (``iss``, ``aud``, ``exp``, ``nbf``).</span>
+<a id="__codelineno-0-254" name="__codelineno-0-254"></a><span class="sd">    6. Enforces required scopes and permissions.</span>
 <a id="__codelineno-0-255" name="__codelineno-0-255"></a>
-<a id="__codelineno-0-256" name="__codelineno-0-256"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-257" name="__codelineno-0-257"></a><span class="sd">        The decoded token payload as a dictionary. Contains all</span>
-<a id="__codelineno-0-258" name="__codelineno-0-258"></a><span class="sd">        claims from the token including registered claims (``iss``,</span>
-<a id="__codelineno-0-259" name="__codelineno-0-259"></a><span class="sd">        ``sub``, ``aud``, ``exp``, etc.) and any custom claims.</span>
-<a id="__codelineno-0-260" name="__codelineno-0-260"></a>
-<a id="__codelineno-0-261" name="__codelineno-0-261"></a><span class="sd">    Raises:</span>
-<a id="__codelineno-0-262" name="__codelineno-0-262"></a><span class="sd">        AuthError: On any verification failure. The error&#39;s</span>
-<a id="__codelineno-0-263" name="__codelineno-0-263"></a><span class="sd">            ``status_code`` indicates the appropriate HTTP response:</span>
-<a id="__codelineno-0-264" name="__codelineno-0-264"></a><span class="sd">            - 401 for authentication failures (missing token,</span>
-<a id="__codelineno-0-265" name="__codelineno-0-265"></a><span class="sd">              malformed token, invalid signature, expired token,</span>
-<a id="__codelineno-0-266" name="__codelineno-0-266"></a><span class="sd">              wrong issuer/audience).</span>
-<a id="__codelineno-0-267" name="__codelineno-0-267"></a><span class="sd">            - 403 for authorization failures (insufficient scopes</span>
-<a id="__codelineno-0-268" name="__codelineno-0-268"></a><span class="sd">              or permissions).</span>
-<a id="__codelineno-0-269" name="__codelineno-0-269"></a>
-<a id="__codelineno-0-270" name="__codelineno-0-270"></a><span class="sd">            Specific error codes include:</span>
-<a id="__codelineno-0-271" name="__codelineno-0-271"></a><span class="sd">            - ``&quot;missing_token&quot;``: Empty or whitespace-only token.</span>
-<a id="__codelineno-0-272" name="__codelineno-0-272"></a><span class="sd">            - ``&quot;malformed_token&quot;``: Unparseable token or missing</span>
-<a id="__codelineno-0-273" name="__codelineno-0-273"></a><span class="sd">              ``alg`` header.</span>
-<a id="__codelineno-0-274" name="__codelineno-0-274"></a><span class="sd">            - ``&quot;forbidden_header&quot;``: Token contains ``jku``,</span>
-<a id="__codelineno-0-275" name="__codelineno-0-275"></a><span class="sd">              ``x5u``, or ``crit`` headers.</span>
-<a id="__codelineno-0-276" name="__codelineno-0-276"></a><span class="sd">            - ``&quot;disallowed_alg&quot;``: Algorithm not in allowlist or</span>
-<a id="__codelineno-0-277" name="__codelineno-0-277"></a><span class="sd">              is ``none``.</span>
-<a id="__codelineno-0-278" name="__codelineno-0-278"></a><span class="sd">            - ``&quot;missing_kid&quot;``: Token lacks ``kid`` header.</span>
-<a id="__codelineno-0-279" name="__codelineno-0-279"></a><span class="sd">            - ``&quot;token_expired&quot;``: Token ``exp`` is in the past.</span>
-<a id="__codelineno-0-280" name="__codelineno-0-280"></a><span class="sd">            - ``&quot;token_not_yet_valid&quot;``: Token ``nbf`` is in the</span>
-<a id="__codelineno-0-281" name="__codelineno-0-281"></a><span class="sd">              future.</span>
-<a id="__codelineno-0-282" name="__codelineno-0-282"></a><span class="sd">            - ``&quot;invalid_issuer&quot;``: ``iss`` claim mismatch.</span>
-<a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="sd">            - ``&quot;invalid_audience&quot;``: ``aud`` claim mismatch.</span>
-<a id="__codelineno-0-284" name="__codelineno-0-284"></a><span class="sd">            - ``&quot;insufficient_scope&quot;``: Missing required scopes.</span>
-<a id="__codelineno-0-285" name="__codelineno-0-285"></a><span class="sd">            - ``&quot;insufficient_permissions&quot;``: Missing required</span>
-<a id="__codelineno-0-286" name="__codelineno-0-286"></a><span class="sd">              permissions.</span>
-<a id="__codelineno-0-287" name="__codelineno-0-287"></a>
-<a id="__codelineno-0-288" name="__codelineno-0-288"></a><span class="sd">    Examples:</span>
-<a id="__codelineno-0-289" name="__codelineno-0-289"></a><span class="sd">        Successful verification:</span>
-<a id="__codelineno-0-290" name="__codelineno-0-290"></a>
-<a id="__codelineno-0-291" name="__codelineno-0-291"></a><span class="sd">        &gt;&gt;&gt; claims = verifier.verify_access_token(valid_token)  # doctest: +SKIP</span>
-<a id="__codelineno-0-292" name="__codelineno-0-292"></a><span class="sd">        &gt;&gt;&gt; claims[&quot;sub&quot;]  # doctest: +SKIP</span>
-<a id="__codelineno-0-293" name="__codelineno-0-293"></a><span class="sd">        &#39;auth0|123456789&#39;</span>
-<a id="__codelineno-0-294" name="__codelineno-0-294"></a><span class="sd">        &gt;&gt;&gt; claims[&quot;aud&quot;]  # doctest: +SKIP</span>
-<a id="__codelineno-0-295" name="__codelineno-0-295"></a><span class="sd">        &#39;https://api.example.com&#39;</span>
-<a id="__codelineno-0-296" name="__codelineno-0-296"></a>
-<a id="__codelineno-0-297" name="__codelineno-0-297"></a><span class="sd">        Missing token:</span>
+<a id="__codelineno-0-256" name="__codelineno-0-256"></a><span class="sd">    The method supports Auth0-style multi-audience tokens where the</span>
+<a id="__codelineno-0-257" name="__codelineno-0-257"></a><span class="sd">    ``aud`` claim is an array. Verification succeeds if any configured</span>
+<a id="__codelineno-0-258" name="__codelineno-0-258"></a><span class="sd">    audience matches any audience in the token.</span>
+<a id="__codelineno-0-259" name="__codelineno-0-259"></a>
+<a id="__codelineno-0-260" name="__codelineno-0-260"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-261" name="__codelineno-0-261"></a><span class="sd">        token: The encoded JWT access token string. Leading and</span>
+<a id="__codelineno-0-262" name="__codelineno-0-262"></a><span class="sd">            trailing whitespace is stripped.</span>
+<a id="__codelineno-0-263" name="__codelineno-0-263"></a>
+<a id="__codelineno-0-264" name="__codelineno-0-264"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-265" name="__codelineno-0-265"></a><span class="sd">        The decoded token payload as a dictionary. Contains all</span>
+<a id="__codelineno-0-266" name="__codelineno-0-266"></a><span class="sd">        claims from the token including registered claims (``iss``,</span>
+<a id="__codelineno-0-267" name="__codelineno-0-267"></a><span class="sd">        ``sub``, ``aud``, ``exp``, etc.) and any custom claims.</span>
+<a id="__codelineno-0-268" name="__codelineno-0-268"></a>
+<a id="__codelineno-0-269" name="__codelineno-0-269"></a><span class="sd">    Raises:</span>
+<a id="__codelineno-0-270" name="__codelineno-0-270"></a><span class="sd">        AuthError: On any verification failure. The error&#39;s</span>
+<a id="__codelineno-0-271" name="__codelineno-0-271"></a><span class="sd">            ``status_code`` indicates the appropriate HTTP response:</span>
+<a id="__codelineno-0-272" name="__codelineno-0-272"></a><span class="sd">            - 401 for authentication failures (missing token,</span>
+<a id="__codelineno-0-273" name="__codelineno-0-273"></a><span class="sd">              malformed token, invalid signature, expired token,</span>
+<a id="__codelineno-0-274" name="__codelineno-0-274"></a><span class="sd">              wrong issuer/audience).</span>
+<a id="__codelineno-0-275" name="__codelineno-0-275"></a><span class="sd">            - 403 for authorization failures (insufficient scopes</span>
+<a id="__codelineno-0-276" name="__codelineno-0-276"></a><span class="sd">              or permissions).</span>
+<a id="__codelineno-0-277" name="__codelineno-0-277"></a>
+<a id="__codelineno-0-278" name="__codelineno-0-278"></a><span class="sd">            Specific error codes include:</span>
+<a id="__codelineno-0-279" name="__codelineno-0-279"></a><span class="sd">            - ``&quot;missing_token&quot;``: Empty or whitespace-only token.</span>
+<a id="__codelineno-0-280" name="__codelineno-0-280"></a><span class="sd">            - ``&quot;malformed_token&quot;``: Unparseable token or missing</span>
+<a id="__codelineno-0-281" name="__codelineno-0-281"></a><span class="sd">              ``alg`` header.</span>
+<a id="__codelineno-0-282" name="__codelineno-0-282"></a><span class="sd">            - ``&quot;forbidden_header&quot;``: Token contains ``jku``,</span>
+<a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="sd">              ``x5u``, or ``crit`` headers.</span>
+<a id="__codelineno-0-284" name="__codelineno-0-284"></a><span class="sd">            - ``&quot;disallowed_alg&quot;``: Algorithm not in allowlist or</span>
+<a id="__codelineno-0-285" name="__codelineno-0-285"></a><span class="sd">              is ``none``.</span>
+<a id="__codelineno-0-286" name="__codelineno-0-286"></a><span class="sd">            - ``&quot;missing_kid&quot;``: Token lacks ``kid`` header.</span>
+<a id="__codelineno-0-287" name="__codelineno-0-287"></a><span class="sd">            - ``&quot;token_expired&quot;``: Token ``exp`` is in the past.</span>
+<a id="__codelineno-0-288" name="__codelineno-0-288"></a><span class="sd">            - ``&quot;token_not_yet_valid&quot;``: Token ``nbf`` is in the</span>
+<a id="__codelineno-0-289" name="__codelineno-0-289"></a><span class="sd">              future.</span>
+<a id="__codelineno-0-290" name="__codelineno-0-290"></a><span class="sd">            - ``&quot;invalid_issuer&quot;``: ``iss`` claim mismatch.</span>
+<a id="__codelineno-0-291" name="__codelineno-0-291"></a><span class="sd">            - ``&quot;invalid_audience&quot;``: ``aud`` claim mismatch.</span>
+<a id="__codelineno-0-292" name="__codelineno-0-292"></a><span class="sd">            - ``&quot;insufficient_scope&quot;``: Missing required scopes.</span>
+<a id="__codelineno-0-293" name="__codelineno-0-293"></a><span class="sd">            - ``&quot;insufficient_permissions&quot;``: Missing required</span>
+<a id="__codelineno-0-294" name="__codelineno-0-294"></a><span class="sd">              permissions.</span>
+<a id="__codelineno-0-295" name="__codelineno-0-295"></a>
+<a id="__codelineno-0-296" name="__codelineno-0-296"></a><span class="sd">    Examples:</span>
+<a id="__codelineno-0-297" name="__codelineno-0-297"></a><span class="sd">        Successful verification:</span>
 <a id="__codelineno-0-298" name="__codelineno-0-298"></a>
-<a id="__codelineno-0-299" name="__codelineno-0-299"></a><span class="sd">        &gt;&gt;&gt; verifier.verify_access_token(&quot;&quot;)  # doctest: +SKIP</span>
-<a id="__codelineno-0-300" name="__codelineno-0-300"></a><span class="sd">        Traceback (most recent call last):</span>
-<a id="__codelineno-0-301" name="__codelineno-0-301"></a><span class="sd">            ...</span>
-<a id="__codelineno-0-302" name="__codelineno-0-302"></a><span class="sd">        AuthError: Missing access token</span>
-<a id="__codelineno-0-303" name="__codelineno-0-303"></a>
-<a id="__codelineno-0-304" name="__codelineno-0-304"></a><span class="sd">        Expired token:</span>
-<a id="__codelineno-0-305" name="__codelineno-0-305"></a>
-<a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">        &gt;&gt;&gt; verifier.verify_access_token(expired_token)  # doctest: +SKIP</span>
-<a id="__codelineno-0-307" name="__codelineno-0-307"></a><span class="sd">        Traceback (most recent call last):</span>
-<a id="__codelineno-0-308" name="__codelineno-0-308"></a><span class="sd">            ...</span>
-<a id="__codelineno-0-309" name="__codelineno-0-309"></a><span class="sd">        AuthError: Token is expired</span>
-<a id="__codelineno-0-310" name="__codelineno-0-310"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-311" name="__codelineno-0-311"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-312" name="__codelineno-0-312"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
-<a id="__codelineno-0-313" name="__codelineno-0-313"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s2">&quot;missing_token&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Missing access token&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">)</span>
-<a id="__codelineno-0-314" name="__codelineno-0-314"></a>
-<a id="__codelineno-0-315" name="__codelineno-0-315"></a>    <span class="c1"># Parse the header without verifying the signature.</span>
-<a id="__codelineno-0-316" name="__codelineno-0-316"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-317" name="__codelineno-0-317"></a>        <span class="n">header</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">get_unverified_header</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
-<a id="__codelineno-0-318" name="__codelineno-0-318"></a>    <span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">DecodeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-<a id="__codelineno-0-319" name="__codelineno-0-319"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
-<a id="__codelineno-0-320" name="__codelineno-0-320"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;malformed_token&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-321" name="__codelineno-0-321"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Malformed token&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-322" name="__codelineno-0-322"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
-<a id="__codelineno-0-323" name="__codelineno-0-323"></a>        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
-<a id="__codelineno-0-324" name="__codelineno-0-324"></a>
-<a id="__codelineno-0-325" name="__codelineno-0-325"></a>    <span class="c1"># Reject dangerous header parameters that could be used for attacks.</span>
-<a id="__codelineno-0-326" name="__codelineno-0-326"></a>    <span class="c1"># - jku: URL to fetch keys from (could point to attacker-controlled server)</span>
-<a id="__codelineno-0-327" name="__codelineno-0-327"></a>    <span class="c1"># - x5u: URL to fetch X.509 certificate (same risk as jku)</span>
-<a id="__codelineno-0-328" name="__codelineno-0-328"></a>    <span class="c1"># - crit: Critical headers that must be understood (complexity attack vector)</span>
-<a id="__codelineno-0-329" name="__codelineno-0-329"></a>    <span class="k">if</span> <span class="s2">&quot;jku&quot;</span> <span class="ow">in</span> <span class="n">header</span> <span class="ow">or</span> <span class="s2">&quot;x5u&quot;</span> <span class="ow">in</span> <span class="n">header</span> <span class="ow">or</span> <span class="s2">&quot;crit&quot;</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
-<a id="__codelineno-0-330" name="__codelineno-0-330"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
-<a id="__codelineno-0-331" name="__codelineno-0-331"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;forbidden_header&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-332" name="__codelineno-0-332"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Forbidden token header parameter&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-333" name="__codelineno-0-333"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
-<a id="__codelineno-0-334" name="__codelineno-0-334"></a>        <span class="p">)</span>
-<a id="__codelineno-0-335" name="__codelineno-0-335"></a>
-<a id="__codelineno-0-336" name="__codelineno-0-336"></a>    <span class="c1"># Validate the algorithm header.</span>
-<a id="__codelineno-0-337" name="__codelineno-0-337"></a>    <span class="n">alg</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;alg&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-338" name="__codelineno-0-338"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alg</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">alg</span><span class="p">:</span>
-<a id="__codelineno-0-339" name="__codelineno-0-339"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s2">&quot;malformed_token&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Missing alg header&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">)</span>
-<a id="__codelineno-0-340" name="__codelineno-0-340"></a>    <span class="k">if</span> <span class="n">alg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-341" name="__codelineno-0-341"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
-<a id="__codelineno-0-342" name="__codelineno-0-342"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;disallowed_alg&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-343" name="__codelineno-0-343"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Disallowed signing algorithm&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-344" name="__codelineno-0-344"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
-<a id="__codelineno-0-345" name="__codelineno-0-345"></a>        <span class="p">)</span>
-<a id="__codelineno-0-346" name="__codelineno-0-346"></a>    <span class="k">if</span> <span class="n">alg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">allowed_algorithms</span><span class="p">:</span>
-<a id="__codelineno-0-347" name="__codelineno-0-347"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
-<a id="__codelineno-0-348" name="__codelineno-0-348"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;disallowed_alg&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-349" name="__codelineno-0-349"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Disallowed signing algorithm&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-350" name="__codelineno-0-350"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
-<a id="__codelineno-0-351" name="__codelineno-0-351"></a>        <span class="p">)</span>
-<a id="__codelineno-0-352" name="__codelineno-0-352"></a>
-<a id="__codelineno-0-353" name="__codelineno-0-353"></a>    <span class="c1"># Require kid header for JWKS key lookup.</span>
-<a id="__codelineno-0-354" name="__codelineno-0-354"></a>    <span class="n">kid</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;kid&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-355" name="__codelineno-0-355"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">kid</span><span class="p">:</span>
-<a id="__codelineno-0-356" name="__codelineno-0-356"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s2">&quot;missing_kid&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Missing kid header&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">)</span>
-<a id="__codelineno-0-357" name="__codelineno-0-357"></a>
-<a id="__codelineno-0-358" name="__codelineno-0-358"></a>    <span class="c1"># Fetch the signing key from the JWKS.</span>
-<a id="__codelineno-0-359" name="__codelineno-0-359"></a>    <span class="n">signing_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jwks</span><span class="o">.</span><span class="n">get_signing_key_from_jwt</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-0-299" name="__codelineno-0-299"></a><span class="sd">        &gt;&gt;&gt; claims = verifier.verify_access_token(valid_token)  # doctest: +SKIP</span>
+<a id="__codelineno-0-300" name="__codelineno-0-300"></a><span class="sd">        &gt;&gt;&gt; claims[&quot;sub&quot;]  # doctest: +SKIP</span>
+<a id="__codelineno-0-301" name="__codelineno-0-301"></a><span class="sd">        &#39;auth0|123456789&#39;</span>
+<a id="__codelineno-0-302" name="__codelineno-0-302"></a><span class="sd">        &gt;&gt;&gt; claims[&quot;aud&quot;]  # doctest: +SKIP</span>
+<a id="__codelineno-0-303" name="__codelineno-0-303"></a><span class="sd">        &#39;https://api.example.com&#39;</span>
+<a id="__codelineno-0-304" name="__codelineno-0-304"></a>
+<a id="__codelineno-0-305" name="__codelineno-0-305"></a><span class="sd">        Missing token:</span>
+<a id="__codelineno-0-306" name="__codelineno-0-306"></a>
+<a id="__codelineno-0-307" name="__codelineno-0-307"></a><span class="sd">        &gt;&gt;&gt; verifier.verify_access_token(&quot;&quot;)  # doctest: +SKIP</span>
+<a id="__codelineno-0-308" name="__codelineno-0-308"></a><span class="sd">        Traceback (most recent call last):</span>
+<a id="__codelineno-0-309" name="__codelineno-0-309"></a><span class="sd">            ...</span>
+<a id="__codelineno-0-310" name="__codelineno-0-310"></a><span class="sd">        AuthError: Missing access token</span>
+<a id="__codelineno-0-311" name="__codelineno-0-311"></a>
+<a id="__codelineno-0-312" name="__codelineno-0-312"></a><span class="sd">        Expired token:</span>
+<a id="__codelineno-0-313" name="__codelineno-0-313"></a>
+<a id="__codelineno-0-314" name="__codelineno-0-314"></a><span class="sd">        &gt;&gt;&gt; verifier.verify_access_token(expired_token)  # doctest: +SKIP</span>
+<a id="__codelineno-0-315" name="__codelineno-0-315"></a><span class="sd">        Traceback (most recent call last):</span>
+<a id="__codelineno-0-316" name="__codelineno-0-316"></a><span class="sd">            ...</span>
+<a id="__codelineno-0-317" name="__codelineno-0-317"></a><span class="sd">        AuthError: Token is expired</span>
+<a id="__codelineno-0-318" name="__codelineno-0-318"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-319" name="__codelineno-0-319"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-320" name="__codelineno-0-320"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
+<a id="__codelineno-0-321" name="__codelineno-0-321"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s2">&quot;missing_token&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Missing access token&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">)</span>
+<a id="__codelineno-0-322" name="__codelineno-0-322"></a>
+<a id="__codelineno-0-323" name="__codelineno-0-323"></a>    <span class="c1"># Parse the header without verifying the signature.</span>
+<a id="__codelineno-0-324" name="__codelineno-0-324"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-325" name="__codelineno-0-325"></a>        <span class="n">header</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">get_unverified_header</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-0-326" name="__codelineno-0-326"></a>    <span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">DecodeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<a id="__codelineno-0-327" name="__codelineno-0-327"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
+<a id="__codelineno-0-328" name="__codelineno-0-328"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;malformed_token&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-329" name="__codelineno-0-329"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Malformed token&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-330" name="__codelineno-0-330"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
+<a id="__codelineno-0-331" name="__codelineno-0-331"></a>        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+<a id="__codelineno-0-332" name="__codelineno-0-332"></a>
+<a id="__codelineno-0-333" name="__codelineno-0-333"></a>    <span class="c1"># Reject dangerous header parameters that could be used for attacks.</span>
+<a id="__codelineno-0-334" name="__codelineno-0-334"></a>    <span class="c1"># - jku: URL to fetch keys from (could point to attacker-controlled server)</span>
+<a id="__codelineno-0-335" name="__codelineno-0-335"></a>    <span class="c1"># - x5u: URL to fetch X.509 certificate (same risk as jku)</span>
+<a id="__codelineno-0-336" name="__codelineno-0-336"></a>    <span class="c1"># - crit: Critical headers that must be understood (complexity attack vector)</span>
+<a id="__codelineno-0-337" name="__codelineno-0-337"></a>    <span class="k">if</span> <span class="s2">&quot;jku&quot;</span> <span class="ow">in</span> <span class="n">header</span> <span class="ow">or</span> <span class="s2">&quot;x5u&quot;</span> <span class="ow">in</span> <span class="n">header</span> <span class="ow">or</span> <span class="s2">&quot;crit&quot;</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+<a id="__codelineno-0-338" name="__codelineno-0-338"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
+<a id="__codelineno-0-339" name="__codelineno-0-339"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;forbidden_header&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-340" name="__codelineno-0-340"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Forbidden token header parameter&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-341" name="__codelineno-0-341"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
+<a id="__codelineno-0-342" name="__codelineno-0-342"></a>        <span class="p">)</span>
+<a id="__codelineno-0-343" name="__codelineno-0-343"></a>
+<a id="__codelineno-0-344" name="__codelineno-0-344"></a>    <span class="c1"># Validate the algorithm header.</span>
+<a id="__codelineno-0-345" name="__codelineno-0-345"></a>    <span class="n">alg</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;alg&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-346" name="__codelineno-0-346"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alg</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">alg</span><span class="p">:</span>
+<a id="__codelineno-0-347" name="__codelineno-0-347"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s2">&quot;malformed_token&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Missing alg header&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">)</span>
+<a id="__codelineno-0-348" name="__codelineno-0-348"></a>    <span class="k">if</span> <span class="n">alg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-349" name="__codelineno-0-349"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
+<a id="__codelineno-0-350" name="__codelineno-0-350"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;disallowed_alg&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-351" name="__codelineno-0-351"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Disallowed signing algorithm&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-352" name="__codelineno-0-352"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
+<a id="__codelineno-0-353" name="__codelineno-0-353"></a>        <span class="p">)</span>
+<a id="__codelineno-0-354" name="__codelineno-0-354"></a>    <span class="k">if</span> <span class="n">alg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">allowed_algorithms</span><span class="p">:</span>
+<a id="__codelineno-0-355" name="__codelineno-0-355"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
+<a id="__codelineno-0-356" name="__codelineno-0-356"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;disallowed_alg&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-357" name="__codelineno-0-357"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Disallowed signing algorithm&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-358" name="__codelineno-0-358"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
+<a id="__codelineno-0-359" name="__codelineno-0-359"></a>        <span class="p">)</span>
 <a id="__codelineno-0-360" name="__codelineno-0-360"></a>
-<a id="__codelineno-0-361" name="__codelineno-0-361"></a>    <span class="c1"># Configure PyJWT verification options.</span>
-<a id="__codelineno-0-362" name="__codelineno-0-362"></a>    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-0-363" name="__codelineno-0-363"></a>        <span class="s2">&quot;require&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;exp&quot;</span><span class="p">,</span> <span class="s2">&quot;iss&quot;</span><span class="p">,</span> <span class="s2">&quot;aud&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-364" name="__codelineno-0-364"></a>        <span class="s2">&quot;verify_signature&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-365" name="__codelineno-0-365"></a>        <span class="s2">&quot;verify_exp&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-366" name="__codelineno-0-366"></a>        <span class="s2">&quot;verify_nbf&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-367" name="__codelineno-0-367"></a>        <span class="s2">&quot;verify_aud&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-368" name="__codelineno-0-368"></a>        <span class="s2">&quot;verify_iss&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-369" name="__codelineno-0-369"></a>        <span class="s2">&quot;strict_aud&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Allow aud to be array (Auth0 style)</span>
-<a id="__codelineno-0-370" name="__codelineno-0-370"></a>    <span class="p">}</span>
-<a id="__codelineno-0-371" name="__codelineno-0-371"></a>
-<a id="__codelineno-0-372" name="__codelineno-0-372"></a>    <span class="c1"># Try each configured audience until one matches.</span>
-<a id="__codelineno-0-373" name="__codelineno-0-373"></a>    <span class="c1"># This handles tokens with array aud claims.</span>
-<a id="__codelineno-0-374" name="__codelineno-0-374"></a>    <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-375" name="__codelineno-0-375"></a>    <span class="n">last_exc</span><span class="p">:</span> <span class="ne">Exception</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-376" name="__codelineno-0-376"></a>    <span class="k">for</span> <span class="n">audience</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">audiences</span><span class="p">:</span>
-<a id="__codelineno-0-377" name="__codelineno-0-377"></a>        <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-378" name="__codelineno-0-378"></a>            <span class="n">payload</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
-<a id="__codelineno-0-379" name="__codelineno-0-379"></a>                <span class="n">token</span><span class="p">,</span>
-<a id="__codelineno-0-380" name="__codelineno-0-380"></a>                <span class="n">signing_key</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
-<a id="__codelineno-0-381" name="__codelineno-0-381"></a>                <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="n">alg</span><span class="p">],</span>
-<a id="__codelineno-0-382" name="__codelineno-0-382"></a>                <span class="n">audience</span><span class="o">=</span><span class="n">audience</span><span class="p">,</span>
-<a id="__codelineno-0-383" name="__codelineno-0-383"></a>                <span class="n">issuer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">issuer</span><span class="p">,</span>
-<a id="__codelineno-0-384" name="__codelineno-0-384"></a>                <span class="n">leeway</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">leeway_s</span><span class="p">,</span>
-<a id="__codelineno-0-385" name="__codelineno-0-385"></a>                <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
-<a id="__codelineno-0-386" name="__codelineno-0-386"></a>            <span class="p">)</span>
-<a id="__codelineno-0-387" name="__codelineno-0-387"></a>            <span class="k">break</span>
-<a id="__codelineno-0-388" name="__codelineno-0-388"></a>        <span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">InvalidAudienceError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-<a id="__codelineno-0-389" name="__codelineno-0-389"></a>            <span class="n">last_exc</span> <span class="o">=</span> <span class="n">exc</span>
-<a id="__codelineno-0-390" name="__codelineno-0-390"></a>            <span class="k">continue</span>
-<a id="__codelineno-0-391" name="__codelineno-0-391"></a>        <span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">PyJWTError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-<a id="__codelineno-0-392" name="__codelineno-0-392"></a>            <span class="k">raise</span> <span class="n">_map_decode_error</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
-<a id="__codelineno-0-393" name="__codelineno-0-393"></a>
-<a id="__codelineno-0-394" name="__codelineno-0-394"></a>    <span class="k">if</span> <span class="n">payload</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-395" name="__codelineno-0-395"></a>        <span class="k">raise</span> <span class="n">_map_decode_error</span><span class="p">(</span><span class="n">last_exc</span> <span class="ow">or</span> <span class="n">jwt</span><span class="o">.</span><span class="n">InvalidAudienceError</span><span class="p">(</span><span class="s2">&quot;invalid audience&quot;</span><span class="p">))</span>
-<a id="__codelineno-0-396" name="__codelineno-0-396"></a>
-<a id="__codelineno-0-397" name="__codelineno-0-397"></a>    <span class="c1"># Enforce required scopes (403 on failure).</span>
-<a id="__codelineno-0-398" name="__codelineno-0-398"></a>    <span class="n">required_scopes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">required_scope_set</span>
-<a id="__codelineno-0-399" name="__codelineno-0-399"></a>    <span class="n">required_permissions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">required_permission_set</span>
-<a id="__codelineno-0-400" name="__codelineno-0-400"></a>
-<a id="__codelineno-0-401" name="__codelineno-0-401"></a>    <span class="n">token_scopes</span> <span class="o">=</span> <span class="n">_parse_scope_claim</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">scope_claim</span><span class="p">))</span>
-<a id="__codelineno-0-402" name="__codelineno-0-402"></a>    <span class="n">token_permissions</span> <span class="o">=</span> <span class="n">_parse_permissions_claim</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">permissions_claim</span><span class="p">))</span>
-<a id="__codelineno-0-403" name="__codelineno-0-403"></a>
-<a id="__codelineno-0-404" name="__codelineno-0-404"></a>    <span class="n">missing_scopes</span> <span class="o">=</span> <span class="n">required_scopes</span> <span class="o">-</span> <span class="n">token_scopes</span>
-<a id="__codelineno-0-405" name="__codelineno-0-405"></a>    <span class="k">if</span> <span class="n">missing_scopes</span><span class="p">:</span>
-<a id="__codelineno-0-406" name="__codelineno-0-406"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
-<a id="__codelineno-0-407" name="__codelineno-0-407"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;insufficient_scope&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-408" name="__codelineno-0-408"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Insufficient scope&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-409" name="__codelineno-0-409"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">403</span><span class="p">,</span>
-<a id="__codelineno-0-410" name="__codelineno-0-410"></a>            <span class="n">required_scopes</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing_scopes</span><span class="p">)),</span>
-<a id="__codelineno-0-411" name="__codelineno-0-411"></a>        <span class="p">)</span>
-<a id="__codelineno-0-412" name="__codelineno-0-412"></a>
-<a id="__codelineno-0-413" name="__codelineno-0-413"></a>    <span class="c1"># Enforce required permissions (403 on failure).</span>
-<a id="__codelineno-0-414" name="__codelineno-0-414"></a>    <span class="n">missing_permissions</span> <span class="o">=</span> <span class="n">required_permissions</span> <span class="o">-</span> <span class="n">token_permissions</span>
-<a id="__codelineno-0-415" name="__codelineno-0-415"></a>    <span class="k">if</span> <span class="n">missing_permissions</span><span class="p">:</span>
-<a id="__codelineno-0-416" name="__codelineno-0-416"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
-<a id="__codelineno-0-417" name="__codelineno-0-417"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;insufficient_permissions&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-418" name="__codelineno-0-418"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Insufficient permissions&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-419" name="__codelineno-0-419"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">403</span><span class="p">,</span>
-<a id="__codelineno-0-420" name="__codelineno-0-420"></a>            <span class="n">required_permissions</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing_permissions</span><span class="p">)),</span>
-<a id="__codelineno-0-421" name="__codelineno-0-421"></a>        <span class="p">)</span>
-<a id="__codelineno-0-422" name="__codelineno-0-422"></a>
-<a id="__codelineno-0-423" name="__codelineno-0-423"></a>    <span class="k">return</span> <span class="n">payload</span>
+<a id="__codelineno-0-361" name="__codelineno-0-361"></a>    <span class="c1"># Require kid header for JWKS key lookup.</span>
+<a id="__codelineno-0-362" name="__codelineno-0-362"></a>    <span class="n">kid</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;kid&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-363" name="__codelineno-0-363"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">kid</span><span class="p">:</span>
+<a id="__codelineno-0-364" name="__codelineno-0-364"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s2">&quot;missing_kid&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Missing kid header&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">)</span>
+<a id="__codelineno-0-365" name="__codelineno-0-365"></a>
+<a id="__codelineno-0-366" name="__codelineno-0-366"></a>    <span class="c1"># Fetch the signing key from the JWKS.</span>
+<a id="__codelineno-0-367" name="__codelineno-0-367"></a>    <span class="n">signing_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jwks</span><span class="o">.</span><span class="n">get_signing_key_from_jwt</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-0-368" name="__codelineno-0-368"></a>
+<a id="__codelineno-0-369" name="__codelineno-0-369"></a>    <span class="c1"># Configure PyJWT verification options.</span>
+<a id="__codelineno-0-370" name="__codelineno-0-370"></a>    <span class="n">options</span><span class="p">:</span> <span class="n">Options</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-371" name="__codelineno-0-371"></a>        <span class="s2">&quot;require&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;exp&quot;</span><span class="p">,</span> <span class="s2">&quot;iss&quot;</span><span class="p">,</span> <span class="s2">&quot;aud&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-372" name="__codelineno-0-372"></a>        <span class="s2">&quot;verify_signature&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-373" name="__codelineno-0-373"></a>        <span class="s2">&quot;verify_exp&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-374" name="__codelineno-0-374"></a>        <span class="s2">&quot;verify_nbf&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-375" name="__codelineno-0-375"></a>        <span class="s2">&quot;verify_aud&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-376" name="__codelineno-0-376"></a>        <span class="s2">&quot;verify_iss&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-377" name="__codelineno-0-377"></a>        <span class="s2">&quot;strict_aud&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Allow aud to be array (Auth0 style)</span>
+<a id="__codelineno-0-378" name="__codelineno-0-378"></a>    <span class="p">}</span>
+<a id="__codelineno-0-379" name="__codelineno-0-379"></a>
+<a id="__codelineno-0-380" name="__codelineno-0-380"></a>    <span class="c1"># Try each configured audience until one matches.</span>
+<a id="__codelineno-0-381" name="__codelineno-0-381"></a>    <span class="c1"># This handles tokens with array aud claims.</span>
+<a id="__codelineno-0-382" name="__codelineno-0-382"></a>    <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-383" name="__codelineno-0-383"></a>    <span class="n">last_exc</span><span class="p">:</span> <span class="ne">Exception</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-384" name="__codelineno-0-384"></a>    <span class="k">for</span> <span class="n">audience</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">audiences</span><span class="p">:</span>
+<a id="__codelineno-0-385" name="__codelineno-0-385"></a>        <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-386" name="__codelineno-0-386"></a>            <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decoder</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+<a id="__codelineno-0-387" name="__codelineno-0-387"></a>                <span class="n">token</span><span class="p">,</span>
+<a id="__codelineno-0-388" name="__codelineno-0-388"></a>                <span class="n">signing_key</span><span class="p">,</span>
+<a id="__codelineno-0-389" name="__codelineno-0-389"></a>                <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="n">alg</span><span class="p">],</span>
+<a id="__codelineno-0-390" name="__codelineno-0-390"></a>                <span class="n">audience</span><span class="o">=</span><span class="n">audience</span><span class="p">,</span>
+<a id="__codelineno-0-391" name="__codelineno-0-391"></a>                <span class="n">issuer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">issuer</span><span class="p">,</span>
+<a id="__codelineno-0-392" name="__codelineno-0-392"></a>                <span class="n">leeway</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">leeway_s</span><span class="p">,</span>
+<a id="__codelineno-0-393" name="__codelineno-0-393"></a>                <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+<a id="__codelineno-0-394" name="__codelineno-0-394"></a>            <span class="p">)</span>
+<a id="__codelineno-0-395" name="__codelineno-0-395"></a>            <span class="k">break</span>
+<a id="__codelineno-0-396" name="__codelineno-0-396"></a>        <span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">InvalidAudienceError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<a id="__codelineno-0-397" name="__codelineno-0-397"></a>            <span class="n">last_exc</span> <span class="o">=</span> <span class="n">exc</span>
+<a id="__codelineno-0-398" name="__codelineno-0-398"></a>            <span class="k">continue</span>
+<a id="__codelineno-0-399" name="__codelineno-0-399"></a>        <span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">PyJWTError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<a id="__codelineno-0-400" name="__codelineno-0-400"></a>            <span class="k">raise</span> <span class="n">_map_decode_error</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+<a id="__codelineno-0-401" name="__codelineno-0-401"></a>
+<a id="__codelineno-0-402" name="__codelineno-0-402"></a>    <span class="k">if</span> <span class="n">payload</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-403" name="__codelineno-0-403"></a>        <span class="k">raise</span> <span class="n">_map_decode_error</span><span class="p">(</span><span class="n">last_exc</span> <span class="ow">or</span> <span class="n">jwt</span><span class="o">.</span><span class="n">InvalidAudienceError</span><span class="p">(</span><span class="s2">&quot;invalid audience&quot;</span><span class="p">))</span>
+<a id="__codelineno-0-404" name="__codelineno-0-404"></a>
+<a id="__codelineno-0-405" name="__codelineno-0-405"></a>    <span class="c1"># Enforce required scopes (403 on failure).</span>
+<a id="__codelineno-0-406" name="__codelineno-0-406"></a>    <span class="n">required_scopes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">required_scope_set</span>
+<a id="__codelineno-0-407" name="__codelineno-0-407"></a>    <span class="n">required_permissions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">required_permission_set</span>
+<a id="__codelineno-0-408" name="__codelineno-0-408"></a>
+<a id="__codelineno-0-409" name="__codelineno-0-409"></a>    <span class="n">token_scopes</span> <span class="o">=</span> <span class="n">_parse_scope_claim</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">scope_claim</span><span class="p">))</span>
+<a id="__codelineno-0-410" name="__codelineno-0-410"></a>    <span class="n">token_permissions</span> <span class="o">=</span> <span class="n">_parse_permissions_claim</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">permissions_claim</span><span class="p">))</span>
+<a id="__codelineno-0-411" name="__codelineno-0-411"></a>
+<a id="__codelineno-0-412" name="__codelineno-0-412"></a>    <span class="n">missing_scopes</span> <span class="o">=</span> <span class="n">required_scopes</span> <span class="o">-</span> <span class="n">token_scopes</span>
+<a id="__codelineno-0-413" name="__codelineno-0-413"></a>    <span class="k">if</span> <span class="n">missing_scopes</span><span class="p">:</span>
+<a id="__codelineno-0-414" name="__codelineno-0-414"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
+<a id="__codelineno-0-415" name="__codelineno-0-415"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;insufficient_scope&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-416" name="__codelineno-0-416"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Insufficient scope&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-417" name="__codelineno-0-417"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">403</span><span class="p">,</span>
+<a id="__codelineno-0-418" name="__codelineno-0-418"></a>            <span class="n">required_scopes</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing_scopes</span><span class="p">)),</span>
+<a id="__codelineno-0-419" name="__codelineno-0-419"></a>        <span class="p">)</span>
+<a id="__codelineno-0-420" name="__codelineno-0-420"></a>
+<a id="__codelineno-0-421" name="__codelineno-0-421"></a>    <span class="c1"># Enforce required permissions (403 on failure).</span>
+<a id="__codelineno-0-422" name="__codelineno-0-422"></a>    <span class="n">missing_permissions</span> <span class="o">=</span> <span class="n">required_permissions</span> <span class="o">-</span> <span class="n">token_permissions</span>
+<a id="__codelineno-0-423" name="__codelineno-0-423"></a>    <span class="k">if</span> <span class="n">missing_permissions</span><span class="p">:</span>
+<a id="__codelineno-0-424" name="__codelineno-0-424"></a>        <span class="k">raise</span> <span class="n">AuthError</span><span class="p">(</span>
+<a id="__codelineno-0-425" name="__codelineno-0-425"></a>            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;insufficient_permissions&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-426" name="__codelineno-0-426"></a>            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Insufficient permissions&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-427" name="__codelineno-0-427"></a>            <span class="n">status_code</span><span class="o">=</span><span class="mi">403</span><span class="p">,</span>
+<a id="__codelineno-0-428" name="__codelineno-0-428"></a>            <span class="n">required_permissions</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing_permissions</span><span class="p">)),</span>
+<a id="__codelineno-0-429" name="__codelineno-0-429"></a>        <span class="p">)</span>
+<a id="__codelineno-0-430" name="__codelineno-0-430"></a>
+<a id="__codelineno-0-431" name="__codelineno-0-431"></a>    <span class="k">return</span> <span class="n">payload</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

@@ -628,6 +628,7 @@
 <ul>
 <li>Verifies signature, <code>iss</code>, <code>aud</code>, <code>exp</code>, and <code>nbf</code> (when present).</li>
 <li>Uses an explicit algorithm allowlist and rejects <code>alg=none</code>.</li>
+<li>Enforces minimum cryptographic key lengths by default (configurable via <code>enforce_minimum_key_length</code>).</li>
 <li>Fails closed on malformed tokens, JWKS fetch errors, timeouts, missing keys, and missing <code>kid</code>.</li>
 <li>Never derives a JWKS URL from token headers, and rejects tokens that include <code>jku</code>, <code>x5u</code>, or <code>crit</code>.</li>
 <li>Supports Auth0-style multi-audience tokens (<code>aud</code> as an array) and enforces required scopes and permissions.</li>
@@ -660,7 +661,7 @@ rationale</a>.</p>
 <li><a href="https://auth0.com/docs/secure/tokens/json-web-tokens/validate-json-web-tokens">Auth0: Validate JSON Web Tokens</a></li>
 <li><a href="https://datatracker.ietf.org/doc/html/rfc8725">RFC 8725: JSON Web Token Best Current Practices</a></li>
 <li><a href="https://www.rfc-editor.org/info/rfc9700">RFC 9700: Best Current Practice for OAuth 2.0 Security</a></li>
-<li><a href="https://github.com/jpadilla/pyjwt/blob/master/docs/usage.rst">PyJWT docs and examples</a></li>
+<li><a href="https://pyjwt.readthedocs.io/en/stable/usage.html">PyJWT docs and examples</a></li>
 </ul>
 
 
