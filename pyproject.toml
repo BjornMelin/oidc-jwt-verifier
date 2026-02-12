@@ -21,7 +21,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "pyjwt[crypto]>=2.10.1",
+    "pyjwt[crypto]>=2.11.0",
 ]
 
 [project.optional-dependencies]
