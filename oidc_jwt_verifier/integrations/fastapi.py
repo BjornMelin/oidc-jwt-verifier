@@ -8,7 +8,7 @@ headers.
 from __future__ import annotations
 
 from collections.abc import Awaitable, Callable
-from typing import Any
+from typing import Any, cast
 
 from fastapi import Depends, HTTPException
 from fastapi.concurrency import run_in_threadpool
@@ -121,10 +121,10 @@ def create_sync_bearer_dependency(
         token = credentials.credentials if credentials is not None else ""
         try:
             if offload_to_threadpool:
-                claims: dict[str, Any] = await run_in_threadpool(
-                    verifier.verify_access_token, token
+                return cast(
+                    "dict[str, Any]",
+                    await run_in_threadpool(verifier.verify_access_token, token),
                 )
-                return claims
             return verifier.verify_access_token(token)
         except AuthError as exc:
             raise auth_error_to_http_exception(exc, realm=realm) from exc

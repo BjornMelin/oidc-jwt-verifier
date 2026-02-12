@@ -57,6 +57,9 @@ async def verify(token: str) -> dict[str, object]:
         return await verifier.verify_access_token(token)
 ```
 
+Note: In production services, prefer reusing a single `AsyncJWTVerifier`
+instance for the app/process lifetime and close it on shutdown.
+
 ## Next Steps
 
 - Configure claim and cache behavior: [Configuration](configuration.md)

@@ -16,8 +16,8 @@ import httpx
 import jwt
 from jwt import PyJWK, PyJWKSet
 
-from .config import AuthConfig
-from .errors import AuthError
+from oidc_jwt_verifier.config import AuthConfig
+from oidc_jwt_verifier.errors import AuthError
 
 
 @dataclass(slots=True)
@@ -42,6 +42,18 @@ class AsyncJWKSClient:
         _jwk_set_expiry_monotonic: Monotonic timestamp when JWKS cache expires.
         _key_cache: LRU-like cache of ``kid`` to ``PyJWK``.
         _lock: Async lock protecting cache state.
+
+    Examples:
+        >>> from oidc_jwt_verifier import AuthConfig
+        >>> from oidc_jwt_verifier.async_jwks import AsyncJWKSClient
+        >>> config = AuthConfig(
+        ...     issuer="https://issuer.example/",
+        ...     audience="https://api.example",
+        ...     jwks_url="https://issuer.example/.well-known/jwks.json",
+        ... )
+        >>> client = AsyncJWKSClient.from_config(config)
+        >>> # await client.get_signing_key_from_jwt(token)
+        >>> # await client.aclose()
     """
 
     _config: AuthConfig
@@ -75,6 +87,15 @@ class AsyncJWKSClient:
 
         Raises:
             ValueError: If ``max_fetch_attempts < 1``.
+
+        Examples:
+            >>> from oidc_jwt_verifier import AuthConfig
+            >>> config = AuthConfig(
+            ...     issuer="https://issuer.example/",
+            ...     audience="https://api.example",
+            ...     jwks_url="https://issuer.example/.well-known/jwks.json",
+            ... )
+            >>> client = AsyncJWKSClient.from_config(config)
         """
         if max_fetch_attempts < 1:
             raise ValueError("max_fetch_attempts must be >= 1")
@@ -92,6 +113,9 @@ class AsyncJWKSClient:
         """Close internal resources.
 
         Closes the underlying HTTP client only when this instance owns it.
+
+        Examples:
+            >>> # await client.aclose()
         """
         if self._owns_client:
             await self._client.aclose()
@@ -107,8 +131,22 @@ class AsyncJWKSClient:
 
         Raises:
             AuthError: On key lookup/fetch/parsing failures.
+
+        Examples:
+            >>> # signing_key = await client.get_signing_key_from_jwt(token)
         """
-        token_str = token.decode("utf-8") if isinstance(token, bytes) else token
+        if isinstance(token, bytes):
+            try:
+                token_str = token.decode("utf-8")
+            except UnicodeDecodeError as exc:
+                raise AuthError(
+                    code="jwks_error",
+                    message="JWKS lookup failed",
+                    status_code=401,
+                ) from exc
+        else:
+            token_str = token
+
         kid = self._extract_kid(token_str)
         return await self.get_signing_key(kid)
 
@@ -126,6 +164,9 @@ class AsyncJWKSClient:
 
         Raises:
             AuthError: With ``key_not_found`` when no matching key exists.
+
+        Examples:
+            >>> # signing_key = await client.get_signing_key("kid-123")
         """
         cached = await self._try_get_key_from_caches(kid)
         if cached is not None:
@@ -155,14 +196,14 @@ class AsyncJWKSClient:
             Cached key if available; otherwise ``None``.
         """
         async with self._lock:
+            jwk_set = self._get_cached_jwk_set_unlocked()
+            if jwk_set is None:
+                return None
+
             direct = self._key_cache.get(kid)
             if direct is not None:
                 self._key_cache.move_to_end(kid)
                 return direct
-
-            jwk_set = self._get_cached_jwk_set_unlocked()
-            if jwk_set is None:
-                return None
 
             key = self._match_kid(self._extract_signing_keys(jwk_set), kid)
             if key is None:
@@ -213,7 +254,9 @@ class AsyncJWKSClient:
 
         async with self._lock:
             self._jwk_set_cache = jwk_set
-            self._jwk_set_expiry_monotonic = time.monotonic() + self._config.jwks_cache_ttl_s
+            ttl_s = self._config.jwks_cache_ttl_s
+            self._jwk_set_expiry_monotonic = time.monotonic() + ttl_s
+            self._key_cache.clear()
 
         return signing_keys
 
@@ -276,6 +319,7 @@ class AsyncJWKSClient:
             return None
         if time.monotonic() >= self._jwk_set_expiry_monotonic:
             self._jwk_set_cache = None
+            self._key_cache.clear()
             return None
         return self._jwk_set_cache
 

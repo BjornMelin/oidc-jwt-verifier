@@ -21,8 +21,7 @@ from tests.jwt_test_utils import (
 @pytest.mark.asyncio
 async def test_fastapi_async_dependency_accepts_valid_token() -> None:
     """FastAPI helper dependency returns claims for valid bearer token."""
-    pytest.importorskip("fastapi")
-    httpx = pytest.importorskip("httpx")
+    import httpx
     from fastapi import Depends, FastAPI
 
     private_pem, public_key = make_rsa_keypair()
@@ -63,8 +62,7 @@ async def test_fastapi_async_dependency_accepts_valid_token() -> None:
 @pytest.mark.asyncio
 async def test_fastapi_async_dependency_returns_rfc6750_headers_on_403() -> None:
     """FastAPI helper maps AuthError to RFC 6750 WWW-Authenticate header."""
-    pytest.importorskip("fastapi")
-    httpx = pytest.importorskip("httpx")
+    import httpx
     from fastapi import Depends, FastAPI
 
     private_pem, public_key = make_rsa_keypair()

@@ -6,7 +6,7 @@ Starlette applications while preserving RFC 6750 response semantics.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 from starlette.concurrency import run_in_threadpool
 from starlette.requests import Request
@@ -75,8 +75,10 @@ async def verify_request_bearer_token(
     """
     token = extract_bearer_token(request.headers.get("Authorization"))
     if isinstance(verifier, JWTVerifier):
-        claims: dict[str, Any] = await run_in_threadpool(verifier.verify_access_token, token)
-        return claims
+        return cast(
+            "dict[str, Any]",
+            await run_in_threadpool(verifier.verify_access_token, token),
+        )
     return await verifier.verify_access_token(token)
 
 

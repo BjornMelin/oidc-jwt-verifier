@@ -1018,13 +1018,17 @@ async = [
     { name = "httpx" },
 ]
 dev = [
+    { name = "anyio" },
     { name = "bandit", extra = ["toml"] },
     { name = "build" },
+    { name = "fastapi" },
+    { name = "httpx" },
     { name = "mypy" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "ruff" },
+    { name = "starlette" },
 ]
 docs = [
     { name = "anyio" },
@@ -1049,14 +1053,17 @@ starlette = [
 [package.metadata]
 requires-dist = [
     { name = "anyio", marker = "extra == 'async'", specifier = ">=4.0.0,<5.0.0" },
+    { name = "anyio", marker = "extra == 'dev'", specifier = ">=4.0.0,<5.0.0" },
     { name = "anyio", marker = "extra == 'docs'", specifier = ">=4.0.0,<5.0.0" },
     { name = "anyio", marker = "extra == 'fastapi'", specifier = ">=4.0.0,<5.0.0" },
     { name = "anyio", marker = "extra == 'starlette'", specifier = ">=4.0.0,<5.0.0" },
     { name = "bandit", extras = ["toml"], marker = "extra == 'dev'", specifier = ">=1.7.0" },
     { name = "build", marker = "extra == 'dev'", specifier = ">=1.2.2" },
+    { name = "fastapi", marker = "extra == 'dev'", specifier = ">=0.110.0" },
     { name = "fastapi", marker = "extra == 'docs'", specifier = ">=0.110.0" },
     { name = "fastapi", marker = "extra == 'fastapi'", specifier = ">=0.110.0" },
     { name = "httpx", marker = "extra == 'async'", specifier = ">=0.28.0,<1.0.0" },
+    { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.28.0,<1.0.0" },
     { name = "httpx", marker = "extra == 'docs'", specifier = ">=0.28.0,<1.0.0" },
     { name = "httpx", marker = "extra == 'fastapi'", specifier = ">=0.28.0,<1.0.0" },
     { name = "httpx", marker = "extra == 'starlette'", specifier = ">=0.28.0,<1.0.0" },
@@ -1069,6 +1076,7 @@ requires-dist = [
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.23.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.1.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8.0" },
+    { name = "starlette", marker = "extra == 'dev'", specifier = ">=0.37.0" },
     { name = "starlette", marker = "extra == 'docs'", specifier = ">=0.37.0" },
     { name = "starlette", marker = "extra == 'starlette'", specifier = ">=0.37.0" },
 ]

@@ -19,8 +19,7 @@ from tests.jwt_test_utils import (
 @pytest.mark.asyncio
 async def test_starlette_middleware_sets_claims_on_request_state() -> None:
     """Middleware verifies bearer token and stores claims in request.state."""
-    httpx = pytest.importorskip("httpx")
-    pytest.importorskip("starlette")
+    import httpx
     from starlette.applications import Starlette
     from starlette.requests import Request
     from starlette.responses import JSONResponse
@@ -57,8 +56,7 @@ async def test_starlette_middleware_sets_claims_on_request_state() -> None:
 @pytest.mark.asyncio
 async def test_starlette_middleware_returns_rfc6750_header_on_missing_token() -> None:
     """Missing bearer token returns 401 with RFC 6750 header."""
-    httpx = pytest.importorskip("httpx")
-    pytest.importorskip("starlette")
+    import httpx
     from starlette.applications import Starlette
     from starlette.requests import Request
     from starlette.responses import JSONResponse

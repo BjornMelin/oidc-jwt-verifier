@@ -5,9 +5,13 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
+import pytest
+
+
+pytest.importorskip("httpx")
+
 import httpx
 import jwt
-import pytest
 
 from oidc_jwt_verifier import AuthConfig, AuthError, JWTVerifier
 from oidc_jwt_verifier.async_jwks import AsyncJWKSClient
