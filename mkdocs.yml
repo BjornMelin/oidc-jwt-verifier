@@ -107,7 +107,21 @@ markdown_extensions:
 # Navigation
 nav:
   - Home: index.md
+  - Getting Started: getting-started.md
+  - Usage:
+      - Sync: usage/sync.md
+      - Async: usage/async.md
+  - Integrations:
+      - FastAPI: integrations/fastapi.md
+      - Starlette: integrations/starlette.md
+  - Configuration: configuration.md
+  - Errors: errors.md
+  - Security: security.md
+  - Migration: migration.md
   - Alternatives: alternatives.md
+  - Architecture:
+      - ADR Async Capabilities: architecture/adr/ADR-async-capabilities-strategy.md
+      - SPEC Async Capabilities: architecture/spec/SPEC-async-capabilities-fastapi-starlette.md
   - API Reference: reference.md
   - Changelog: changelog.md
 

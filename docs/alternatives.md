@@ -1,115 +1,42 @@
-# Alternatives and rationale
+# Alternatives
 
-This project exists because JWT validation for APIs is easy to get *mostly* right while still missing
-important security and interoperability details (algorithm allowlists, unsafe header handling,
-consistent error responses, and authorization checks like scopes/permissions).
+This project is intentionally narrow: verify API access tokens from a known OIDC issuer with strict defaults and predictable errors.
 
-`oidc-jwt-verifier` is intentionally small and policy-driven: you provide explicit configuration
-(`issuer`, `audience`, `jwks_url`, allowed algorithms, and required scopes), and the library applies
-conservative defaults and consistent error behavior.
+## When This Package Fits Best
 
-## Scope and non-goals
+Use `oidc-jwt-verifier` when you want:
 
-**In scope**
+- Explicit issuer, audience, and JWKS URL configuration
+- Built-in fail-closed JWT hardening
+- Scope and permission enforcement
+- Matching sync and async verification behavior
+- Ready-to-use FastAPI and Starlette integration helpers
 
-- Verifying signed JWT access tokens for a known OIDC issuer.
-- Fetching signing keys from a configured JWKS URL with caching (via PyJWT’s `PyJWKClient`).
-- Enforcing claim checks (`iss`, `aud`, `exp`, `nbf`) and authorization policy (required scopes and
-  permissions).
-- Returning an RFC 6750-compatible `WWW-Authenticate` header via `AuthError`.
+## When Another Approach May Fit Better
 
-**Not in scope**
+### Direct PyJWT usage
 
-- OIDC discovery (`.well-known/openid-configuration`) or deriving endpoints from the token.
-- Client-side OAuth/OIDC flows, session management, or framework integrations.
-- Async key fetching (this library is synchronous by design).
+Use PyJWT directly when you need full control and are willing to own policy and error mapping details.
 
-## Comparisons to related packages
+- <https://pyjwt.readthedocs.io/en/stable/>
 
-### Use PyJWT directly
+### Discovery-driven verifier packages
 
-PyJWT is the underlying JWT implementation and provides the core primitives, including `PyJWKClient`
-for fetching and caching signing keys from a JWKS endpoint.
+Use discovery-oriented packages when you prefer automatic OIDC metadata resolution (`.well-known/openid-configuration`) instead of explicit `jwks_url` setup.
 
-- PyJWT docs: `https://pyjwt.readthedocs.io/en/stable/usage.html`
+### Framework-specific auth packages
 
-Choose **PyJWT directly** when you want maximum control and are prepared to implement and review
-your own security policy: allowed algorithms, header restrictions, audience/issuer rules, required
-scopes/permissions, and consistent API error mapping.
+Use framework-specific auth libraries when you want deep integration with one framework and are comfortable with tighter framework coupling.
 
-Choose **`oidc-jwt-verifier`** when you want those policy decisions centralized and reused across
-multiple apps/frameworks with the same behavior.
+### General JOSE libraries
 
-### `verify-oidc-token`
+Use Authlib, joserfc, or python-jose when you need broader JOSE features beyond access-token verification.
 
-`verify-oidc-token` focuses on verifying tokens against an OIDC issuer with a small surface area and
-provides a CLI.
+- <https://docs.authlib.org/en/latest/jose/jwt.html>
+- <https://pypi.org/project/joserfc/>
+- <https://pypi.org/project/python-jose/>
 
-- PyPI: `https://pypi.org/project/verify-oidc-token/`
+## Design Trade-off
 
-It’s a reasonable choice for scripts and lightweight checks; `oidc-jwt-verifier` is optimized for
-server-side API enforcement (repeatable policy + API-friendly errors) rather than being a minimal
-verification utility.
-
-### `py-jwt-verifier`
-
-`py-jwt-verifier` supports multiple identity providers and uses OIDC configuration discovery to find
-`jwks_uri`, with caching via `requests_cache`.
-
-- PyPI: `https://pypi.org/project/py-jwt-verifier/`
-
-If you want discovery-driven configuration and a more “IdP-agnostic out of the box” flow,
-`py-jwt-verifier` may be a better fit. If you prefer explicit configuration (never deriving a JWKS
-URL from token contents/headers) and a small verifier you can embed across frameworks,
-`oidc-jwt-verifier` is the intended fit.
-
-### `flask-oidc-verifier`
-
-`flask-oidc-verifier` targets Flask specifically.
-
-- PyPI: `https://pypi.org/project/flask-oidc-verifier/`
-
-If you’re all-in on Flask and want an opinionated integration, a framework-specific package can be a
-good choice. `oidc-jwt-verifier` is framework-agnostic on purpose so you can share the same policy
-across different runtimes (e.g., WSGI, ASGI, Lambda).
-
-### `verify-oidc-identity`
-
-`verify-oidc-identity` is oriented around verifying OIDC ID tokens (identity assertions) and
-supports both sync and async flows.
-
-- PyPI: `https://pypi.org/project/verify-oidc-identity/`
-
-If you are primarily validating ID tokens (authentication), prefer an ID-token-oriented library. If
-you’re validating API access tokens and enforcing scopes/permissions, `oidc-jwt-verifier` stays
-focused on that server-side use case.
-
-### General JOSE/JWT libraries (`Authlib`, `joserfc`, `python-jose`)
-
-General-purpose JOSE/JWT libraries are good foundations, but they typically expect you to supply key
-material and policy rather than providing an API-token verifier with JWKS fetching behavior and API
-error conventions.
-
-- Authlib (JOSE/JWT): `https://docs.authlib.org/en/latest/jose/jwt.html`
-- joserfc: `https://pypi.org/project/joserfc/`
-- python-jose: `https://pypi.org/project/python-jose/`
-
-Choose these when you’re building a broader auth stack or need advanced JOSE features. Choose
-`oidc-jwt-verifier` when you want a small, opinionated verification core for API access tokens.
-
-### Async key fetching: `pyjwt-key-fetcher`
-
-If you specifically need async JWKS fetching and want something “PyJWT-shaped”, `pyjwt-key-fetcher`
-positions itself as an async alternative to `PyJWKClient` and can retrieve OIDC configuration (to
-find `jwks_uri`).
-
-- PyPI: `https://pypi.org/project/pyjwt-key-fetcher/`
-
-## Why use `oidc-jwt-verifier`
-
-Use this library when you want:
-
-- A single, reusable verifier across frameworks with explicit issuer/audience/JWKS configuration.
-- Conservative defaults around algorithm allowlists and header handling (fail closed).
-- Minimum cryptographic key length enforcement by default, with explicit opt-out.
-- Built-in enforcement for scopes/permissions and consistent API-friendly errors (`AuthError`).
+`oidc-jwt-verifier` favors explicit configuration and small surface area over auto-discovery and broad feature scope.
+That trade-off keeps verification behavior predictable across frameworks and runtime models.
