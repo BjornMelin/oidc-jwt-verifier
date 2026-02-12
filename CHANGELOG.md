@@ -1,17 +1,5 @@
 # Changelog
 
-## [Unreleased]
-
-### Features
-
-* enforce PyJWT minimum key length checks by default and add `AuthConfig.enforce_minimum_key_length`
-
-### Bug Fixes
-
-* align verifier and JWKS typing with PyJWT 2.11.0 APIs (`jwt.types.Options`, `PyJWK`, float timeout/TTL)
-* raise minimum dependency to `pyjwt[crypto]>=2.11.0`
-* update docs to reference PyJWT stable docs URLs
-
 ## [0.1.3](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.2...v0.1.3) (2025-12-18)
 
 
