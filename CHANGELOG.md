@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.4](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.3...v0.1.4) (2026-02-12)
+
+
+### Features
+
+* **jwt:** enforce minimum cryptographic key length ([459c160](https://github.com/BjornMelin/oidc-jwt-verifier/commit/459c16097941ccee194752deee559171dc18afeb))
+* **verifier:** align with PyJWT 2.11 typing and key checks ([7bcd8bf](https://github.com/BjornMelin/oidc-jwt-verifier/commit/7bcd8bfff1ab60b5e940b662cdb04fc0df9047a7))
+
 ## [0.1.3](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.2...v0.1.3) (2025-12-18)
 
 
