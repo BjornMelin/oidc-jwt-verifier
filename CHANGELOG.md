@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.5](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.4...v0.1.5) (2026-02-12)
+
+
+### Features
+
+* **integrations:** add fastapi and starlette auth helpers ([cdbae89](https://github.com/BjornMelin/oidc-jwt-verifier/commit/cdbae89f2b66bb346e371695e42489812944b691))
+* **verifier:** add async support and framework integrations ([e69dbcd](https://github.com/BjornMelin/oidc-jwt-verifier/commit/e69dbcd1914c8607a351b97161a2dd10bd0152ee))
+* **verifier:** add native async verifier and shared policy core ([a8e6f40](https://github.com/BjornMelin/oidc-jwt-verifier/commit/a8e6f403a2eaec8ed4b80c7d77c234300ddc6fb6))
+
+
+### Bug Fixes
+
+* **async:** address PR [#10](https://github.com/BjornMelin/oidc-jwt-verifier/issues/10) review feedback ([b77433c](https://github.com/BjornMelin/oidc-jwt-verifier/commit/b77433c9c2d33e64cd5277626747d52ab7c21eb5))
+* commit all pending changes ([aaa743c](https://github.com/BjornMelin/oidc-jwt-verifier/commit/aaa743c37cebde3f77f19c21260b5dba5a360f20))
+* harden mypy Any checks and align CI extras install ([25c8a6e](https://github.com/BjornMelin/oidc-jwt-verifier/commit/25c8a6e8a9b10264c3638906440db6562c9ba52d))
+* **integrations:** resolve PR [#10](https://github.com/BjornMelin/oidc-jwt-verifier/issues/10) review threads ([b506f98](https://github.com/BjornMelin/oidc-jwt-verifier/commit/b506f9836cc7b45af099989d7b1361e7553ced78))
+
 ## [0.1.4](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.3...v0.1.4) (2026-02-12)
 
 
