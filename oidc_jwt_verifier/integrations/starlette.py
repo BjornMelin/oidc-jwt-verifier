@@ -75,7 +75,8 @@ async def verify_request_bearer_token(
     """
     token = extract_bearer_token(request.headers.get("Authorization"))
     if isinstance(verifier, JWTVerifier):
-        return await run_in_threadpool(verifier.verify_access_token, token)
+        claims: dict[str, Any] = await run_in_threadpool(verifier.verify_access_token, token)
+        return claims
     return await verifier.verify_access_token(token)
 
 

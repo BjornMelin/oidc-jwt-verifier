@@ -121,7 +121,10 @@ def create_sync_bearer_dependency(
         token = credentials.credentials if credentials is not None else ""
         try:
             if offload_to_threadpool:
-                return await run_in_threadpool(verifier.verify_access_token, token)
+                claims: dict[str, Any] = await run_in_threadpool(
+                    verifier.verify_access_token, token
+                )
+                return claims
             return verifier.verify_access_token(token)
         except AuthError as exc:
             raise auth_error_to_http_exception(exc, realm=realm) from exc
