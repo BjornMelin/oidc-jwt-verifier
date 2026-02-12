@@ -2,6 +2,20 @@
 
 This module offers middleware and helper functions to apply verifier logic in
 Starlette applications while preserving RFC 6750 response semantics.
+
+Args:
+    None.
+
+Returns:
+    None.
+
+Raises:
+    None.
+
+Examples:
+    >>> from oidc_jwt_verifier.integrations.starlette import (
+    ...     BearerAuthMiddleware,
+    ... )
 """
 
 from __future__ import annotations
@@ -13,9 +27,9 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.types import ASGIApp, Receive, Scope, Send
 
-from ..async_verifier import AsyncJWTVerifier
-from ..errors import AuthError
-from ..verifier import JWTVerifier
+from oidc_jwt_verifier.async_verifier import AsyncJWTVerifier
+from oidc_jwt_verifier.errors import AuthError
+from oidc_jwt_verifier.verifier import JWTVerifier
 
 
 def auth_error_to_response(
@@ -31,6 +45,16 @@ def auth_error_to_response(
 
     Returns:
         JSON response with correct status and RFC 6750 header.
+
+    Raises:
+        None.
+
+    Examples:
+        >>> from oidc_jwt_verifier.errors import AuthError
+        >>> error = AuthError(code="invalid_token", message="bad token")
+        >>> response = auth_error_to_response(error)
+        >>> response.status_code
+        401
     """
     return JSONResponse(
         {"detail": error.message, "code": error.code},
@@ -49,6 +73,15 @@ def extract_bearer_token(authorization_header: str | None) -> str:
 
     Returns:
         Bearer token string, or empty string when missing/invalid.
+
+    Raises:
+        None.
+
+    Examples:
+        >>> extract_bearer_token("Bearer abc.def.ghi")
+        'abc.def.ghi'
+        >>> extract_bearer_token("Basic abc")
+        ''
     """
     if authorization_header is None:
         return ""
@@ -74,6 +107,10 @@ async def verify_request_bearer_token(
 
     Raises:
         AuthError: On authentication/authorization failure.
+
+    Examples:
+        >>> # Usually called from middleware with a Starlette ``Request``.
+        >>> # claims = await verify_request_bearer_token(request, verifier=verifier)
     """
     token = extract_bearer_token(request.headers.get("Authorization"))
     if isinstance(verifier, JWTVerifier):
@@ -95,6 +132,17 @@ class BearerAuthMiddleware:
         realm: Optional realm for RFC 6750 header generation.
         exempt_paths: Paths to skip authentication for.
         claims_state_key: Key used in ``request.state`` for decoded claims.
+
+    Returns:
+        None.
+
+    Raises:
+        None.
+
+    Examples:
+        >>> from starlette.applications import Starlette
+        >>> app = Starlette()
+        >>> _ = BearerAuthMiddleware(app, verifier=verifier)
     """
 
     def __init__(
@@ -122,6 +170,16 @@ class BearerAuthMiddleware:
             scope: ASGI scope.
             receive: ASGI receive callable.
             send: ASGI send callable.
+
+        Returns:
+            None.
+
+        Raises:
+            None. ``AuthError`` is handled and converted into an RFC 6750 response.
+
+        Examples:
+            >>> # Invoked by Starlette's ASGI runtime, not called directly.
+            >>> # await middleware(scope, receive, send)
         """
         if scope.get("type") != "http":
             await self._app(scope, receive, send)

@@ -149,7 +149,9 @@ unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*" = ["S101", "D", "PLR2004", "PT004", "PT011", "B011", "E402", "PLC0415"]
+"tests/**/*" = ["S101", "D", "PLR2004", "PT004", "PT011", "B011"]
+"tests/test_fastapi_integration.py" = ["PLC0415"]
+"tests/test_starlette_integration.py" = ["PLC0415"]
 "scripts/**/*" = ["T20"]
 "examples/**/*" = ["T20"]
 
@@ -191,9 +193,36 @@ show_error_codes = true
 strict_equality = true
 disallow_any_unimported = true
 disallow_any_generics = true
-ignore_missing_imports = true  # third-party libs often lack stubs
+ignore_missing_imports = false
 files = ["oidc_jwt_verifier"]
 exclude = ["^\\.venv", "^build", "^dist", "tests"]
+
+[[tool.mypy.overrides]]
+module = [
+    "jwt",
+    "jwt.algorithms",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "httpx",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "fastapi",
+    "fastapi.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "starlette",
+    "starlette.*",
+]
+ignore_missing_imports = true
 
 # --- Bandit ---
 

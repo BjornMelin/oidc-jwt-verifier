@@ -14,9 +14,9 @@ from fastapi import Depends, HTTPException
 from fastapi.concurrency import run_in_threadpool
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from ..async_verifier import AsyncJWTVerifier
-from ..errors import AuthError
-from ..verifier import JWTVerifier
+from oidc_jwt_verifier.async_verifier import AsyncJWTVerifier
+from oidc_jwt_verifier.errors import AuthError
+from oidc_jwt_verifier.verifier import JWTVerifier
 
 
 def auth_error_to_http_exception(
@@ -98,7 +98,9 @@ def create_sync_bearer_dependency(
         verifier: Sync verifier instance.
         realm: Optional RFC 6750 realm.
         offload_to_threadpool: Whether to run sync verification in
-            ``run_in_threadpool``.
+            ``run_in_threadpool``. Set to ``False`` only when keys are already
+            cached or otherwise guaranteed local; if JWKS must be fetched over
+            HTTP, sync I/O will block the event loop.
         auto_error: Passed to ``HTTPBearer``.
 
     Returns:
