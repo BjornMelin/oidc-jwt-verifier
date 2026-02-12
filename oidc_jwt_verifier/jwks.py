@@ -10,21 +10,12 @@ all fetches use the URL configured in ``AuthConfig``.
 """
 
 from dataclasses import dataclass
-from typing import Any
 
-from jwt import PyJWKClient
+from jwt import PyJWK, PyJWKClient
+from jwt.exceptions import PyJWKClientConnectionError, PyJWKClientError
 
 from .config import AuthConfig
 from .errors import AuthError
-
-
-# Import PyJWT exception types with fallback for version compatibility.
-# Some versions of PyJWT may not expose these exceptions.
-try:
-    from jwt.exceptions import PyJWKClientConnectionError, PyJWKClientError
-except Exception:  # pragma: no cover
-    PyJWKClientConnectionError = None  # type: ignore[assignment,misc]
-    PyJWKClientError = None  # type: ignore[assignment,misc]
 
 
 @dataclass(slots=True)
@@ -94,7 +85,7 @@ class JWKSClient:
         )
         return cls(_client=jwks_client)
 
-    def get_signing_key_from_jwt(self, token: str) -> Any:
+    def get_signing_key_from_jwt(self, token: str | bytes) -> PyJWK:
         """Retrieve the signing key for a JWT from the JWKS.
 
         Extracts the ``kid`` (Key ID) from the token header and looks up
@@ -106,13 +97,11 @@ class JWKSClient:
         exceptions with HTTP status code 401.
 
         Args:
-            token: The encoded JWT string. The token must contain a ``kid``
-                header for key lookup.
+            token: The encoded JWT string (or bytes). The token must
+                contain a ``kid`` header for key lookup.
 
         Returns:
-            The signing key object from PyJWT. The key's ``key`` attribute
-            contains the cryptographic key material suitable for
-            verification.
+            The ``PyJWK`` signing key object from PyJWT.
 
         Raises:
             AuthError: On any failure during key retrieval. Specific codes:
@@ -142,9 +131,7 @@ class JWKSClient:
             return self._client.get_signing_key_from_jwt(token)
         except Exception as exc:
             # Handle connection errors (network failures, timeouts).
-            if PyJWKClientConnectionError is not None and isinstance(
-                exc, PyJWKClientConnectionError
-            ):
+            if isinstance(exc, PyJWKClientConnectionError):
                 raise AuthError(
                     code="jwks_fetch_failed",
                     message="JWKS fetch failed",
@@ -157,8 +144,8 @@ class JWKSClient:
             # and other client issues. We differentiate by matching error message
             # substrings ("unable to find", "kid"). This creates coupling to PyJWT's
             # internal message format - verify these patterns when upgrading PyJWT.
-            # See tests/test_jwks.py for regression tests that validate these patterns.
-            if PyJWKClientError is not None and isinstance(exc, PyJWKClientError):
+            # See tests/test_verifier.py for regression tests that validate these patterns.
+            if isinstance(exc, PyJWKClientError):
                 message = str(exc).lower()
                 if "unable to find" in message or "kid" in message:
                     raise AuthError(

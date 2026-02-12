@@ -66,11 +66,15 @@ class AuthConfig:
         leeway_s: Clock skew tolerance in seconds for ``exp`` and ``nbf``
             claim validation. Defaults to 0.
         jwks_timeout_s: HTTP timeout in seconds for JWKS fetches.
-            Defaults to 3.
+            Supports fractional seconds. Defaults to 3.0.
         jwks_cache_ttl_s: Time-to-live in seconds for cached JWKS data.
-            Must be in the range (0, 86400]. Defaults to 300.
+            Supports fractional seconds and must be in the range
+            (0, 86400]. Defaults to 300.0.
         jwks_max_cached_keys: Maximum number of signing keys to cache.
             Must be in the range (0, 1024]. Defaults to 16.
+        enforce_minimum_key_length: Whether to reject JWTs signed with
+            cryptographic keys below PyJWT minimum recommendations.
+            Defaults to ``True``.
         required_scopes: Scopes that must be present in the token for
             authorization to succeed. Checked against the ``scope_claim``.
             Defaults to an empty tuple (no scope requirements).
@@ -142,9 +146,10 @@ class AuthConfig:
     allowed_algs: Sequence[str] = ("RS256",)
     leeway_s: int = 0
 
-    jwks_timeout_s: int = 3
-    jwks_cache_ttl_s: int = 300
+    jwks_timeout_s: float = 3.0
+    jwks_cache_ttl_s: float = 300.0
     jwks_max_cached_keys: int = 16
+    enforce_minimum_key_length: bool = True
 
     required_scopes: Sequence[str] = ()
     required_permissions: Sequence[str] = ()

@@ -110,7 +110,8 @@ def _map_decode_error(exc: Exception) -> AuthError:
         - ``"missing_claim"``: A required claim is absent.
         - ``"disallowed_alg"``: The signing algorithm is not permitted.
         - ``"malformed_token"``: The token structure is invalid.
-        - ``"invalid_token"``: Catch-all for other validation failures.
+        - ``"invalid_token"``: Invalid key material or other token validation
+          failures.
 
     Examples:
         >>> import jwt
@@ -134,6 +135,8 @@ def _map_decode_error(exc: Exception) -> AuthError:
         return AuthError(code="invalid_audience", message="Invalid audience", status_code=401)
     if isinstance(exc, jwt.MissingRequiredClaimError):
         return AuthError(code="missing_claim", message=str(exc), status_code=401)
+    if isinstance(exc, jwt.InvalidKeyError):
+        return AuthError(code="invalid_token", message="Invalid token", status_code=401)
     if isinstance(exc, jwt.InvalidAlgorithmError):
         return AuthError(
             code="disallowed_alg",
@@ -169,6 +172,7 @@ class JWTVerifier:
     Attributes:
         _config: The authentication configuration.
         _jwks: The JWKS client for signing key retrieval.
+        _decoder: A configured ``jwt.PyJWT`` instance used for token decoding.
 
     Examples:
         Basic token verification:
@@ -232,6 +236,9 @@ class JWTVerifier:
         """
         self._config = config
         self._jwks = JWKSClient.from_config(config)
+        self._decoder = jwt.PyJWT(
+            options={"enforce_minimum_key_length": config.enforce_minimum_key_length}
+        )
 
     def verify_access_token(self, token: str) -> dict[str, Any]:
         """Verify an access token and return its claims.
@@ -376,9 +383,9 @@ class JWTVerifier:
         last_exc: Exception | None = None
         for audience in self._config.audiences:
             try:
-                payload = jwt.decode(
+                payload = self._decoder.decode(
                     token,
-                    signing_key.key,
+                    signing_key,
                     algorithms=[alg],
                     audience=audience,
                     issuer=self._config.issuer,
