@@ -90,6 +90,7 @@ def test_valid_token_accepted_and_jwks_cached() -> None:
 
 
 def test_jwks_client_accepts_bytes_token() -> None:
+    """JWKS key lookup accepts JWT input as bytes."""
     private_pem, public_key = _make_rsa_keypair()
     kid = "test-key-1"
     jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
@@ -621,7 +622,7 @@ def test_token_signed_with_wrong_key_rejected() -> None:
 
 
 def test_short_rsa_key_rejected_when_min_key_enforcement_enabled() -> None:
-    """Short RSA keys are rejected when enforce_minimum_key_length is enabled."""
+    """Short RSA keys are rejected when strict key-length checks are enabled."""
     private_pem, public_key = _make_rsa_keypair(key_size=1024)
     kid = "short-rsa-key"
     jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
@@ -657,7 +658,7 @@ def test_short_rsa_key_rejected_when_min_key_enforcement_enabled() -> None:
 
 
 def test_short_rsa_key_allowed_when_min_key_enforcement_disabled() -> None:
-    """Short RSA keys can still be verified when enforcement is explicitly disabled."""
+    """Short RSA keys are accepted when strict key-length checks are disabled."""
     private_pem, public_key = _make_rsa_keypair(key_size=1024)
     kid = "short-rsa-key"
     jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
