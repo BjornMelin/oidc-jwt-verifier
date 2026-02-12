@@ -46,6 +46,7 @@ The verifier:
 
 - Verifies signature, `iss`, `aud`, `exp`, and `nbf` (when present).
 - Uses an explicit algorithm allowlist and rejects `alg=none`.
+- Enforces minimum cryptographic key lengths by default (configurable via `enforce_minimum_key_length`).
 - Fails closed on malformed tokens, JWKS fetch errors, timeouts, missing keys, and missing `kid`.
 - Never derives a JWKS URL from token headers, and rejects tokens that include `jku`, `x5u`, or `crit`.
 - Supports Auth0-style multi-audience tokens (`aud` as an array) and enforces required scopes and permissions.
@@ -86,4 +87,4 @@ except AuthError as err:
 - [Auth0: Validate JSON Web Tokens](https://auth0.com/docs/secure/tokens/json-web-tokens/validate-json-web-tokens)
 - [RFC 8725: JSON Web Token Best Current Practices](https://datatracker.ietf.org/doc/html/rfc8725)
 - [RFC 9700: Best Current Practice for OAuth 2.0 Security](https://www.rfc-editor.org/info/rfc9700)
-- [PyJWT docs and examples](https://github.com/jpadilla/pyjwt/blob/master/docs/usage.rst)
+- [PyJWT docs and examples](https://pyjwt.readthedocs.io/en/stable/usage.html)

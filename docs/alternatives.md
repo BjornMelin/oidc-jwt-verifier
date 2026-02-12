@@ -31,7 +31,7 @@ conservative defaults and consistent error behavior.
 PyJWT is the underlying JWT implementation and provides the core primitives, including `PyJWKClient`
 for fetching and caching signing keys from a JWKS endpoint.
 
-- PyJWT docs: `https://github.com/jpadilla/pyjwt/blob/master/docs/usage.rst`
+- PyJWT docs: `https://pyjwt.readthedocs.io/en/stable/usage.html`
 
 Choose **PyJWT directly** when you want maximum control and are prepared to implement and review
 your own security policy: allowed algorithms, header restrictions, audience/issuer rules, required
@@ -111,5 +111,5 @@ Use this library when you want:
 
 - A single, reusable verifier across frameworks with explicit issuer/audience/JWKS configuration.
 - Conservative defaults around algorithm allowlists and header handling (fail closed).
+- Minimum cryptographic key length enforcement by default, with explicit opt-out.
 - Built-in enforcement for scopes/permissions and consistent API-friendly errors (`AuthError`).
-
