@@ -116,15 +116,19 @@ def test_config_empty_allowed_algs_rejected(allowed_algs: str | list[str]) -> No
     [
         ("leeway_s", -1, "leeway_s must be >= 0"),
         ("jwks_timeout_s", 0, "jwks_timeout_s must be > 0"),
+        ("jwks_timeout_s", 0.0, "jwks_timeout_s must be > 0"),
         ("jwks_timeout_s", -1, "jwks_timeout_s must be > 0"),
+        ("jwks_timeout_s", -0.1, "jwks_timeout_s must be > 0"),
         ("jwks_cache_ttl_s", 0, r"jwks_cache_ttl_s must be in \(0, 86400\]"),
+        ("jwks_cache_ttl_s", 0.0, r"jwks_cache_ttl_s must be in \(0, 86400\]"),
         ("jwks_cache_ttl_s", 86401, r"jwks_cache_ttl_s must be in \(0, 86400\]"),
+        ("jwks_cache_ttl_s", 86400.1, r"jwks_cache_ttl_s must be in \(0, 86400\]"),
         ("jwks_max_cached_keys", 0, r"jwks_max_cached_keys must be in \(0, 1024\]"),
         ("jwks_max_cached_keys", 1025, r"jwks_max_cached_keys must be in \(0, 1024\]"),
     ],
 )
 def test_config_numeric_range_invalid_raises_valueerror(
-    param: str, invalid_value: int, error_pattern: str
+    param: str, invalid_value: int | float, error_pattern: str
 ) -> None:
     """AuthConfig rejects numeric parameters outside valid ranges."""
     kwargs = _valid_config_kwargs()
@@ -140,14 +144,18 @@ def test_config_numeric_range_invalid_raises_valueerror(
         ("leeway_s", 0),
         ("leeway_s", 100),
         ("jwks_timeout_s", 1),
+        ("jwks_timeout_s", 0.5),
         ("jwks_timeout_s", 100),
         ("jwks_cache_ttl_s", 1),
+        ("jwks_cache_ttl_s", 0.5),
         ("jwks_cache_ttl_s", 86400),
         ("jwks_max_cached_keys", 1),
         ("jwks_max_cached_keys", 1024),
     ],
 )
-def test_config_numeric_range_valid_boundaries_accepted(param: str, valid_boundary: int) -> None:
+def test_config_numeric_range_valid_boundaries_accepted(
+    param: str, valid_boundary: int | float
+) -> None:
     """AuthConfig accepts numeric parameters at valid boundaries."""
     kwargs = _valid_config_kwargs()
     kwargs[param] = valid_boundary
@@ -276,13 +284,25 @@ def test_config_defaults() -> None:
     )
     assert config.allowed_algorithms == ("RS256",)
     assert config.leeway_s == 0
-    assert config.jwks_timeout_s == 3
-    assert config.jwks_cache_ttl_s == 300
+    assert config.jwks_timeout_s == 3.0
+    assert config.jwks_cache_ttl_s == 300.0
     assert config.jwks_max_cached_keys == 16
+    assert config.enforce_minimum_key_length is True
     assert config.required_scope_set == set()
     assert config.required_permission_set == set()
     assert config.scope_claim == "scope"
     assert config.permissions_claim == "permissions"
+
+
+def test_config_enforce_minimum_key_length_can_be_disabled() -> None:
+    """enforce_minimum_key_length can be explicitly disabled."""
+    config = AuthConfig(
+        issuer="https://issuer.example/",
+        audience="https://api.example",
+        jwks_url="https://issuer.example/.well-known/jwks.json",
+        enforce_minimum_key_length=False,
+    )
+    assert config.enforce_minimum_key_length is False
 
 
 def test_config_is_frozen() -> None:

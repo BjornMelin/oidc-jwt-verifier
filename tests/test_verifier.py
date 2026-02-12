@@ -1,5 +1,6 @@
 import base64
 import json
+import warnings
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
@@ -9,6 +10,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 from oidc_jwt_verifier import AuthConfig, AuthError, JWTVerifier
+from oidc_jwt_verifier.jwks import JWKSClient
 from oidc_jwt_verifier.verifier import _parse_permissions_claim, _parse_scope_claim
 from tests.conftest import jwks_server
 
@@ -24,8 +26,8 @@ def _rsa_public_key_to_jwk(public_key: rsa.RSAPublicKey, *, kid: str) -> dict[st
     return {"kty": "RSA", "use": "sig", "kid": kid, "n": _b64url(n), "e": _b64url(e)}
 
 
-def _make_rsa_keypair() -> tuple[bytes, rsa.RSAPublicKey]:
-    private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+def _make_rsa_keypair(*, key_size: int = 2048) -> tuple[bytes, rsa.RSAPublicKey]:
+    private_key = rsa.generate_private_key(public_exponent=65537, key_size=key_size)
     private_pem = private_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.PKCS8,
@@ -85,6 +87,37 @@ def test_valid_token_accepted_and_jwks_cached() -> None:
         assert claims1["iss"] == issuer
         assert claims2["iss"] == issuer
         assert local.request_count.value == 1
+
+
+def test_jwks_client_accepts_bytes_token() -> None:
+    """JWKS key lookup accepts JWT input as bytes."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+    }
+
+    with jwks_server(jwks) as local:
+        client = JWKSClient.from_config(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+            )
+        )
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+        signing_key = client.get_signing_key_from_jwt(token.encode("ascii"))
+
+        assert signing_key.key_id == kid
 
 
 def test_wrong_issuer_rejected() -> None:
@@ -233,7 +266,8 @@ def test_disallowed_alg_rejected_without_jwks_fetch() -> None:
             "aud": "https://api.example",
             "exp": int((datetime.now(tz=timezone.utc) + timedelta(seconds=60)).timestamp()),
         },
-        "secret",
+        # PyJWT 2.11+ warns on short HMAC keys (<32 bytes for HS256).
+        "this-is-a-test-secret-key-at-least-32-bytes",
         algorithm="HS256",
     )
 
@@ -585,6 +619,79 @@ def test_token_signed_with_wrong_key_rejected() -> None:
         # PyJWT raises DecodeError for signature failures, mapped to malformed_token
         assert excinfo.value.code == "malformed_token"
         assert excinfo.value.status_code == 401
+
+
+def test_short_rsa_key_rejected_when_min_key_enforcement_enabled() -> None:
+    """Short RSA keys are rejected when strict key-length checks are enabled."""
+    private_pem, public_key = _make_rsa_keypair(key_size=1024)
+    kid = "short-rsa-key"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+    }
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", jwt.InsecureKeyLengthWarning)
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+                enforce_minimum_key_length=True,
+            )
+        )
+        with pytest.raises(AuthError) as excinfo:
+            verifier.verify_access_token(token)
+
+        assert excinfo.value.code == "invalid_token"
+        assert excinfo.value.status_code == 401
+
+
+def test_short_rsa_key_allowed_when_min_key_enforcement_disabled() -> None:
+    """Short RSA keys are accepted when strict key-length checks are disabled."""
+    private_pem, public_key = _make_rsa_keypair(key_size=1024)
+    kid = "short-rsa-key"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+    }
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", jwt.InsecureKeyLengthWarning)
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+                enforce_minimum_key_length=False,
+            )
+        )
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", jwt.InsecureKeyLengthWarning)
+            claims = verifier.verify_access_token(token)
+
+        assert claims["iss"] == issuer
 
 
 # ============================================================================
