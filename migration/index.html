@@ -12,13 +12,13 @@
         <meta name="author" content="Bjorn Melin">
       
       
-        <link rel="canonical" href="https://oidc-jwt-verifier.bjornmelin.io/alternatives/">
+        <link rel="canonical" href="https://oidc-jwt-verifier.bjornmelin.io/migration/">
       
       
-        <link rel="prev" href="../migration/">
+        <link rel="prev" href="../security/">
       
       
-        <link rel="next" href="../architecture/adr/ADR-async-capabilities-strategy/">
+        <link rel="next" href="../alternatives/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Alternatives - oidc-jwt-verifier</title>
+        <title>Migration - oidc-jwt-verifier</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#alternatives" class="md-skip">
+        <a href="#migration-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Alternatives
+              Migration
             
           </span>
         </div>
@@ -358,9 +358,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../migration/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -377,11 +379,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../alternatives/" class="md-tabs__link">
         
   
   
@@ -870,33 +870,6 @@
       
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../migration/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Migration
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
     
   
   
@@ -916,7 +889,7 @@
   <span class="md-ellipsis">
     
   
-    Alternatives
+    Migration
   
 
     
@@ -934,7 +907,7 @@
   <span class="md-ellipsis">
     
   
-    Alternatives
+    Migration
   
 
     
@@ -960,10 +933,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#when-this-package-fits-best" class="md-nav__link">
+  <a href="#compatibility-summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When This Package Fits Best
+        Compatibility Summary
       
     </span>
   </a>
@@ -971,71 +944,54 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-another-approach-may-fit-better" class="md-nav__link">
+  <a href="#if-you-already-use-the-sync-verifier" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When Another Approach May Fit Better
+        If You Already Use the Sync Verifier
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="When Another Approach May Fit Better">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#direct-pyjwt-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Direct PyJWT usage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#discovery-driven-verifier-packages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Discovery-driven verifier packages
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#framework-specific-auth-packages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Framework-specific auth packages
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#general-jose-libraries" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        General JOSE libraries
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#design-trade-off" class="md-nav__link">
+  <a href="#move-to-native-async-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Design Trade-off
+        Move to Native Async Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastapi-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastAPI Migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#starlette-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starlette Migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rollout-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollout Checklist
       
     </span>
   </a>
@@ -1046,6 +1002,33 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alternatives/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alternatives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1234,7 +1217,7 @@
 
 
   
-    <a href="https://github.com/BjornMelin/oidc-jwt-verifier/edit/main/docs/alternatives.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BjornMelin/oidc-jwt-verifier/edit/main/docs/migration.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1242,37 +1225,77 @@
   
 
 
-<h1 id="alternatives">Alternatives<a class="headerlink" href="#alternatives" title="Permanent link">&para;</a></h1>
-<p>This project is intentionally narrow: verify API access tokens from a known OIDC issuer with strict defaults and predictable errors.</p>
-<h2 id="when-this-package-fits-best">When This Package Fits Best<a class="headerlink" href="#when-this-package-fits-best" title="Permanent link">&para;</a></h2>
-<p>Use <code>oidc-jwt-verifier</code> when you want:</p>
+<h1 id="migration-guide">Migration Guide<a class="headerlink" href="#migration-guide" title="Permanent link">&para;</a></h1>
+<p>This release adds async and framework integration features without breaking the existing sync API.</p>
+<h2 id="compatibility-summary">Compatibility Summary<a class="headerlink" href="#compatibility-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Existing usage</th>
+<th>Required change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AuthConfig</code>, <code>AuthError</code>, <code>JWTVerifier</code></td>
+<td>None</td>
+</tr>
+<tr>
+<td>Sync-only installation</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Async usage</td>
+<td>Install <code>oidc-jwt-verifier[async]</code></td>
+</tr>
+<tr>
+<td>FastAPI helpers</td>
+<td>Install <code>oidc-jwt-verifier[fastapi]</code></td>
+</tr>
+<tr>
+<td>Starlette helpers</td>
+<td>Install <code>oidc-jwt-verifier[starlette]</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="if-you-already-use-the-sync-verifier">If You Already Use the Sync Verifier<a class="headerlink" href="#if-you-already-use-the-sync-verifier" title="Permanent link">&para;</a></h2>
+<p>No migration is required.</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthConfig</span><span class="p">,</span> <span class="n">JWTVerifier</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">verifier</span> <span class="o">=</span> <span class="n">JWTVerifier</span><span class="p">(</span><span class="n">AuthConfig</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">claims</span> <span class="o">=</span> <span class="n">verifier</span><span class="o">.</span><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="move-to-native-async-verification">Move to Native Async Verification<a class="headerlink" href="#move-to-native-async-verification" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Install async extra: <code>pip install "oidc-jwt-verifier[async]"</code></li>
+<li>Replace <code>JWTVerifier</code> with <code>AsyncJWTVerifier</code></li>
+<li>Use <code>await verifier.verify_access_token(...)</code></li>
+<li>Close verifier-owned resources with <code>await verifier.aclose()</code> or <code>async with</code></li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier.async_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncJWTVerifier</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">async</span> <span class="k">with</span> <span class="n">AsyncJWTVerifier</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">verifier</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">claims</span> <span class="o">=</span> <span class="k">await</span> <span class="n">verifier</span><span class="o">.</span><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="fastapi-migration">FastAPI Migration<a class="headerlink" href="#fastapi-migration" title="Permanent link">&para;</a></h2>
+<p>Use <code>create_async_bearer_dependency()</code> for async endpoints.</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier.integrations.fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_async_bearer_dependency</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">auth</span> <span class="o">=</span> <span class="n">create_async_bearer_dependency</span><span class="p">(</span><span class="n">verifier</span><span class="p">,</span> <span class="n">realm</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>If you must keep <code>JWTVerifier</code>, use <code>create_sync_bearer_dependency()</code> with threadpool offload enabled.</p>
+<h2 id="starlette-migration">Starlette Migration<a class="headerlink" href="#starlette-migration" title="Permanent link">&para;</a></h2>
+<p>Add <code>BearerAuthMiddleware</code> and read claims from request state.</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">BearerAuthMiddleware</span><span class="p">,</span> <span class="n">verifier</span><span class="o">=</span><span class="n">verifier</span><span class="p">,</span> <span class="n">realm</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="rollout-checklist">Rollout Checklist<a class="headerlink" href="#rollout-checklist" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Explicit issuer, audience, and JWKS URL configuration</li>
-<li>Built-in fail-closed JWT hardening</li>
-<li>Scope and permission enforcement</li>
-<li>Matching sync and async verification behavior</li>
-<li>Ready-to-use FastAPI and Starlette integration helpers</li>
+<li>Install the correct extra for your runtime.</li>
+<li>Reuse long-lived verifier instances.</li>
+<li>Add shutdown cleanup for async verifier ownership paths.</li>
+<li>Confirm <code>WWW-Authenticate</code> headers in integration tests.</li>
+<li>Validate required scopes/permissions behavior in your API routes.</li>
 </ul>
-<h2 id="when-another-approach-may-fit-better">When Another Approach May Fit Better<a class="headerlink" href="#when-another-approach-may-fit-better" title="Permanent link">&para;</a></h2>
-<h3 id="direct-pyjwt-usage">Direct PyJWT usage<a class="headerlink" href="#direct-pyjwt-usage" title="Permanent link">&para;</a></h3>
-<p>Use PyJWT directly when you need full control and are willing to own policy and error mapping details.</p>
-<ul>
-<li><a href="https://pyjwt.readthedocs.io/en/stable/">https://pyjwt.readthedocs.io/en/stable/</a></li>
-</ul>
-<h3 id="discovery-driven-verifier-packages">Discovery-driven verifier packages<a class="headerlink" href="#discovery-driven-verifier-packages" title="Permanent link">&para;</a></h3>
-<p>Use discovery-oriented packages when you prefer automatic OIDC metadata resolution (<code>.well-known/openid-configuration</code>) instead of explicit <code>jwks_url</code> setup.</p>
-<h3 id="framework-specific-auth-packages">Framework-specific auth packages<a class="headerlink" href="#framework-specific-auth-packages" title="Permanent link">&para;</a></h3>
-<p>Use framework-specific auth libraries when you want deep integration with one framework and are comfortable with tighter framework coupling.</p>
-<h3 id="general-jose-libraries">General JOSE libraries<a class="headerlink" href="#general-jose-libraries" title="Permanent link">&para;</a></h3>
-<p>Use Authlib, joserfc, or python-jose when you need broader JOSE features beyond access-token verification.</p>
-<ul>
-<li><a href="https://docs.authlib.org/en/latest/jose/jwt.html">https://docs.authlib.org/en/latest/jose/jwt.html</a></li>
-<li><a href="https://pypi.org/project/joserfc/">https://pypi.org/project/joserfc/</a></li>
-<li><a href="https://pypi.org/project/python-jose/">https://pypi.org/project/python-jose/</a></li>
-</ul>
-<h2 id="design-trade-off">Design Trade-off<a class="headerlink" href="#design-trade-off" title="Permanent link">&para;</a></h2>
-<p><code>oidc-jwt-verifier</code> favors explicit configuration and small surface area over auto-discovery and broad feature scope.
-That trade-off keeps verification behavior predictable across frameworks and runtime models.</p>
 
 
 
@@ -1308,7 +1331,7 @@ That trade-off keeps verification behavior predictable across frameworks and run
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../migration/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Migration">
+          <a href="../security/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Security">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1318,20 +1341,20 @@ That trade-off keeps verification behavior predictable across frameworks and run
                 Previous
               </span>
               <div class="md-ellipsis">
-                Migration
+                Security
               </div>
             </div>
           </a>
         
         
           
-          <a href="../architecture/adr/ADR-async-capabilities-strategy/" class="md-footer__link md-footer__link--next" aria-label="Next: ADR Async Capabilities">
+          <a href="../alternatives/" class="md-footer__link md-footer__link--next" aria-label="Next: Alternatives">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                ADR Async Capabilities
+                Alternatives
               </div>
             </div>
             <div class="md-footer__button md-icon">

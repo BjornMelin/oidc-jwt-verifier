@@ -12,13 +12,13 @@
         <meta name="author" content="Bjorn Melin">
       
       
-        <link rel="canonical" href="https://oidc-jwt-verifier.bjornmelin.io/alternatives/">
+        <link rel="canonical" href="https://oidc-jwt-verifier.bjornmelin.io/getting-started/">
       
       
-        <link rel="prev" href="../migration/">
+        <link rel="prev" href="..">
       
       
-        <link rel="next" href="../architecture/adr/ADR-async-capabilities-strategy/">
+        <link rel="next" href="../usage/sync/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Alternatives - oidc-jwt-verifier</title>
+        <title>Getting Started - oidc-jwt-verifier</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#alternatives" class="md-skip">
+        <a href="#getting-started" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Alternatives
+              Getting Started
             
           </span>
         </div>
@@ -242,9 +242,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../getting-started/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -377,11 +379,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../alternatives/" class="md-tabs__link">
         
   
   
@@ -536,10 +536,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../getting-started/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -555,6 +582,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#first-sync-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First Sync Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#first-async-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First Async Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -897,37 +999,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Alternatives
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../alternatives/" class="md-nav__link">
         
   
   
@@ -943,109 +1018,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#when-this-package-fits-best" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When This Package Fits Best
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#when-another-approach-may-fit-better" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When Another Approach May Fit Better
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="When Another Approach May Fit Better">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#direct-pyjwt-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Direct PyJWT usage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#discovery-driven-verifier-packages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Discovery-driven verifier packages
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#framework-specific-auth-packages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Framework-specific auth packages
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#general-jose-libraries" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        General JOSE libraries
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#design-trade-off" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Design Trade-off
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1234,7 +1206,7 @@
 
 
   
-    <a href="https://github.com/BjornMelin/oidc-jwt-verifier/edit/main/docs/alternatives.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BjornMelin/oidc-jwt-verifier/edit/main/docs/getting-started.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1242,37 +1214,58 @@
   
 
 
-<h1 id="alternatives">Alternatives<a class="headerlink" href="#alternatives" title="Permanent link">&para;</a></h1>
-<p>This project is intentionally narrow: verify API access tokens from a known OIDC issuer with strict defaults and predictable errors.</p>
-<h2 id="when-this-package-fits-best">When This Package Fits Best<a class="headerlink" href="#when-this-package-fits-best" title="Permanent link">&para;</a></h2>
-<p>Use <code>oidc-jwt-verifier</code> when you want:</p>
+<h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Explicit issuer, audience, and JWKS URL configuration</li>
-<li>Built-in fail-closed JWT hardening</li>
-<li>Scope and permission enforcement</li>
-<li>Matching sync and async verification behavior</li>
-<li>Ready-to-use FastAPI and Starlette integration helpers</li>
+<li>Python <code>&gt;=3.10</code></li>
 </ul>
-<h2 id="when-another-approach-may-fit-better">When Another Approach May Fit Better<a class="headerlink" href="#when-another-approach-may-fit-better" title="Permanent link">&para;</a></h2>
-<h3 id="direct-pyjwt-usage">Direct PyJWT usage<a class="headerlink" href="#direct-pyjwt-usage" title="Permanent link">&para;</a></h3>
-<p>Use PyJWT directly when you need full control and are willing to own policy and error mapping details.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>Install only the sync verifier:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>oidc-jwt-verifier
+</code></pre></div>
+<p>Install async support:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;oidc-jwt-verifier[async]&quot;</span>
+</code></pre></div>
+<p>Install framework helpers:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;oidc-jwt-verifier[fastapi]&quot;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;oidc-jwt-verifier[starlette]&quot;</span>
+</code></pre></div>
+<h2 id="first-sync-verification">First Sync Verification<a class="headerlink" href="#first-sync-verification" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthConfig</span><span class="p">,</span> <span class="n">JWTVerifier</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">AuthConfig</span><span class="p">(</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">issuer</span><span class="o">=</span><span class="s2">&quot;https://issuer.example/&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">audience</span><span class="o">=</span><span class="s2">&quot;https://api.example&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">jwks_url</span><span class="o">=</span><span class="s2">&quot;https://issuer.example/.well-known/jwks.json&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">)</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">verifier</span> <span class="o">=</span> <span class="n">JWTVerifier</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">claims</span> <span class="o">=</span> <span class="n">verifier</span><span class="o">.</span><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="first-async-verification">First Async Verification<a class="headerlink" href="#first-async-verification" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthConfig</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier.async_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncJWTVerifier</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">config</span> <span class="o">=</span> <span class="n">AuthConfig</span><span class="p">(</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">issuer</span><span class="o">=</span><span class="s2">&quot;https://issuer.example/&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">audience</span><span class="o">=</span><span class="s2">&quot;https://api.example&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">jwks_url</span><span class="o">=</span><span class="s2">&quot;https://issuer.example/.well-known/jwks.json&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">verify</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="k">async</span> <span class="k">with</span> <span class="n">AsyncJWTVerifier</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">verifier</span><span class="p">:</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>        <span class="k">return</span> <span class="k">await</span> <span class="n">verifier</span><span class="o">.</span><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</code></pre></div>
+<p>Note: In production services, prefer reusing a single <code>AsyncJWTVerifier</code>
+instance for the app/process lifetime and close it on shutdown.</p>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://pyjwt.readthedocs.io/en/stable/">https://pyjwt.readthedocs.io/en/stable/</a></li>
+<li>Configure claim and cache behavior: <a href="../configuration/">Configuration</a></li>
+<li>Handle verifier errors correctly: <a href="../errors/">Errors</a></li>
+<li>Integrate with your framework:</li>
+<li><a href="../integrations/fastapi/">FastAPI</a></li>
+<li><a href="../integrations/starlette/">Starlette</a></li>
 </ul>
-<h3 id="discovery-driven-verifier-packages">Discovery-driven verifier packages<a class="headerlink" href="#discovery-driven-verifier-packages" title="Permanent link">&para;</a></h3>
-<p>Use discovery-oriented packages when you prefer automatic OIDC metadata resolution (<code>.well-known/openid-configuration</code>) instead of explicit <code>jwks_url</code> setup.</p>
-<h3 id="framework-specific-auth-packages">Framework-specific auth packages<a class="headerlink" href="#framework-specific-auth-packages" title="Permanent link">&para;</a></h3>
-<p>Use framework-specific auth libraries when you want deep integration with one framework and are comfortable with tighter framework coupling.</p>
-<h3 id="general-jose-libraries">General JOSE libraries<a class="headerlink" href="#general-jose-libraries" title="Permanent link">&para;</a></h3>
-<p>Use Authlib, joserfc, or python-jose when you need broader JOSE features beyond access-token verification.</p>
-<ul>
-<li><a href="https://docs.authlib.org/en/latest/jose/jwt.html">https://docs.authlib.org/en/latest/jose/jwt.html</a></li>
-<li><a href="https://pypi.org/project/joserfc/">https://pypi.org/project/joserfc/</a></li>
-<li><a href="https://pypi.org/project/python-jose/">https://pypi.org/project/python-jose/</a></li>
-</ul>
-<h2 id="design-trade-off">Design Trade-off<a class="headerlink" href="#design-trade-off" title="Permanent link">&para;</a></h2>
-<p><code>oidc-jwt-verifier</code> favors explicit configuration and small surface area over auto-discovery and broad feature scope.
-That trade-off keeps verification behavior predictable across frameworks and runtime models.</p>
 
 
 
@@ -1308,7 +1301,7 @@ That trade-off keeps verification behavior predictable across frameworks and run
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../migration/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Migration">
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1318,20 +1311,20 @@ That trade-off keeps verification behavior predictable across frameworks and run
                 Previous
               </span>
               <div class="md-ellipsis">
-                Migration
+                Home
               </div>
             </div>
           </a>
         
         
           
-          <a href="../architecture/adr/ADR-async-capabilities-strategy/" class="md-footer__link md-footer__link--next" aria-label="Next: ADR Async Capabilities">
+          <a href="../usage/sync/" class="md-footer__link md-footer__link--next" aria-label="Next: Sync">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                ADR Async Capabilities
+                Sync
               </div>
             </div>
             <div class="md-footer__button md-icon">

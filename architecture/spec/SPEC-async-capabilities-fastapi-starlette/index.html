@@ -12,31 +12,31 @@
         <meta name="author" content="Bjorn Melin">
       
       
-        <link rel="canonical" href="https://oidc-jwt-verifier.bjornmelin.io/alternatives/">
+        <link rel="canonical" href="https://oidc-jwt-verifier.bjornmelin.io/architecture/spec/SPEC-async-capabilities-fastapi-starlette/">
       
       
-        <link rel="prev" href="../migration/">
+        <link rel="prev" href="../../adr/ADR-async-capabilities-strategy/">
       
       
-        <link rel="next" href="../architecture/adr/ADR-async-capabilities-strategy/">
+        <link rel="next" href="../../../reference/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Alternatives - oidc-jwt-verifier</title>
+        <title>SPEC Async Capabilities - oidc-jwt-verifier</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -55,9 +55,9 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#alternatives" class="md-skip">
+        <a href="#spec-async-capabilities-for-fastapi-and-starlette" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="oidc-jwt-verifier" class="md-header__button md-logo" aria-label="oidc-jwt-verifier" data-md-component="logo">
+    <a href="../../.." title="oidc-jwt-verifier" class="md-header__button md-logo" aria-label="oidc-jwt-verifier" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Alternatives
+              SPEC Async Capabilities
             
           </span>
         </div>
@@ -225,7 +225,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -244,7 +244,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../getting-started/" class="md-tabs__link">
+      <a href="../../../getting-started/" class="md-tabs__link">
         
   
   
@@ -265,7 +265,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../usage/sync/" class="md-tabs__link">
+        <a href="../../../usage/sync/" class="md-tabs__link">
           
   
   
@@ -285,7 +285,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../integrations/fastapi/" class="md-tabs__link">
+        <a href="../../../integrations/fastapi/" class="md-tabs__link">
           
   
   
@@ -303,7 +303,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../configuration/" class="md-tabs__link">
+      <a href="../../../configuration/" class="md-tabs__link">
         
   
   
@@ -322,7 +322,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../errors/" class="md-tabs__link">
+      <a href="../../../errors/" class="md-tabs__link">
         
   
   
@@ -341,7 +341,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../security/" class="md-tabs__link">
+      <a href="../../../security/" class="md-tabs__link">
         
   
   
@@ -360,7 +360,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../migration/" class="md-tabs__link">
+      <a href="../../../migration/" class="md-tabs__link">
         
   
   
@@ -377,11 +377,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../../alternatives/" class="md-tabs__link">
         
   
   
@@ -398,11 +396,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../architecture/adr/ADR-async-capabilities-strategy/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../adr/ADR-async-capabilities-strategy/" class="md-tabs__link">
           
   
   
@@ -420,7 +420,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../reference/" class="md-tabs__link">
+      <a href="../../../reference/" class="md-tabs__link">
         
   
   
@@ -439,7 +439,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../changelog/" class="md-tabs__link">
+      <a href="../../../changelog/" class="md-tabs__link">
         
   
   
@@ -482,7 +482,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="oidc-jwt-verifier" class="md-nav__button md-logo" aria-label="oidc-jwt-verifier" data-md-component="logo">
+    <a href="../../.." title="oidc-jwt-verifier" class="md-nav__button md-logo" aria-label="oidc-jwt-verifier" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -512,7 +512,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -539,7 +539,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/" class="md-nav__link">
+      <a href="../../../getting-started/" class="md-nav__link">
         
   
   
@@ -616,7 +616,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../usage/sync/" class="md-nav__link">
+      <a href="../../../usage/sync/" class="md-nav__link">
         
   
   
@@ -644,7 +644,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../usage/async/" class="md-nav__link">
+      <a href="../../../usage/async/" class="md-nav__link">
         
   
   
@@ -729,7 +729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../integrations/fastapi/" class="md-nav__link">
+      <a href="../../../integrations/fastapi/" class="md-nav__link">
         
   
   
@@ -757,7 +757,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../integrations/starlette/" class="md-nav__link">
+      <a href="../../../integrations/starlette/" class="md-nav__link">
         
   
   
@@ -792,7 +792,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../configuration/" class="md-nav__link">
+      <a href="../../../configuration/" class="md-nav__link">
         
   
   
@@ -819,7 +819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../errors/" class="md-nav__link">
+      <a href="../../../errors/" class="md-nav__link">
         
   
   
@@ -846,7 +846,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../security/" class="md-nav__link">
+      <a href="../../../security/" class="md-nav__link">
         
   
   
@@ -873,7 +873,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../migration/" class="md-nav__link">
+      <a href="../../../migration/" class="md-nav__link">
         
   
   
@@ -897,6 +897,116 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alternatives/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alternatives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/ADR-async-capabilities-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR Async Capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -916,7 +1026,7 @@
   <span class="md-ellipsis">
     
   
-    Alternatives
+    SPEC Async Capabilities
   
 
     
@@ -934,7 +1044,7 @@
   <span class="md-ellipsis">
     
   
-    Alternatives
+    SPEC Async Capabilities
   
 
     
@@ -960,10 +1070,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#when-this-package-fits-best" class="md-nav__link">
+  <a href="#goals" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When This Package Fits Best
+        Goals
       
     </span>
   </a>
@@ -971,22 +1081,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-another-approach-may-fit-better" class="md-nav__link">
+  <a href="#non-goals" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When Another Approach May Fit Better
+        Non-goals
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="When Another Approach May Fit Better">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-api-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public API Contract
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public API Contract">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#direct-pyjwt-usage" class="md-nav__link">
+  <a href="#sync" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Direct PyJWT usage
+        Sync
       
     </span>
   </a>
@@ -994,10 +1115,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#discovery-driven-verifier-packages" class="md-nav__link">
+  <a href="#async" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Discovery-driven verifier packages
+        Async
       
     </span>
   </a>
@@ -1005,21 +1126,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#framework-specific-auth-packages" class="md-nav__link">
+  <a href="#integrations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Framework-specific auth packages
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#general-jose-libraries" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        General JOSE libraries
+        Integrations
       
     </span>
   </a>
@@ -1032,10 +1142,126 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#design-trade-off" class="md-nav__link">
+  <a href="#packaging-strategy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Design Trade-off
+        Packaging Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-policy-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Policy Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lifecycle Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asyncjwksclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncJWKSClient
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asyncjwtverifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncJWTVerifier
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-and-fetch-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache and Fetch Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Semantics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Expectations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibility-and-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compatibility and Versioning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
       
     </span>
   </a>
@@ -1046,111 +1272,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
-        
-          
-          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Architecture
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Architecture
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../architecture/adr/ADR-async-capabilities-strategy/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR Async Capabilities
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../architecture/spec/SPEC-async-capabilities-fastapi-starlette/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    SPEC Async Capabilities
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1170,7 +1291,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/" class="md-nav__link">
+      <a href="../../../reference/" class="md-nav__link">
         
   
   
@@ -1197,7 +1318,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../changelog/" class="md-nav__link">
+      <a href="../../../changelog/" class="md-nav__link">
         
   
   
@@ -1234,7 +1355,7 @@
 
 
   
-    <a href="https://github.com/BjornMelin/oidc-jwt-verifier/edit/main/docs/alternatives.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BjornMelin/oidc-jwt-verifier/edit/main/docs/architecture/spec/SPEC-async-capabilities-fastapi-starlette.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1242,37 +1363,133 @@
   
 
 
-<h1 id="alternatives">Alternatives<a class="headerlink" href="#alternatives" title="Permanent link">&para;</a></h1>
-<p>This project is intentionally narrow: verify API access tokens from a known OIDC issuer with strict defaults and predictable errors.</p>
-<h2 id="when-this-package-fits-best">When This Package Fits Best<a class="headerlink" href="#when-this-package-fits-best" title="Permanent link">&para;</a></h2>
-<p>Use <code>oidc-jwt-verifier</code> when you want:</p>
+<h1 id="spec-async-capabilities-for-fastapi-and-starlette">SPEC: Async Capabilities for FastAPI and Starlette<a class="headerlink" href="#spec-async-capabilities-for-fastapi-and-starlette" title="Permanent link">&para;</a></h1>
 <ul>
-<li>Explicit issuer, audience, and JWKS URL configuration</li>
-<li>Built-in fail-closed JWT hardening</li>
+<li>Status: Implemented</li>
+<li>Date: 2026-02-12</li>
+</ul>
+<h2 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Provide native async JWT verification.</li>
+<li>Keep existing sync API behavior intact.</li>
+<li>Provide first-party FastAPI and Starlette helpers.</li>
+<li>Maintain strict fail-closed security defaults.</li>
+</ul>
+<h2 id="non-goals">Non-goals<a class="headerlink" href="#non-goals" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Removing sync APIs.</li>
+<li>OIDC discovery or dynamic endpoint derivation from token data.</li>
+<li>Built-in telemetry backend integrations.</li>
+</ul>
+<h2 id="public-api-contract">Public API Contract<a class="headerlink" href="#public-api-contract" title="Permanent link">&para;</a></h2>
+<h3 id="sync">Sync<a class="headerlink" href="#sync" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>JWTVerifier.verify_access_token(token: str) -&gt; dict[str, Any]</code></li>
+<li><code>JWKSClient.get_signing_key_from_jwt(token: str | bytes) -&gt; PyJWK</code></li>
+</ul>
+<h3 id="async">Async<a class="headerlink" href="#async" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>AsyncJWTVerifier.verify_access_token(token: str) -&gt; dict[str, Any]</code></li>
+<li><code>AsyncJWTVerifier.aclose() -&gt; None</code></li>
+<li><code>AsyncJWKSClient.get_signing_key_from_jwt(token: str | bytes) -&gt; PyJWK</code></li>
+<li><code>AsyncJWKSClient.aclose() -&gt; None</code></li>
+</ul>
+<h3 id="integrations">Integrations<a class="headerlink" href="#integrations" title="Permanent link">&para;</a></h3>
+<p>FastAPI (<code>oidc_jwt_verifier.integrations.fastapi</code>):</p>
+<ul>
+<li><code>create_async_bearer_dependency(...)</code></li>
+<li><code>create_sync_bearer_dependency(...)</code></li>
+<li><code>auth_error_to_http_exception(...)</code></li>
+</ul>
+<p>Starlette (<code>oidc_jwt_verifier.integrations.starlette</code>):</p>
+<ul>
+<li><code>BearerAuthMiddleware</code></li>
+<li><code>verify_request_bearer_token(...)</code></li>
+<li><code>auth_error_to_response(...)</code></li>
+</ul>
+<h2 id="packaging-strategy">Packaging Strategy<a class="headerlink" href="#packaging-strategy" title="Permanent link">&para;</a></h2>
+<p>Optional extras:</p>
+<ul>
+<li><code>async</code>: <code>httpx</code>, <code>anyio</code></li>
+<li><code>fastapi</code>: <code>fastapi</code> plus async dependencies</li>
+<li><code>starlette</code>: <code>starlette</code> plus async dependencies</li>
+</ul>
+<p>Base install remains sync-only.</p>
+<p>Import boundaries:</p>
+<ul>
+<li>Root import works without async dependencies.</li>
+<li>Async modules require async dependencies.</li>
+<li>Framework integration modules require framework dependencies.</li>
+</ul>
+<h2 id="shared-policy-model">Shared Policy Model<a class="headerlink" href="#shared-policy-model" title="Permanent link">&para;</a></h2>
+<p><code>oidc_jwt_verifier._policy</code> defines shared behavior for sync and async verifiers:</p>
+<ul>
+<li>Header checks (<code>jku</code>, <code>x5u</code>, <code>crit</code>, <code>alg</code>, <code>kid</code>)</li>
+<li>Decode options and claim verification loop</li>
+<li>Decode exception to <code>AuthError</code> mapping</li>
 <li>Scope and permission enforcement</li>
-<li>Matching sync and async verification behavior</li>
-<li>Ready-to-use FastAPI and Starlette integration helpers</li>
 </ul>
-<h2 id="when-another-approach-may-fit-better">When Another Approach May Fit Better<a class="headerlink" href="#when-another-approach-may-fit-better" title="Permanent link">&para;</a></h2>
-<h3 id="direct-pyjwt-usage">Direct PyJWT usage<a class="headerlink" href="#direct-pyjwt-usage" title="Permanent link">&para;</a></h3>
-<p>Use PyJWT directly when you need full control and are willing to own policy and error mapping details.</p>
+<h2 id="lifecycle-rules">Lifecycle Rules<a class="headerlink" href="#lifecycle-rules" title="Permanent link">&para;</a></h2>
+<h3 id="asyncjwksclient">AsyncJWKSClient<a class="headerlink" href="#asyncjwksclient" title="Permanent link">&para;</a></h3>
 <ul>
+<li>Owns and closes internal <code>httpx.AsyncClient</code> when created internally.</li>
+<li>Does not close externally injected <code>httpx.AsyncClient</code>.</li>
+</ul>
+<h3 id="asyncjwtverifier">AsyncJWTVerifier<a class="headerlink" href="#asyncjwtverifier" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Closes internal async JWKS client only when it created that client.</li>
+<li>Does not close externally injected JWKS client.</li>
+</ul>
+<h2 id="cache-and-fetch-behavior">Cache and Fetch Behavior<a class="headerlink" href="#cache-and-fetch-behavior" title="Permanent link">&para;</a></h2>
+<ul>
+<li>JWKS document cache with TTL (<code>jwks_cache_ttl_s</code>).</li>
+<li>Key cache by <code>kid</code> with max size (<code>jwks_max_cached_keys</code>).</li>
+<li>On missing <code>kid</code>, perform normal lookup, then one forced JWKS refresh, then fail.</li>
+<li>Async fetch supports configurable retry attempts (<code>max_fetch_attempts</code>, default <code>2</code>).</li>
+</ul>
+<h2 id="error-semantics">Error Semantics<a class="headerlink" href="#error-semantics" title="Permanent link">&para;</a></h2>
+<p>Sync and async paths emit the same <code>AuthError</code> taxonomy and status semantics.</p>
+<ul>
+<li>Authentication failures return <code>401</code>.</li>
+<li>Authorization failures return <code>403</code>.</li>
+<li><code>WWW-Authenticate</code> values are produced by <code>AuthError.www_authenticate_header()</code>.</li>
+</ul>
+<h2 id="security-constraints">Security Constraints<a class="headerlink" href="#security-constraints" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Reject <code>alg=none</code>.</li>
+<li>Enforce configured algorithm allowlist.</li>
+<li>Reject <code>jku</code>, <code>x5u</code>, and <code>crit</code> headers.</li>
+<li>Require <code>kid</code> for key lookup.</li>
+<li>Never derive JWKS source from token headers.</li>
+<li>Fail closed on parse, fetch, decode, and claim failures.</li>
+</ul>
+<h2 id="performance-expectations">Performance Expectations<a class="headerlink" href="#performance-expectations" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Async path should be preferred for async frameworks to avoid blocking behavior.</li>
+<li>Sync verifier remains valid in async frameworks through threadpool helpers when migration is not immediate.</li>
+<li>Performance verification should compare native async path vs sync-threadpool fallback under concurrent load.</li>
+</ul>
+<h2 id="compatibility-and-versioning">Compatibility and Versioning<a class="headerlink" href="#compatibility-and-versioning" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Sync API remains backward compatible.</li>
+<li>Async and framework APIs are additive.</li>
+<li>Release impact is minor-version additive behavior.</li>
+</ul>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://fastapi.tiangolo.com/async/">https://fastapi.tiangolo.com/async/</a></li>
+<li><a href="https://fastapi.tiangolo.com/tutorial/dependencies/">https://fastapi.tiangolo.com/tutorial/dependencies/</a></li>
+<li><a href="https://www.starlette.io/threadpool/">https://www.starlette.io/threadpool/</a></li>
+<li><a href="https://www.starlette.io/">https://www.starlette.io/</a></li>
+<li><a href="https://anyio.readthedocs.io/en/stable/">https://anyio.readthedocs.io/en/stable/</a></li>
 <li><a href="https://pyjwt.readthedocs.io/en/stable/">https://pyjwt.readthedocs.io/en/stable/</a></li>
+<li><a href="https://pyjwt.readthedocs.io/en/stable/api.html">https://pyjwt.readthedocs.io/en/stable/api.html</a></li>
+<li><a href="https://packaging.python.org/en/latest/specifications/declaring-project-metadata/">https://packaging.python.org/en/latest/specifications/declaring-project-metadata/</a></li>
+<li><a href="https://docs.astral.sh/uv/">https://docs.astral.sh/uv/</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc8725">https://datatracker.ietf.org/doc/html/rfc8725</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc6750">https://datatracker.ietf.org/doc/html/rfc6750</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc7519">https://www.rfc-editor.org/rfc/rfc7519</a></li>
 </ul>
-<h3 id="discovery-driven-verifier-packages">Discovery-driven verifier packages<a class="headerlink" href="#discovery-driven-verifier-packages" title="Permanent link">&para;</a></h3>
-<p>Use discovery-oriented packages when you prefer automatic OIDC metadata resolution (<code>.well-known/openid-configuration</code>) instead of explicit <code>jwks_url</code> setup.</p>
-<h3 id="framework-specific-auth-packages">Framework-specific auth packages<a class="headerlink" href="#framework-specific-auth-packages" title="Permanent link">&para;</a></h3>
-<p>Use framework-specific auth libraries when you want deep integration with one framework and are comfortable with tighter framework coupling.</p>
-<h3 id="general-jose-libraries">General JOSE libraries<a class="headerlink" href="#general-jose-libraries" title="Permanent link">&para;</a></h3>
-<p>Use Authlib, joserfc, or python-jose when you need broader JOSE features beyond access-token verification.</p>
-<ul>
-<li><a href="https://docs.authlib.org/en/latest/jose/jwt.html">https://docs.authlib.org/en/latest/jose/jwt.html</a></li>
-<li><a href="https://pypi.org/project/joserfc/">https://pypi.org/project/joserfc/</a></li>
-<li><a href="https://pypi.org/project/python-jose/">https://pypi.org/project/python-jose/</a></li>
-</ul>
-<h2 id="design-trade-off">Design Trade-off<a class="headerlink" href="#design-trade-off" title="Permanent link">&para;</a></h2>
-<p><code>oidc-jwt-verifier</code> favors explicit configuration and small surface area over auto-discovery and broad feature scope.
-That trade-off keeps verification behavior predictable across frameworks and runtime models.</p>
 
 
 
@@ -1308,7 +1525,7 @@ That trade-off keeps verification behavior predictable across frameworks and run
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../migration/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Migration">
+          <a href="../../adr/ADR-async-capabilities-strategy/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ADR Async Capabilities">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1318,20 +1535,20 @@ That trade-off keeps verification behavior predictable across frameworks and run
                 Previous
               </span>
               <div class="md-ellipsis">
-                Migration
+                ADR Async Capabilities
               </div>
             </div>
           </a>
         
         
           
-          <a href="../architecture/adr/ADR-async-capabilities-strategy/" class="md-footer__link md-footer__link--next" aria-label="Next: ADR Async Capabilities">
+          <a href="../../../reference/" class="md-footer__link md-footer__link--next" aria-label="Next: API Reference">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                ADR Async Capabilities
+                API Reference
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1372,10 +1589,10 @@ That trade-off keeps verification behavior predictable across frameworks and run
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.footer", "toc.integrate", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.footer", "toc.integrate", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

@@ -12,13 +12,13 @@
         <meta name="author" content="Bjorn Melin">
       
       
-        <link rel="canonical" href="https://oidc-jwt-verifier.bjornmelin.io/alternatives/">
+        <link rel="canonical" href="https://oidc-jwt-verifier.bjornmelin.io/errors/">
       
       
-        <link rel="prev" href="../migration/">
+        <link rel="prev" href="../configuration/">
       
       
-        <link rel="next" href="../architecture/adr/ADR-async-capabilities-strategy/">
+        <link rel="next" href="../security/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Alternatives - oidc-jwt-verifier</title>
+        <title>Errors - oidc-jwt-verifier</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#alternatives" class="md-skip">
+        <a href="#errors" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Alternatives
+              Errors
             
           </span>
         </div>
@@ -320,9 +320,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../errors/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -377,11 +379,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../alternatives/" class="md-tabs__link">
         
   
   
@@ -816,10 +816,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../errors/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -835,6 +862,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Handling Pattern
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Codes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rfc-6750-header-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RFC 6750 Header Output
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -897,37 +977,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Alternatives
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../alternatives/" class="md-nav__link">
         
   
   
@@ -943,109 +996,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#when-this-package-fits-best" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When This Package Fits Best
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#when-another-approach-may-fit-better" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When Another Approach May Fit Better
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="When Another Approach May Fit Better">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#direct-pyjwt-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Direct PyJWT usage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#discovery-driven-verifier-packages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Discovery-driven verifier packages
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#framework-specific-auth-packages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Framework-specific auth packages
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#general-jose-libraries" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        General JOSE libraries
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#design-trade-off" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Design Trade-off
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1234,7 +1184,7 @@
 
 
   
-    <a href="https://github.com/BjornMelin/oidc-jwt-verifier/edit/main/docs/alternatives.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/BjornMelin/oidc-jwt-verifier/edit/main/docs/errors.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1242,37 +1192,128 @@
   
 
 
-<h1 id="alternatives">Alternatives<a class="headerlink" href="#alternatives" title="Permanent link">&para;</a></h1>
-<p>This project is intentionally narrow: verify API access tokens from a known OIDC issuer with strict defaults and predictable errors.</p>
-<h2 id="when-this-package-fits-best">When This Package Fits Best<a class="headerlink" href="#when-this-package-fits-best" title="Permanent link">&para;</a></h2>
-<p>Use <code>oidc-jwt-verifier</code> when you want:</p>
+<h1 id="errors">Errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h1>
+<p>The library raises one public exception type: <code>AuthError</code>.</p>
+<p><code>AuthError</code> contains:</p>
 <ul>
-<li>Explicit issuer, audience, and JWKS URL configuration</li>
-<li>Built-in fail-closed JWT hardening</li>
-<li>Scope and permission enforcement</li>
-<li>Matching sync and async verification behavior</li>
-<li>Ready-to-use FastAPI and Starlette integration helpers</li>
+<li><code>code</code>: stable machine-readable identifier</li>
+<li><code>message</code>: human-readable description</li>
+<li><code>status_code</code>: HTTP <code>401</code> or <code>403</code></li>
+<li><code>required_scopes</code>: populated for <code>insufficient_scope</code></li>
+<li><code>required_permissions</code>: populated for <code>insufficient_permissions</code></li>
 </ul>
-<h2 id="when-another-approach-may-fit-better">When Another Approach May Fit Better<a class="headerlink" href="#when-another-approach-may-fit-better" title="Permanent link">&para;</a></h2>
-<h3 id="direct-pyjwt-usage">Direct PyJWT usage<a class="headerlink" href="#direct-pyjwt-usage" title="Permanent link">&para;</a></h3>
-<p>Use PyJWT directly when you need full control and are willing to own policy and error mapping details.</p>
+<h2 id="error-handling-pattern">Error Handling Pattern<a class="headerlink" href="#error-handling-pattern" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oidc_jwt_verifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthError</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">claims</span> <span class="o">=</span> <span class="n">verifier</span><span class="o">.</span><span class="n">verify_access_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">except</span> <span class="n">AuthError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">status</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">status_code</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">code</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">code</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">header</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">www_authenticate_header</span><span class="p">(</span><span class="n">realm</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="error-codes">Error Codes<a class="headerlink" href="#error-codes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th style="text-align: right;">Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>missing_token</code></td>
+<td style="text-align: right;">401</td>
+<td>Token missing or blank.</td>
+</tr>
+<tr>
+<td><code>malformed_token</code></td>
+<td style="text-align: right;">401</td>
+<td>Token format or header is invalid.</td>
+</tr>
+<tr>
+<td><code>forbidden_header</code></td>
+<td style="text-align: right;">401</td>
+<td>Token header contains forbidden fields (<code>jku</code>, <code>x5u</code>, <code>crit</code>).</td>
+</tr>
+<tr>
+<td><code>disallowed_alg</code></td>
+<td style="text-align: right;">401</td>
+<td>Signing algorithm is not permitted.</td>
+</tr>
+<tr>
+<td><code>missing_kid</code></td>
+<td style="text-align: right;">401</td>
+<td>Token header has no usable <code>kid</code>.</td>
+</tr>
+<tr>
+<td><code>token_expired</code></td>
+<td style="text-align: right;">401</td>
+<td><code>exp</code> is in the past.</td>
+</tr>
+<tr>
+<td><code>token_not_yet_valid</code></td>
+<td style="text-align: right;">401</td>
+<td><code>nbf</code> is in the future.</td>
+</tr>
+<tr>
+<td><code>invalid_issuer</code></td>
+<td style="text-align: right;">401</td>
+<td><code>iss</code> does not match configured issuer.</td>
+</tr>
+<tr>
+<td><code>invalid_audience</code></td>
+<td style="text-align: right;">401</td>
+<td><code>aud</code> does not match configured audience(s).</td>
+</tr>
+<tr>
+<td><code>missing_claim</code></td>
+<td style="text-align: right;">401</td>
+<td>Required JWT claim is missing.</td>
+</tr>
+<tr>
+<td><code>invalid_token</code></td>
+<td style="text-align: right;">401</td>
+<td>Signature/claim/key validation failed.</td>
+</tr>
+<tr>
+<td><code>jwks_fetch_failed</code></td>
+<td style="text-align: right;">401</td>
+<td>JWKS endpoint request failed (network/HTTP).</td>
+</tr>
+<tr>
+<td><code>jwks_error</code></td>
+<td style="text-align: right;">401</td>
+<td>JWKS payload or key parsing failed.</td>
+</tr>
+<tr>
+<td><code>key_not_found</code></td>
+<td style="text-align: right;">401</td>
+<td>No key in JWKS matched token <code>kid</code>.</td>
+</tr>
+<tr>
+<td><code>insufficient_scope</code></td>
+<td style="text-align: right;">403</td>
+<td>Required scopes are missing.</td>
+</tr>
+<tr>
+<td><code>insufficient_permissions</code></td>
+<td style="text-align: right;">403</td>
+<td>Required permissions are missing.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="rfc-6750-header-output">RFC 6750 Header Output<a class="headerlink" href="#rfc-6750-header-output" title="Permanent link">&para;</a></h2>
+<p>Use <code>AuthError.www_authenticate_header()</code> to generate standards-compliant bearer challenge headers.</p>
 <ul>
-<li><a href="https://pyjwt.readthedocs.io/en/stable/">https://pyjwt.readthedocs.io/en/stable/</a></li>
+<li>For <code>401</code>, <code>error</code> is <code>invalid_token</code>.</li>
+<li>For <code>403</code>, <code>error</code> is <code>insufficient_scope</code>.</li>
+<li>Missing scopes/permissions are included when available.</li>
 </ul>
-<h3 id="discovery-driven-verifier-packages">Discovery-driven verifier packages<a class="headerlink" href="#discovery-driven-verifier-packages" title="Permanent link">&para;</a></h3>
-<p>Use discovery-oriented packages when you prefer automatic OIDC metadata resolution (<code>.well-known/openid-configuration</code>) instead of explicit <code>jwks_url</code> setup.</p>
-<h3 id="framework-specific-auth-packages">Framework-specific auth packages<a class="headerlink" href="#framework-specific-auth-packages" title="Permanent link">&para;</a></h3>
-<p>Use framework-specific auth libraries when you want deep integration with one framework and are comfortable with tighter framework coupling.</p>
-<h3 id="general-jose-libraries">General JOSE libraries<a class="headerlink" href="#general-jose-libraries" title="Permanent link">&para;</a></h3>
-<p>Use Authlib, joserfc, or python-jose when you need broader JOSE features beyond access-token verification.</p>
-<ul>
-<li><a href="https://docs.authlib.org/en/latest/jose/jwt.html">https://docs.authlib.org/en/latest/jose/jwt.html</a></li>
-<li><a href="https://pypi.org/project/joserfc/">https://pypi.org/project/joserfc/</a></li>
-<li><a href="https://pypi.org/project/python-jose/">https://pypi.org/project/python-jose/</a></li>
-</ul>
-<h2 id="design-trade-off">Design Trade-off<a class="headerlink" href="#design-trade-off" title="Permanent link">&para;</a></h2>
-<p><code>oidc-jwt-verifier</code> favors explicit configuration and small surface area over auto-discovery and broad feature scope.
-That trade-off keeps verification behavior predictable across frameworks and runtime models.</p>
+<p>Example output:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Bearer realm=&quot;api&quot;, error=&quot;invalid_token&quot;, error_description=&quot;Token is expired&quot;
+</code></pre></div>
 
 
 
@@ -1308,7 +1349,7 @@ That trade-off keeps verification behavior predictable across frameworks and run
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../migration/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Migration">
+          <a href="../configuration/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Configuration">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1318,20 +1359,20 @@ That trade-off keeps verification behavior predictable across frameworks and run
                 Previous
               </span>
               <div class="md-ellipsis">
-                Migration
+                Configuration
               </div>
             </div>
           </a>
         
         
           
-          <a href="../architecture/adr/ADR-async-capabilities-strategy/" class="md-footer__link md-footer__link--next" aria-label="Next: ADR Async Capabilities">
+          <a href="../security/" class="md-footer__link md-footer__link--next" aria-label="Next: Security">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                ADR Async Capabilities
+                Security
               </div>
             </div>
             <div class="md-footer__button md-icon">
