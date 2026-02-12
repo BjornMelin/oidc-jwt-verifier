@@ -25,9 +25,24 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+async = [
+    "httpx>=0.28.0,<1.0.0",
+    "anyio>=4.0.0,<5.0.0",
+]
+fastapi = [
+    "fastapi>=0.110.0",
+    "httpx>=0.28.0,<1.0.0",
+    "anyio>=4.0.0,<5.0.0",
+]
+starlette = [
+    "starlette>=0.37.0",
+    "httpx>=0.28.0,<1.0.0",
+    "anyio>=4.0.0,<5.0.0",
+]
 dev = [
     "build>=1.2.2",
     "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
     "pytest-cov>=4.1.0",
     "ruff>=0.8.0",
     "mypy>=1.13.0",
@@ -37,6 +52,10 @@ docs = [
     "mkdocs-material>=9.5.0",
     "mkdocstrings[python]>=0.27.0",
     "mkdocs-autorefs>=1.2.0",
+    "httpx>=0.28.0,<1.0.0",
+    "anyio>=4.0.0,<5.0.0",
+    "fastapi>=0.110.0",
+    "starlette>=0.37.0",
 ]
 
 [project.urls]
@@ -59,6 +78,7 @@ oidc_jwt_verifier = ["py.typed"]
 testpaths = ["tests"]
 addopts = ["-q", "--strict-markers", "--strict-config"]
 filterwarnings = ["error"]
+asyncio_mode = "auto"
 
 # --- Coverage ---
 
@@ -125,7 +145,7 @@ unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*" = ["S101", "D", "PLR2004", "PT004", "PT011", "B011"]
+"tests/**/*" = ["S101", "D", "PLR2004", "PT004", "PT011", "B011", "E402", "PLC0415"]
 "scripts/**/*" = ["T20"]
 "examples/**/*" = ["T20"]
 
