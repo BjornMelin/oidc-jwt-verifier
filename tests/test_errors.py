@@ -19,11 +19,15 @@ from oidc_jwt_verifier.errors import _quote_rfc6750_value
 def test_auth_error_invalid_status_code_raises_valueerror() -> None:
     """AuthError rejects status codes other than 401 or 403."""
     with pytest.raises(ValueError, match="status_code must be 401 or 403"):
-        AuthError(code="internal_error", message="Something broke", status_code=500)
+        AuthError(
+            code="internal_error", message="Something broke", status_code=500
+        )
 
 
 @pytest.mark.parametrize("invalid_status", [200, 400, 404, 500, 502])
-def test_auth_error_rejects_various_invalid_status_codes(invalid_status: int) -> None:
+def test_auth_error_rejects_various_invalid_status_codes(
+    invalid_status: int,
+) -> None:
     """AuthError rejects various non-401/403 status codes."""
     with pytest.raises(ValueError, match="status_code must be 401 or 403"):
         AuthError(code="test", message="test", status_code=invalid_status)
@@ -32,7 +36,9 @@ def test_auth_error_rejects_various_invalid_status_codes(invalid_status: int) ->
 @pytest.mark.parametrize("valid_status", [401, 403])
 def test_auth_error_accepts_valid_status_codes(valid_status: int) -> None:
     """AuthError accepts 401 and 403 status codes."""
-    error = AuthError(code="test", message="test message", status_code=valid_status)
+    error = AuthError(
+        code="test", message="test message", status_code=valid_status
+    )
     assert error.status_code == valid_status
     assert error.code == "test"
     assert error.message == "test message"
@@ -53,7 +59,9 @@ def test_auth_error_required_scopes_stored_as_tuple() -> None:
 
 def test_auth_error_empty_required_scopes_default() -> None:
     """AuthError defaults required_scopes to empty tuple."""
-    error = AuthError(code="invalid_token", message="Bad token", status_code=401)
+    error = AuthError(
+        code="invalid_token", message="Bad token", status_code=401
+    )
     assert error.required_scopes == ()
 
 
@@ -71,7 +79,9 @@ def test_auth_error_required_permissions_stored_as_tuple() -> None:
 
 def test_auth_error_empty_required_permissions_default() -> None:
     """AuthError defaults required_permissions to empty tuple."""
-    error = AuthError(code="invalid_token", message="Bad token", status_code=401)
+    error = AuthError(
+        code="invalid_token", message="Bad token", status_code=401
+    )
     assert error.required_permissions == ()
 
 
@@ -82,7 +92,9 @@ def test_auth_error_empty_required_permissions_default() -> None:
 
 def test_www_authenticate_header_401_format() -> None:
     """401 errors produce 'invalid_token' in WWW-Authenticate header."""
-    error = AuthError(code="token_expired", message="Token is expired", status_code=401)
+    error = AuthError(
+        code="token_expired", message="Token is expired", status_code=401
+    )
     header = error.www_authenticate_header()
 
     assert header.startswith("Bearer ")
@@ -93,7 +105,9 @@ def test_www_authenticate_header_401_format() -> None:
 
 def test_www_authenticate_header_with_realm() -> None:
     """Realm parameter appears first in WWW-Authenticate header."""
-    error = AuthError(code="invalid_token", message="Bad token", status_code=401)
+    error = AuthError(
+        code="invalid_token", message="Bad token", status_code=401
+    )
     header = error.www_authenticate_header(realm="my-api")
 
     # realm should come first after "Bearer "
@@ -239,7 +253,9 @@ def test_www_authenticate_header_escapes_special_chars_in_message() -> None:
 
 def test_www_authenticate_header_escapes_realm() -> None:
     """Special characters in realm are properly escaped."""
-    error = AuthError(code="invalid_token", message="Bad token", status_code=401)
+    error = AuthError(
+        code="invalid_token", message="Bad token", status_code=401
+    )
     header = error.www_authenticate_header(realm='my "realm"')
 
     assert 'realm="my \\"realm\\""' in header

@@ -11,7 +11,10 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 
 from oidc_jwt_verifier import AuthConfig, AuthError, JWTVerifier
 from oidc_jwt_verifier.jwks import JWKSClient
-from oidc_jwt_verifier.verifier import _parse_permissions_claim, _parse_scope_claim
+from oidc_jwt_verifier.verifier import (
+    _parse_permissions_claim,
+    _parse_scope_claim,
+)
 from tests.conftest import jwks_server
 
 
@@ -19,15 +22,27 @@ def _b64url(data: bytes) -> str:
     return base64.urlsafe_b64encode(data).decode("ascii").rstrip("=")
 
 
-def _rsa_public_key_to_jwk(public_key: rsa.RSAPublicKey, *, kid: str) -> dict[str, str]:
+def _rsa_public_key_to_jwk(
+    public_key: rsa.RSAPublicKey, *, kid: str
+) -> dict[str, str]:
     numbers = public_key.public_numbers()
     n = numbers.n.to_bytes((numbers.n.bit_length() + 7) // 8, "big")
     e = numbers.e.to_bytes((numbers.e.bit_length() + 7) // 8, "big")
-    return {"kty": "RSA", "use": "sig", "kid": kid, "n": _b64url(n), "e": _b64url(e)}
+    return {
+        "kty": "RSA",
+        "use": "sig",
+        "kid": kid,
+        "n": _b64url(n),
+        "e": _b64url(e),
+    }
 
 
-def _make_rsa_keypair(*, key_size: int = 2048) -> tuple[bytes, rsa.RSAPublicKey]:
-    private_key = rsa.generate_private_key(public_exponent=65537, key_size=key_size)
+def _make_rsa_keypair(
+    *, key_size: int = 2048
+) -> tuple[bytes, rsa.RSAPublicKey]:
+    private_key = rsa.generate_private_key(
+        public_exponent=65537, key_size=key_size
+    )
     private_pem = private_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.PKCS8,
@@ -243,13 +258,17 @@ def test_expired_and_nbf_rejected() -> None:
             )
         )
 
-        expired_token = _encode_rs256(expired_payload, private_pem=private_pem, kid=kid)
+        expired_token = _encode_rs256(
+            expired_payload, private_pem=private_pem, kid=kid
+        )
         with pytest.raises(AuthError) as excinfo:
             verifier.verify_access_token(expired_token)
         assert excinfo.value.code == "token_expired"
         assert excinfo.value.status_code == 401
 
-        nbf_token = _encode_rs256(future_nbf_payload, private_pem=private_pem, kid=kid)
+        nbf_token = _encode_rs256(
+            future_nbf_payload, private_pem=private_pem, kid=kid
+        )
         with pytest.raises(AuthError) as excinfo:
             verifier.verify_access_token(nbf_token)
         assert excinfo.value.code == "token_not_yet_valid"
@@ -264,7 +283,11 @@ def test_disallowed_alg_rejected_without_jwks_fetch() -> None:
         {
             "iss": issuer,
             "aud": "https://api.example",
-            "exp": int((datetime.now(tz=timezone.utc) + timedelta(seconds=60)).timestamp()),
+            "exp": int(
+                (
+                    datetime.now(tz=timezone.utc) + timedelta(seconds=60)
+                ).timestamp()
+            ),
         },
         # PyJWT 2.11+ warns on short HMAC keys (<32 bytes for HS256).
         "this-is-a-test-secret-key-at-least-32-bytes",
@@ -331,7 +354,11 @@ def test_jwks_fetch_failure_fails_closed() -> None:
     # with RS256 + kid to exercise JWKS fetch failure.
     token = ".".join(
         [
-            _b64url(json.dumps({"alg": "RS256", "kid": "kid-1", "typ": "JWT"}).encode("utf-8")),
+            _b64url(
+                json.dumps(
+                    {"alg": "RS256", "kid": "kid-1", "typ": "JWT"}
+                ).encode("utf-8")
+            ),
             _b64url(
                 json.dumps(
                     {
@@ -399,7 +426,9 @@ def test_missing_kid_rejected() -> None:
         {"crit": ["exp"]},
     ],
 )
-def test_forbidden_headers_rejected_before_jwks_fetch(extra_header: dict[str, Any]) -> None:
+def test_forbidden_headers_rejected_before_jwks_fetch(
+    extra_header: dict[str, Any],
+) -> None:
     private_pem, public_key = _make_rsa_keypair()
     kid = "test-key-1"
     jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
@@ -423,7 +452,9 @@ def test_forbidden_headers_rejected_before_jwks_fetch(extra_header: dict[str, An
             )
         )
         headers = {"kid": kid, **extra_header}
-        token = jwt.encode(payload, private_pem, algorithm="RS256", headers=headers)
+        token = jwt.encode(
+            payload, private_pem, algorithm="RS256", headers=headers
+        )
 
         with pytest.raises(AuthError) as excinfo:
             verifier.verify_access_token(token)
@@ -564,7 +595,9 @@ def test_key_not_found_fails_closed() -> None:
 
 
 @pytest.mark.parametrize("empty_token", ["", "   ", "\t\n", "  \n  "])
-def test_empty_or_whitespace_token_raises_missing_token(empty_token: str) -> None:
+def test_empty_or_whitespace_token_raises_missing_token(
+    empty_token: str,
+) -> None:
     """Empty or whitespace-only tokens produce missing_token error."""
     verifier = JWTVerifier(
         AuthConfig(
@@ -724,7 +757,10 @@ def test_insufficient_permissions_returns_403() -> None:
                 jwks_url=local.url,
                 jwks_timeout_s=1,
                 required_scopes=("read:users",),  # Satisfied
-                required_permissions=("read:users", "write:users"),  # NOT satisfied
+                required_permissions=(
+                    "read:users",
+                    "write:users",
+                ),  # NOT satisfied
             )
         )
         token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
@@ -864,7 +900,10 @@ def test_token_array_aud_no_match_rejected() -> None:
     now = datetime.now(tz=timezone.utc)
     payload = {
         "iss": issuer,
-        "aud": ["https://api-1.example", "https://api-2.example"],  # Neither matches
+        "aud": [
+            "https://api-1.example",
+            "https://api-2.example",
+        ],  # Neither matches
         "exp": int((now + timedelta(seconds=60)).timestamp()),
     }
 
@@ -872,7 +911,10 @@ def test_token_array_aud_no_match_rejected() -> None:
         verifier = JWTVerifier(
             AuthConfig(
                 issuer=issuer,
-                audience=("https://api-3.example", "https://api-4.example"),  # No overlap
+                audience=(
+                    "https://api-3.example",
+                    "https://api-4.example",
+                ),  # No overlap
                 jwks_url=local.url,
                 jwks_timeout_s=1,
             )
@@ -894,14 +936,22 @@ def test_token_array_aud_no_match_rejected() -> None:
 @pytest.mark.parametrize(
     ("scope_value", "expected"),
     [
-        ("read:users write:users", {"read:users", "write:users"}),  # space-delimited
+        (
+            "read:users write:users",
+            {"read:users", "write:users"},
+        ),  # space-delimited
         (["read:users", "write:users"], {"read:users", "write:users"}),  # array
         (None, set()),  # null
         (12345, set()),  # wrong type
-        (["read:users", "", "write:users"], {"read:users", "write:users"}),  # empty in array
+        (
+            ["read:users", "", "write:users"],
+            {"read:users", "write:users"},
+        ),  # empty in array
     ],
 )
-def test_parse_scope_claim_edge_cases(scope_value: Any, expected: set[str]) -> None:
+def test_parse_scope_claim_edge_cases(
+    scope_value: Any, expected: set[str]
+) -> None:
     """Scope claim parsing handles various input formats."""
     assert _parse_scope_claim(scope_value) == expected
 
@@ -916,6 +966,8 @@ def test_parse_scope_claim_edge_cases(scope_value: Any, expected: set[str]) -> N
         (["admin", "", "editor"], {"admin", "editor"}),  # empty in array
     ],
 )
-def test_parse_permissions_claim_edge_cases(perms_value: Any, expected: set[str]) -> None:
+def test_parse_permissions_claim_edge_cases(
+    perms_value: Any, expected: set[str]
+) -> None:
     """Permissions claim parsing handles various input formats."""
     assert _parse_permissions_claim(perms_value) == expected

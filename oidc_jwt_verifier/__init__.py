@@ -9,8 +9,11 @@ token parsing, JWKS fetching, signature verification, or claim validation
 results in rejection. The JWKS URL is never derived from token headers.
 
 Modules:
+    async_jwks: Async JWKS client with caching.
+    async_verifier: Async JWT verification logic.
     config: Configuration dataclass for verifier settings.
     errors: Exception type with RFC 6750 Bearer challenge support.
+    integrations: FastAPI and Starlette integration helpers.
     jwks: JWKS client wrapper with caching.
     verifier: Core JWT verification logic.
 
@@ -19,6 +22,8 @@ Public API:
         and authorization requirements.
     AuthError: Exception raised on authentication or authorization failure,
         with stable error codes and HTTP status codes.
+    AsyncJWKSClient: Asynchronous JWKS client (optional dependency).
+    AsyncJWTVerifier: Asynchronous verifier (optional dependency).
     JWTVerifier: Stateful verifier instance that validates JWTs against
         the configured OIDC provider.
 
@@ -50,3 +55,14 @@ from .verifier import JWTVerifier
 
 
 __all__ = ["AuthConfig", "AuthError", "JWTVerifier"]
+
+try:
+    from .async_jwks import AsyncJWKSClient
+    from .async_verifier import AsyncJWTVerifier
+except ModuleNotFoundError as exc:
+    # Keep base install sync-only when async extras are not installed.
+    if exc.name not in {"httpx"}:
+        raise
+else:
+    async_exports = (AsyncJWKSClient, AsyncJWTVerifier)
+    __all__.extend([export.__name__ for export in async_exports])

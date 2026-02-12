@@ -42,7 +42,7 @@ jobs:
             **/uv.lock
 
       - name: Install dependencies
-        run: uv pip install --system -e ".[dev]"
+        run: uv pip install --system -e ".[dev,async,fastapi,starlette]"
 
       - name: Check formatting
         run: uv run ruff format . --check
@@ -88,7 +88,7 @@ jobs:
           cache-suffix: py${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: uv pip install --system -e ".[dev]"
+        run: uv pip install --system -e ".[dev,async,fastapi,starlette]"
 
       - name: Run tests with coverage
         run: uv run pytest --cov=oidc_jwt_verifier --cov-report=xml --cov-fail-under=80

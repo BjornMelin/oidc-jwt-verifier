@@ -117,7 +117,10 @@ class AuthConfig:
 
         >>> config = AuthConfig(
         ...     issuer="https://example.auth0.com/",
-        ...     audience=["https://api.example.com", "https://api2.example.com"],
+        ...     audience=[
+        ...         "https://api.example.com",
+        ...         "https://api2.example.com",
+        ...     ],
         ...     jwks_url="https://example.auth0.com/.well-known/jwks.json",
         ...     allowed_algs=["RS256", "RS384"],
         ...     required_scopes=["read:users", "write:users"],
@@ -176,12 +179,16 @@ class AuthConfig:
             raise ValueError("jwks_url must be non-empty")
         object.__setattr__(self, "jwks_url", jwks_url)
 
-        audiences = tuple(a.strip() for a in _normalize_str_sequence(self.audience))
+        audiences = tuple(
+            a.strip() for a in _normalize_str_sequence(self.audience)
+        )
         if not audiences or any(not a for a in audiences):
             raise ValueError("audience must be non-empty")
         object.__setattr__(self, "audience", audiences)
 
-        allowed_algs = tuple(a.strip() for a in _normalize_str_sequence(self.allowed_algs))
+        allowed_algs = tuple(
+            a.strip() for a in _normalize_str_sequence(self.allowed_algs)
+        )
         if not allowed_algs or any(not a for a in allowed_algs):
             raise ValueError("allowed_algs must be non-empty")
         if any(a.lower() == "none" for a in allowed_algs):
@@ -201,12 +208,17 @@ class AuthConfig:
         object.__setattr__(
             self,
             "required_scopes",
-            tuple(s.strip() for s in _normalize_str_sequence(self.required_scopes)),
+            tuple(
+                s.strip() for s in _normalize_str_sequence(self.required_scopes)
+            ),
         )
         object.__setattr__(
             self,
             "required_permissions",
-            tuple(p.strip() for p in _normalize_str_sequence(self.required_permissions)),
+            tuple(
+                p.strip()
+                for p in _normalize_str_sequence(self.required_permissions)
+            ),
         )
 
         scope_claim = self.scope_claim.strip()

@@ -12,8 +12,15 @@ any stage results in rejection via ``AuthError``.
 from typing import Any
 
 import jwt
-from jwt.types import Options
 
+from ._policy import (
+    decode_and_validate_payload,
+    enforce_authorization_claims,
+    map_decode_error,
+    parse_and_validate_header,
+    parse_permissions_claim,
+    parse_scope_claim,
+)
 from .config import AuthConfig
 from .errors import AuthError
 from .jwks import JWKSClient
@@ -44,13 +51,7 @@ def _parse_scope_claim(value: Any) -> set[str]:
         >>> _parse_scope_claim(12345)
         set()
     """
-    if value is None:
-        return set()
-    if isinstance(value, str):
-        return {s for s in value.split() if s}
-    if isinstance(value, list):
-        return {s for s in (str(item) for item in value if item is not None) if s}
-    return set()
+    return parse_scope_claim(value)
 
 
 def _parse_permissions_claim(value: Any) -> set[str]:
@@ -79,13 +80,7 @@ def _parse_permissions_claim(value: Any) -> set[str]:
         >>> _parse_permissions_claim({"nested": "object"})
         set()
     """
-    if value is None:
-        return set()
-    if isinstance(value, list):
-        return {p for p in (str(item) for item in value if item is not None) if p}
-    if isinstance(value, str):
-        return {p for p in value.split() if p}
-    return set()
+    return parse_permissions_claim(value)
 
 
 def _map_decode_error(exc: Exception) -> AuthError:
@@ -121,33 +116,7 @@ def _map_decode_error(exc: Exception) -> AuthError:
         >>> error.status_code
         401
     """
-    if isinstance(exc, jwt.ExpiredSignatureError):
-        return AuthError(code="token_expired", message="Token is expired", status_code=401)
-    if isinstance(exc, jwt.ImmatureSignatureError):
-        return AuthError(
-            code="token_not_yet_valid",
-            message="Token is not valid yet",
-            status_code=401,
-        )
-    if isinstance(exc, jwt.InvalidIssuerError):
-        return AuthError(code="invalid_issuer", message="Invalid issuer", status_code=401)
-    if isinstance(exc, jwt.InvalidAudienceError):
-        return AuthError(code="invalid_audience", message="Invalid audience", status_code=401)
-    if isinstance(exc, jwt.MissingRequiredClaimError):
-        return AuthError(code="missing_claim", message=str(exc), status_code=401)
-    if isinstance(exc, jwt.InvalidKeyError):
-        return AuthError(code="invalid_token", message="Invalid token", status_code=401)
-    if isinstance(exc, jwt.InvalidAlgorithmError):
-        return AuthError(
-            code="disallowed_alg",
-            message="Disallowed signing algorithm",
-            status_code=401,
-        )
-    if isinstance(exc, jwt.DecodeError):
-        return AuthError(code="malformed_token", message="Malformed token", status_code=401)
-    if isinstance(exc, jwt.InvalidTokenError):
-        return AuthError(code="invalid_token", message="Invalid token", status_code=401)
-    return AuthError(code="invalid_token", message="Invalid token", status_code=401)
+    return map_decode_error(exc)
 
 
 class JWTVerifier:
@@ -208,7 +177,9 @@ class JWTVerifier:
         ... )
         >>> verifier = JWTVerifier(config)  # doctest: +SKIP
         >>> # Token without required scopes raises AuthError with 403
-        >>> claims = verifier.verify_access_token(token_without_scopes)  # doctest: +SKIP
+        >>> claims = verifier.verify_access_token(
+        ...     token_without_scopes
+        ... )  # doctest: +SKIP
         Traceback (most recent call last):
             ...
         AuthError: Insufficient scope
@@ -237,7 +208,9 @@ class JWTVerifier:
         self._config = config
         self._jwks = JWKSClient.from_config(config)
         self._decoder = jwt.PyJWT(
-            options={"enforce_minimum_key_length": config.enforce_minimum_key_length}
+            options={
+                "enforce_minimum_key_length": config.enforce_minimum_key_length
+            }
         )
 
     def verify_access_token(self, token: str) -> dict[str, Any]:
@@ -296,7 +269,9 @@ class JWTVerifier:
         Examples:
             Successful verification:
 
-            >>> claims = verifier.verify_access_token(valid_token)  # doctest: +SKIP
+            >>> claims = verifier.verify_access_token(
+            ...     valid_token
+            ... )  # doctest: +SKIP
             >>> claims["sub"]  # doctest: +SKIP
             'auth0|123456789'
             >>> claims["aud"]  # doctest: +SKIP
@@ -318,114 +293,23 @@ class JWTVerifier:
         """
         token = token.strip()
         if not token:
-            raise AuthError(code="missing_token", message="Missing access token", status_code=401)
-
-        # Parse the header without verifying the signature.
-        try:
-            header = jwt.get_unverified_header(token)
-        except jwt.exceptions.DecodeError as exc:
             raise AuthError(
-                code="malformed_token",
-                message="Malformed token",
-                status_code=401,
-            ) from exc
-
-        # Reject dangerous header parameters that could be used for attacks.
-        # - jku: URL to fetch keys from (could point to attacker-controlled server)
-        # - x5u: URL to fetch X.509 certificate (same risk as jku)
-        # - crit: Critical headers that must be understood (complexity attack vector)
-        if "jku" in header or "x5u" in header or "crit" in header:
-            raise AuthError(
-                code="forbidden_header",
-                message="Forbidden token header parameter",
+                code="missing_token",
+                message="Missing access token",
                 status_code=401,
             )
 
-        # Validate the algorithm header.
-        alg = header.get("alg")
-        if not isinstance(alg, str) or not alg:
-            raise AuthError(code="malformed_token", message="Missing alg header", status_code=401)
-        if alg.lower() == "none":
-            raise AuthError(
-                code="disallowed_alg",
-                message="Disallowed signing algorithm",
-                status_code=401,
-            )
-        if alg not in self._config.allowed_algorithms:
-            raise AuthError(
-                code="disallowed_alg",
-                message="Disallowed signing algorithm",
-                status_code=401,
-            )
-
-        # Require kid header for JWKS key lookup.
-        kid = header.get("kid")
-        if not isinstance(kid, str) or not kid:
-            raise AuthError(code="missing_kid", message="Missing kid header", status_code=401)
-
-        # Fetch the signing key from the JWKS.
+        _, alg = parse_and_validate_header(
+            token, allowed_algorithms=self._config.allowed_algorithms
+        )
         signing_key = self._jwks.get_signing_key_from_jwt(token)
 
-        # Configure PyJWT verification options.
-        options: Options = {
-            "require": ["exp", "iss", "aud"],
-            "verify_signature": True,
-            "verify_exp": True,
-            "verify_nbf": True,
-            "verify_aud": True,
-            "verify_iss": True,
-            "strict_aud": False,  # Allow aud to be array (Auth0 style)
-        }
-
-        # Try each configured audience until one matches.
-        # This handles tokens with array aud claims.
-        payload: dict[str, Any] | None = None
-        last_exc: Exception | None = None
-        for audience in self._config.audiences:
-            try:
-                payload = self._decoder.decode(
-                    token,
-                    signing_key,
-                    algorithms=[alg],
-                    audience=audience,
-                    issuer=self._config.issuer,
-                    leeway=self._config.leeway_s,
-                    options=options,
-                )
-                break
-            except jwt.InvalidAudienceError as exc:
-                last_exc = exc
-                continue
-            except jwt.PyJWTError as exc:
-                raise _map_decode_error(exc) from exc
-
-        if payload is None:
-            raise _map_decode_error(last_exc or jwt.InvalidAudienceError("invalid audience"))
-
-        # Enforce required scopes (403 on failure).
-        required_scopes = self._config.required_scope_set
-        required_permissions = self._config.required_permission_set
-
-        token_scopes = _parse_scope_claim(payload.get(self._config.scope_claim))
-        token_permissions = _parse_permissions_claim(payload.get(self._config.permissions_claim))
-
-        missing_scopes = required_scopes - token_scopes
-        if missing_scopes:
-            raise AuthError(
-                code="insufficient_scope",
-                message="Insufficient scope",
-                status_code=403,
-                required_scopes=tuple(sorted(missing_scopes)),
-            )
-
-        # Enforce required permissions (403 on failure).
-        missing_permissions = required_permissions - token_permissions
-        if missing_permissions:
-            raise AuthError(
-                code="insufficient_permissions",
-                message="Insufficient permissions",
-                status_code=403,
-                required_permissions=tuple(sorted(missing_permissions)),
-            )
-
+        payload = decode_and_validate_payload(
+            decoder=self._decoder,
+            token=token,
+            signing_key=signing_key,
+            algorithm=alg,
+            config=self._config,
+        )
+        enforce_authorization_claims(payload, config=self._config)
         return payload

@@ -25,10 +25,29 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+async = [
+    "httpx>=0.28.0,<1.0.0",
+    "anyio>=4.0.0,<5.0.0",
+]
+fastapi = [
+    "fastapi>=0.110.0",
+    "httpx>=0.28.0,<1.0.0",
+    "anyio>=4.0.0,<5.0.0",
+]
+starlette = [
+    "starlette>=0.37.0",
+    "httpx>=0.28.0,<1.0.0",
+    "anyio>=4.0.0,<5.0.0",
+]
 dev = [
     "build>=1.2.2",
     "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
     "pytest-cov>=4.1.0",
+    "httpx>=0.28.0,<1.0.0",
+    "anyio>=4.0.0,<5.0.0",
+    "fastapi>=0.110.0",
+    "starlette>=0.37.0",
     "ruff>=0.8.0",
     "mypy>=1.13.0",
     "bandit[toml]>=1.7.0",
@@ -37,6 +56,10 @@ docs = [
     "mkdocs-material>=9.5.0",
     "mkdocstrings[python]>=0.27.0",
     "mkdocs-autorefs>=1.2.0",
+    "httpx>=0.28.0,<1.0.0",
+    "anyio>=4.0.0,<5.0.0",
+    "fastapi>=0.110.0",
+    "starlette>=0.37.0",
 ]
 
 [project.urls]
@@ -59,6 +82,7 @@ oidc_jwt_verifier = ["py.typed"]
 testpaths = ["tests"]
 addopts = ["-q", "--strict-markers", "--strict-config"]
 filterwarnings = ["error"]
+asyncio_mode = "auto"
 
 # --- Coverage ---
 
@@ -81,7 +105,7 @@ show_missing = true
 
 [tool.ruff]
 target-version = "py310"
-line-length = 100
+line-length = 80
 indent-width = 4
 exclude = [".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "build", "dist", "venv"]
 
@@ -126,6 +150,8 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*" = ["S101", "D", "PLR2004", "PT004", "PT011", "B011"]
+"tests/test_fastapi_integration.py" = ["PLC0415"]
+"tests/test_starlette_integration.py" = ["PLC0415"]
 "scripts/**/*" = ["T20"]
 "examples/**/*" = ["T20"]
 
@@ -165,9 +191,38 @@ warn_unreachable = true
 warn_redundant_casts = true
 show_error_codes = true
 strict_equality = true
-ignore_missing_imports = true  # third-party libs often lack stubs
+disallow_any_unimported = true
+disallow_any_generics = true
+ignore_missing_imports = false
 files = ["oidc_jwt_verifier"]
 exclude = ["^\\.venv", "^build", "^dist", "tests"]
+
+[[tool.mypy.overrides]]
+module = [
+    "jwt",
+    "jwt.algorithms",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "httpx",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "fastapi",
+    "fastapi.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "starlette",
+    "starlette.*",
+]
+ignore_missing_imports = true
 
 # --- Bandit ---
 

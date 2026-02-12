@@ -1,90 +1,50 @@
 # oidc-jwt-verifier
 
-[![PyPI version](https://img.shields.io/pypi/v/oidc-jwt-verifier)](https://pypi.org/project/oidc-jwt-verifier/)
-[![Python versions](https://img.shields.io/pypi/pyversions/oidc-jwt-verifier)](https://pypi.org/project/oidc-jwt-verifier/)
-[![Tests](https://github.com/BjornMelin/oidc-jwt-verifier/actions/workflows/ci.yml/badge.svg)](https://github.com/BjornMelin/oidc-jwt-verifier/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/BjornMelin/oidc-jwt-verifier/branch/main/graph/badge.svg)](https://codecov.io/gh/BjornMelin/oidc-jwt-verifier)
-[![Documentation](https://img.shields.io/badge/docs-live-blue)](https://oidc-jwt-verifier.bjornmelin.io/)
-[![License](https://img.shields.io/github/license/BjornMelin/oidc-jwt-verifier)](https://github.com/BjornMelin/oidc-jwt-verifier/blob/main/LICENSE)
+`oidc-jwt-verifier` is a focused JWT access-token verification library for OIDC/JWKS issuers.
 
-A small, framework-agnostic JWT verification core for OIDC/JWKS issuers.
+It provides:
 
-`oidc-jwt-verifier` is designed to be shared by higher-level adapters (Dash, Bottle, Lambda, FastAPI) while keeping security decisions centralized and consistent.
+- A stable sync verifier (`JWTVerifier`) for existing Python services.
+- A native async verifier (`AsyncJWTVerifier`) for ASGI applications.
+- First-class FastAPI and Starlette integration helpers.
+- Strict fail-closed security defaults with RFC 6750-compatible error headers.
 
-## Installation
+## What This Library Verifies
 
-```bash
-pip install oidc-jwt-verifier
-```
+For each token, the verifier enforces:
 
-For development with documentation tools:
+- Signature validation against keys from a configured JWKS URL.
+- Issuer (`iss`) and audience (`aud`) checks.
+- Time-based checks (`exp`, `nbf`).
+- Algorithm allowlist enforcement, including rejection of `alg=none`.
+- Authorization checks for required scopes and permissions.
 
-```bash
-pip install oidc-jwt-verifier[docs]
-```
+It also rejects unsafe JWT header parameters (`jku`, `x5u`, `crit`) and never derives key endpoints from token headers.
 
-## Quickstart
+## Choose Your Path
 
-```python
-from oidc_jwt_verifier import AuthConfig, JWTVerifier
+- New to the package: [Getting Started](getting-started.md)
+- Sync services: [Usage: Sync](usage/sync.md)
+- Async/ASGI services: [Usage: Async](usage/async.md)
+- Framework integration:
+  - [FastAPI](integrations/fastapi.md)
+  - [Starlette](integrations/starlette.md)
+- Operational details:
+  - [Configuration](configuration.md)
+  - [Errors](errors.md)
+  - [Security](security.md)
+  - [Migration](migration.md)
 
-config = AuthConfig(
-    issuer="https://example-issuer/",
-    audience="https://example-api",
-    jwks_url="https://example-issuer/.well-known/jwks.json",
-    allowed_algs=("RS256",),
-    required_scopes=("read:users",),
-)
+## Design Scope
 
-verifier = JWTVerifier(config)
-claims = verifier.verify_access_token(token)
-```
+In scope:
 
-## Secure-by-default behavior
+- Verification of signed JWT access tokens with explicit issuer/audience/JWKS configuration.
+- Consistent authentication/authorization error semantics.
+- Sync and async verification paths with shared policy behavior.
 
-The verifier:
+Out of scope:
 
-- Verifies signature, `iss`, `aud`, `exp`, and `nbf` (when present).
-- Uses an explicit algorithm allowlist and rejects `alg=none`.
-- Enforces minimum cryptographic key lengths by default (configurable via `enforce_minimum_key_length`).
-- Fails closed on malformed tokens, JWKS fetch errors, timeouts, missing keys, and missing `kid`.
-- Never derives a JWKS URL from token headers, and rejects tokens that include `jku`, `x5u`, or `crit`.
-- Supports Auth0-style multi-audience tokens (`aud` as an array) and enforces required scopes and permissions.
-
-Auth0 guidance for API token validation calls out validating the JWT and then checking `aud` and scopes in the `scope` claim. See the [Auth0 docs](https://auth0.com/docs/secure/tokens/access-tokens/validate-access-tokens) for details.
-
-## Why this library
-
-This project focuses on making *server-side* access token verification reproducible across multiple
-apps and frameworks by centralizing conservative verification and authorization policy.
-
-If you’re deciding between this library and other JWT/OIDC tooling, see [Alternatives and
-rationale](alternatives.md).
-
-## Error handling
-
-The public exception type is [`AuthError`][oidc_jwt_verifier.AuthError].
-
-`AuthError` carries:
-
-- `code`: stable, machine-readable reason
-- `status_code`: `401` (authentication) or `403` (authorization)
-- `www_authenticate_header()`: an RFC 6750 compatible `WWW-Authenticate` value for Bearer auth
-
-```python
-from oidc_jwt_verifier import AuthError
-
-try:
-    claims = verifier.verify_access_token(token)
-except AuthError as err:
-    status = err.status_code
-    www_authenticate = err.www_authenticate_header()
-```
-
-## References
-
-- [Auth0: Validate Access Tokens](https://auth0.com/docs/secure/tokens/access-tokens/validate-access-tokens)
-- [Auth0: Validate JSON Web Tokens](https://auth0.com/docs/secure/tokens/json-web-tokens/validate-json-web-tokens)
-- [RFC 8725: JSON Web Token Best Current Practices](https://datatracker.ietf.org/doc/html/rfc8725)
-- [RFC 9700: Best Current Practice for OAuth 2.0 Security](https://www.rfc-editor.org/info/rfc9700)
-- [PyJWT docs and examples](https://pyjwt.readthedocs.io/en/stable/usage.html)
+- OAuth/OIDC client flows.
+- OIDC discovery and automatic endpoint derivation.
+- Session management.

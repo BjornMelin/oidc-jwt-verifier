@@ -122,7 +122,9 @@ class JWKSClient:
 
             Key not found in JWKS:
 
-            >>> client.get_signing_key_from_jwt(token_with_unknown_kid)  # doctest: +SKIP
+            >>> client.get_signing_key_from_jwt(
+            ...     token_with_unknown_kid
+            ... )  # doctest: +SKIP
             Traceback (most recent call last):
                 ...
             AuthError: No matching signing key

@@ -1,21 +1,33 @@
 # oidc-jwt-verifier
 
-[![PyPI version](https://img.shields.io/pypi/v/oidc-jwt-verifier)](https://pypi.org/project/oidc-jwt-verifier/)
-[![Python versions](https://img.shields.io/pypi/pyversions/oidc-jwt-verifier)](https://pypi.org/project/oidc-jwt-verifier/)
-[![Tests](https://github.com/BjornMelin/oidc-jwt-verifier/actions/workflows/ci.yml/badge.svg)](https://github.com/BjornMelin/oidc-jwt-verifier/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/BjornMelin/oidc-jwt-verifier/branch/main/graph/badge.svg)](https://codecov.io/gh/BjornMelin/oidc-jwt-verifier)
-[![Documentation](https://img.shields.io/badge/docs-live-blue)](https://oidc-jwt-verifier.bjornmelin.io/)
-[![License](https://img.shields.io/github/license/BjornMelin/oidc-jwt-verifier)](https://github.com/BjornMelin/oidc-jwt-verifier/blob/main/LICENSE)
+[![Release](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FBjornMelin%2Foidc-jwt-verifier%2Fmain%2F.release-please-manifest.json&query=%24%5B%22.%22%5D&label=release&style=flat-square&cacheSeconds=60)](https://github.com/BjornMelin/oidc-jwt-verifier/releases)
+[![PyPI](https://img.shields.io/pypi/v/oidc-jwt-verifier?label=pypi&style=flat-square)](https://pypi.org/project/oidc-jwt-verifier/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/oidc-jwt-verifier?style=flat-square)](https://pypi.org/project/oidc-jwt-verifier/)
+[![Tests](https://img.shields.io/github/actions/workflow/status/BjornMelin/oidc-jwt-verifier/ci.yml?branch=main&label=tests&style=flat-square)](https://github.com/BjornMelin/oidc-jwt-verifier/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/codecov/c/github/BjornMelin/oidc-jwt-verifier?branch=main&style=flat-square)](https://codecov.io/gh/BjornMelin/oidc-jwt-verifier)
+[![Docs](https://img.shields.io/badge/docs-live-blue?style=flat-square)](https://oidc-jwt-verifier.bjornmelin.io/)
+[![License](https://img.shields.io/github/license/BjornMelin/oidc-jwt-verifier?style=flat-square)](https://github.com/BjornMelin/oidc-jwt-verifier/blob/main/LICENSE)
 
 `oidc-jwt-verifier` is a small, framework-agnostic JWT verification core for OIDC/JWKS issuers.
 
-It is designed to be shared by higher-level adapters (Dash, Bottle, Lambda, FastAPI) while keeping
-security decisions centralized and consistent.
+It provides:
+
+- A hardened sync verifier (`JWTVerifier`)
+- A native async verifier (`AsyncJWTVerifier`)
+- First-party FastAPI and Starlette integration helpers
 
 ## Install
 
 ```bash
 pip install oidc-jwt-verifier
+```
+
+For async/FastAPI/Starlette support:
+
+```bash
+pip install "oidc-jwt-verifier[async]"
+pip install "oidc-jwt-verifier[fastapi]"
+pip install "oidc-jwt-verifier[starlette]"
 ```
 
 For development:
@@ -39,6 +51,65 @@ config = AuthConfig(
 
 verifier = JWTVerifier(config)
 claims = verifier.verify_access_token(token)
+```
+
+## Async quickstart
+
+```python
+from oidc_jwt_verifier import AuthConfig
+from oidc_jwt_verifier.async_verifier import AsyncJWTVerifier
+
+config = AuthConfig(
+    issuer="https://example-issuer/",
+    audience="https://example-api",
+    jwks_url="https://example-issuer/.well-known/jwks.json",
+    allowed_algs=("RS256",),
+)
+
+async def verify(token: str) -> dict[str, object]:
+    async with AsyncJWTVerifier(config) as verifier:
+        return await verifier.verify_access_token(token)
+```
+
+## FastAPI integration
+
+```python
+from fastapi import Depends, FastAPI
+from oidc_jwt_verifier import AuthConfig
+from oidc_jwt_verifier.async_verifier import AsyncJWTVerifier
+from oidc_jwt_verifier.integrations.fastapi import create_async_bearer_dependency
+
+app = FastAPI()
+verifier = AsyncJWTVerifier(
+    AuthConfig(
+        issuer="https://example-issuer/",
+        audience="https://example-api",
+        jwks_url="https://example-issuer/.well-known/jwks.json",
+    )
+)
+auth = create_async_bearer_dependency(verifier, realm="api")
+
+@app.get("/protected")
+async def protected(claims: dict = Depends(auth)):
+    return {"sub": claims.get("sub")}
+```
+
+## Starlette integration
+
+```python
+from starlette.applications import Starlette
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+from starlette.routing import Route
+
+from oidc_jwt_verifier.integrations.starlette import BearerAuthMiddleware
+
+async def protected(request: Request) -> JSONResponse:
+    claims = request.state.auth_claims
+    return JSONResponse({"sub": claims.get("sub")})
+
+app = Starlette(routes=[Route("/protected", protected)])
+app.add_middleware(BearerAuthMiddleware, verifier=verifier, realm="api")
 ```
 
 ## Secure-by-default behavior
@@ -86,21 +157,22 @@ conservative verification policy (claims, algorithms, header handling) and autho
 For comparisons against common alternatives (PyJWT directly, discovery-driven verifiers, framework
 integrations), see `docs/alternatives.md`.
 
+## Documentation
+
+Primary docs are built with MkDocs in `docs/`.
+
+- Getting started: `docs/getting-started.md`
+- Sync usage: `docs/usage/sync.md`
+- Async usage: `docs/usage/async.md`
+- FastAPI integration: `docs/integrations/fastapi.md`
+- Starlette integration: `docs/integrations/starlette.md`
+- Configuration and security: `docs/configuration.md`, `docs/security.md`
+- API reference: `docs/reference.md`
+
 ## Contributing
 
-We use [Conventional Commits](https://www.conventionalcommits.org/) to automate releases via release-please.
-
-**Commit prefixes:**
-- `feat:` - New feature (bumps PATCH pre-v1.0)
-- `feat!:` - Breaking change (bumps MINOR pre-v1.0)
-- `fix:` - Bug fix (bumps PATCH)
-- `docs:` - Documentation only
-- `chore:` - Maintenance tasks
-- `refactor:` - Code refactoring
-- `test:` - Test changes
-- `perf:` - Performance improvements
-
-PRs without conventional commit prefixes will not trigger releases.
+Use [Conventional Commits](https://www.conventionalcommits.org/).  
+Release-specific commit guidance for maintainers is documented in `AGENTS.md`.
 
 ## References
 
