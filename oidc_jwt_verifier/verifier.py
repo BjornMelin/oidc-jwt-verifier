@@ -12,6 +12,7 @@ any stage results in rejection via ``AuthError``.
 from typing import Any
 
 import jwt
+from jwt.types import Options
 
 from .config import AuthConfig
 from .errors import AuthError
@@ -359,7 +360,7 @@ class JWTVerifier:
         signing_key = self._jwks.get_signing_key_from_jwt(token)
 
         # Configure PyJWT verification options.
-        options = {
+        options: Options = {
             "require": ["exp", "iss", "aud"],
             "verify_signature": True,
             "verify_exp": True,

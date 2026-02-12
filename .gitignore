@@ -13,3 +13,6 @@ dist/
 
 # Documentation
 site/
+
+# opensrc - source code for packages
+opensrc/

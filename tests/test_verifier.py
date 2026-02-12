@@ -233,7 +233,8 @@ def test_disallowed_alg_rejected_without_jwks_fetch() -> None:
             "aud": "https://api.example",
             "exp": int((datetime.now(tz=timezone.utc) + timedelta(seconds=60)).timestamp()),
         },
-        "secret",
+        # PyJWT 2.11+ warns on short HMAC keys (<32 bytes for HS256).
+        "this-is-a-test-secret-key-at-least-32-bytes",
         algorithm="HS256",
     )
 
