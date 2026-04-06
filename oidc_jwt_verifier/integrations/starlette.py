@@ -3,15 +3,6 @@
 This module offers middleware and helper functions to apply verifier logic in
 Starlette applications while preserving RFC 6750 response semantics.
 
-Args:
-    None.
-
-Returns:
-    None.
-
-Raises:
-    None.
-
 Examples:
     >>> from oidc_jwt_verifier.integrations.starlette import (
     ...     BearerAuthMiddleware,
@@ -20,7 +11,7 @@ Examples:
 
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import Any
 
 from starlette.concurrency import run_in_threadpool
 from starlette.requests import Request
@@ -44,10 +35,8 @@ def auth_error_to_response(
         realm: Optional realm for ``WWW-Authenticate`` header.
 
     Returns:
-        JSON response with correct status and RFC 6750 header.
-
-    Raises:
-        None.
+        JSONResponse: JSON response with the correct status and RFC 6750
+            header.
 
     Examples:
         >>> from oidc_jwt_verifier.errors import AuthError
@@ -72,10 +61,8 @@ def extract_bearer_token(authorization_header: str | None) -> str:
         authorization_header: Raw header value.
 
     Returns:
-        Bearer token string, or empty string when missing/invalid.
-
-    Raises:
-        None.
+        str: Bearer token string, or an empty string when the header is
+            missing or invalid.
 
     Examples:
         >>> extract_bearer_token("Bearer abc.def.ghi")
@@ -103,7 +90,7 @@ async def verify_request_bearer_token(
         verifier: Sync or async verifier instance.
 
     Returns:
-        Decoded JWT claims.
+        dict[str, Any]: Decoded JWT claims.
 
     Raises:
         AuthError: On authentication/authorization failure.
@@ -114,10 +101,7 @@ async def verify_request_bearer_token(
     """
     token = extract_bearer_token(request.headers.get("Authorization"))
     if isinstance(verifier, JWTVerifier):
-        return cast(
-            "dict[str, Any]",
-            await run_in_threadpool(verifier.verify_access_token, token),
-        )
+        return await run_in_threadpool(verifier.verify_access_token, token)
     return await verifier.verify_access_token(token)
 
 
@@ -132,12 +116,6 @@ class BearerAuthMiddleware:
         realm: Optional realm for RFC 6750 header generation.
         exempt_paths: Paths to skip authentication for.
         claims_state_key: Key used in ``request.state`` for decoded claims.
-
-    Returns:
-        None.
-
-    Raises:
-        None.
 
     Examples:
         >>> from starlette.applications import Starlette
@@ -172,10 +150,7 @@ class BearerAuthMiddleware:
             send: ASGI send callable.
 
         Returns:
-            None.
-
-        Raises:
-            None. ``AuthError`` is handled and converted into an RFC 6750 response.
+            None: This middleware does not return a value directly.
 
         Examples:
             >>> # Invoked by Starlette's ASGI runtime, not called directly.

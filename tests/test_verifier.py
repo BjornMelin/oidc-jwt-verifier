@@ -10,6 +10,10 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 from oidc_jwt_verifier import AuthConfig, AuthError, JWTVerifier
+from oidc_jwt_verifier._policy import (
+    _parse_unverified_header,
+    parse_and_validate_header,
+)
 from oidc_jwt_verifier.jwks import JWKSClient
 from oidc_jwt_verifier.verifier import (
     _parse_permissions_claim,
@@ -133,6 +137,43 @@ def test_jwks_client_accepts_bytes_token() -> None:
         signing_key = client.get_signing_key_from_jwt(token.encode("ascii"))
 
         assert signing_key.key_id == kid
+
+
+def test_verify_access_token_accepts_bytes_token() -> None:
+    """JWTVerifier accepts UTF-8 bytes tokens on the public API."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+        "nbf": int((now - timedelta(seconds=1)).timestamp()),
+    }
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                allowed_algs=("RS256",),
+                jwks_timeout_s=1.0,
+                jwks_cache_ttl_s=300,
+                jwks_max_cached_keys=8,
+            )
+        )
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        claims = verifier.verify_access_token(token.encode("utf-8"))
+
+    assert claims["iss"] == issuer
+    assert local.request_count.value == 1
 
 
 def test_wrong_issuer_rejected() -> None:
@@ -518,9 +559,68 @@ def test_malformed_token_structure_rejected(token: str) -> None:
 
     with pytest.raises(AuthError) as excinfo:
         verifier.verify_access_token(token)
-
     assert excinfo.value.code == "malformed_token"
     assert excinfo.value.status_code == 401
+
+
+def test_verifier_get_signing_keys_delegates_to_jwks_client() -> None:
+    """Verifier exposes JWKS lifecycle access through its owned client."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+    }
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+            )
+        )
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        claims = verifier.verify_access_token(token)
+        cached = verifier.get_signing_keys()
+        refreshed = verifier.get_signing_keys(refresh=True)
+
+    assert claims["iss"] == issuer
+    assert [key.key_id for key in cached] == [kid]
+    assert [key.key_id for key in refreshed] == [kid]
+    assert local.request_count.value == 2
+
+
+def test_verifier_healthcheck_delegates_refresh_behavior() -> None:
+    """Verifier healthcheck exposes cached and refresh-ready JWKS checks."""
+    _, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer="https://issuer.example/",
+                audience="https://api.example",
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+            )
+        )
+
+        healthy = verifier.healthcheck()
+        refreshed = verifier.healthcheck(refresh=True)
+
+    assert healthy is True
+    assert refreshed is True
+    assert local.request_count.value == 2
 
 
 @pytest.mark.parametrize("missing_claim", ["exp", "iss", "aud"])
@@ -971,3 +1071,76 @@ def test_parse_permissions_claim_edge_cases(
 ) -> None:
     """Permissions claim parsing handles various input formats."""
     assert _parse_permissions_claim(perms_value) == expected
+
+
+def test_parse_unverified_header_invalid_base64url_raises_malformed_token() -> (
+    None
+):
+    """Invalid base64url header segment is rejected as malformed."""
+    token = "%%%.."
+
+    with pytest.raises(AuthError) as excinfo:
+        _parse_unverified_header(token)
+
+    assert excinfo.value.code == "malformed_token"
+    assert excinfo.value.status_code == 401
+
+
+def test_parse_unverified_header_accepts_bytes_token() -> None:
+    """Bytes JWT input is normalized before header parsing."""
+    header_json = json.dumps(
+        {"alg": "RS256", "kid": "kid-1"}, separators=(",", ":")
+    ).encode("utf-8")
+    token = f"{_b64url(header_json)}.payload.signature"
+
+    header = _parse_unverified_header(token.encode("utf-8"))
+
+    assert header == {"alg": "RS256", "kid": "kid-1"}
+
+
+def test_parse_and_validate_header_accepts_bytes_token() -> None:
+    """Header validation accepts UTF-8 bytes tokens."""
+    header_json = json.dumps(
+        {"alg": "RS256", "kid": "kid-1"}, separators=(",", ":")
+    ).encode("utf-8")
+    token = f"{_b64url(header_json)}.payload.signature"
+
+    header, alg = parse_and_validate_header(
+        token.encode("utf-8"), allowed_algorithms=("RS256",)
+    )
+
+    assert header == {"alg": "RS256", "kid": "kid-1"}
+    assert alg == "RS256"
+
+
+def test_parse_unverified_header_invalid_utf8_bytes_raises_malformed_token() -> (
+    None
+):
+    """Undecodable bytes input is rejected as malformed."""
+    with pytest.raises(AuthError) as excinfo:
+        _parse_unverified_header(b"\xff.payload.signature")
+
+    assert excinfo.value.code == "malformed_token"
+    assert excinfo.value.status_code == 401
+
+
+def test_parse_unverified_header_invalid_json_raises_malformed_token() -> None:
+    """Valid base64url but invalid JSON header is rejected as malformed."""
+    token = f"{_b64url(b'not-json')}.payload.signature"
+
+    with pytest.raises(AuthError) as excinfo:
+        _parse_unverified_header(token)
+
+    assert excinfo.value.code == "malformed_token"
+    assert excinfo.value.status_code == 401
+
+
+def test_parse_unverified_header_non_dict_json_raises_malformed_token() -> None:
+    """Decoded JSON headers must be objects, not arrays or scalars."""
+    token = f"{_b64url(b'[1,2,3]')}.payload.signature"
+
+    with pytest.raises(AuthError) as excinfo:
+        _parse_unverified_header(token)
+
+    assert excinfo.value.code == "malformed_token"
+    assert excinfo.value.status_code == 401

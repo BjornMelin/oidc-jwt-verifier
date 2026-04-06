@@ -12,6 +12,7 @@ any stage results in rejection via ``AuthError``.
 from typing import Any
 
 import jwt
+from jwt import PyJWK
 
 from ._policy import (
     decode_and_validate_payload,
@@ -213,7 +214,7 @@ class JWTVerifier:
             }
         )
 
-    def verify_access_token(self, token: str) -> dict[str, Any]:
+    def verify_access_token(self, token: str | bytes) -> dict[str, Any]:
         """Verify an access token and return its claims.
 
         Performs the complete verification chain:
@@ -231,8 +232,8 @@ class JWTVerifier:
         audience matches any audience in the token.
 
         Args:
-            token: The encoded JWT access token string. Leading and
-                trailing whitespace is stripped.
+            token: The encoded JWT access token as ``str`` or UTF-8
+                ``bytes``. Leading and trailing whitespace is stripped.
 
         Returns:
             The decoded token payload as a dictionary. Contains all
@@ -291,6 +292,16 @@ class JWTVerifier:
                 ...
             AuthError: Token is expired
         """
+        if isinstance(token, bytes):
+            try:
+                token = token.decode("utf-8")
+            except UnicodeDecodeError as exc:
+                raise AuthError(
+                    code="malformed_token",
+                    message="Malformed token",
+                    status_code=401,
+                ) from exc
+
         token = token.strip()
         if not token:
             raise AuthError(
@@ -313,3 +324,42 @@ class JWTVerifier:
         )
         enforce_authorization_claims(payload, config=self._config)
         return payload
+
+    def get_signing_keys(self, *, refresh: bool = False) -> list[PyJWK]:
+        """Return signing-capable JWKS keys through the owned client.
+
+        Args:
+            refresh: Whether to force a JWKS refresh before lookup.
+
+        Returns:
+            A list of signing-capable ``PyJWK`` objects.
+
+        Raises:
+            AuthError: On fetch, parsing, or key extraction failures.
+
+        Examples:
+            >>> verifier = JWTVerifier(config)  # doctest: +SKIP
+            >>> keys = verifier.get_signing_keys()  # doctest: +SKIP
+        """
+        return self._jwks.get_signing_keys(refresh=refresh)
+
+    def healthcheck(self, *, refresh: bool = False) -> bool:
+        """Return whether the verifier's configured JWKS is usable.
+
+        This is a convenience layer over the underlying ``JWKSClient`` for
+        startup checks and readiness probes.
+
+        Args:
+            refresh: Whether to force a JWKS refresh before the check.
+
+        Returns:
+            ``True`` when the verifier can currently resolve at least one
+            signing key from the configured JWKS endpoint; otherwise
+            ``False``.
+
+        Examples:
+            >>> verifier = JWTVerifier(config)  # doctest: +SKIP
+            >>> verifier.healthcheck(refresh=True)  # doctest: +SKIP
+            True
+        """
+        return self._jwks.healthcheck(refresh=refresh)

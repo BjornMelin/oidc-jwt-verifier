@@ -9,7 +9,9 @@ The client never fetches JWKS from URLs specified in token headers;
 all fetches use the URL configured in ``AuthConfig``.
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass
+from typing import NoReturn, cast
 
 from jwt import PyJWK, PyJWKClient
 from jwt.exceptions import PyJWKClientConnectionError, PyJWKClientError
@@ -132,38 +134,143 @@ class JWKSClient:
         try:
             return self._client.get_signing_key_from_jwt(token)
         except Exception as exc:
-            # Handle connection errors (network failures, timeouts).
-            if isinstance(exc, PyJWKClientConnectionError):
+            self._raise_auth_error(exc)
+
+    def get_signing_key(self, kid: str, *, refresh: bool = False) -> PyJWK:
+        """Retrieve a signing key directly by ``kid``.
+
+        This method exposes direct key lookup parity with PyJWT's public
+        JWKS client surface. When ``refresh=True``, it bypasses any cached
+        JWKS document and resolves the key from a freshly fetched set.
+
+        Args:
+            kid: JWT key identifier to resolve.
+            refresh: Whether to force a JWKS refresh before lookup.
+
+        Returns:
+            The matching ``PyJWK`` signing key.
+
+        Raises:
+            AuthError: On fetch, parsing, or key lookup failures.
+
+        Examples:
+            >>> client = JWKSClient.from_config(config)  # doctest: +SKIP
+            >>> key = client.get_signing_key("kid-123")  # doctest: +SKIP
+            >>> key.key_id  # doctest: +SKIP
+            'kid-123'
+        """
+        try:
+            if not refresh:
+                get_signing_key = cast(
+                    "Callable[[str], PyJWK]",
+                    self._client.get_signing_key,
+                )
+                return get_signing_key(kid)
+
+            self._clear_signing_key_cache()
+            signing_keys = self._client.get_signing_keys(refresh=True)
+            signing_key = self._client.match_kid(signing_keys, kid)
+            if signing_key is None:
+                raise PyJWKClientError(
+                    f'Unable to find a signing key that matches: "{kid}"'
+                )
+            return signing_key
+        except Exception as exc:
+            self._raise_auth_error(exc)
+
+    def get_signing_keys(self, *, refresh: bool = False) -> list[PyJWK]:
+        """Retrieve signing-capable keys from the configured JWKS.
+
+        Args:
+            refresh: Whether to force a JWKS refresh before lookup.
+
+        Returns:
+            A list of signing-capable ``PyJWK`` objects.
+
+        Raises:
+            AuthError: On fetch, parsing, or key extraction failures.
+
+        Examples:
+            >>> client = JWKSClient.from_config(config)  # doctest: +SKIP
+            >>> keys = client.get_signing_keys(refresh=True)  # doctest: +SKIP
+            >>> len(keys) >= 1  # doctest: +SKIP
+            True
+        """
+        try:
+            if refresh:
+                self._clear_signing_key_cache()
+            return self._client.get_signing_keys(refresh=refresh)
+        except Exception as exc:
+            self._raise_auth_error(exc)
+
+    def healthcheck(self, *, refresh: bool = False) -> bool:
+        """Return whether the configured JWKS is currently usable.
+
+        This is a fail-closed convenience API for startup checks and
+        readiness probes. It does not log or expose failure detail.
+
+        Args:
+            refresh: Whether to force a JWKS refresh before the check.
+
+        Returns:
+            ``True`` when at least one signing key can be resolved from the
+            configured JWKS endpoint; otherwise ``False``.
+
+        Examples:
+            >>> client = JWKSClient.from_config(config)  # doctest: +SKIP
+            >>> client.healthcheck(refresh=True)  # doctest: +SKIP
+            True
+        """
+        try:
+            self.get_signing_keys(refresh=refresh)
+        except AuthError:
+            return False
+        except Exception:
+            return False
+        return True
+
+    @staticmethod
+    def _raise_auth_error(exc: Exception) -> NoReturn:
+        """Raise the canonical ``AuthError`` for a JWKS lookup failure.
+
+        Args:
+            exc: The caught exception from the underlying PyJWT client.
+
+        Raises:
+            AuthError: Stable public exception for JWKS failures.
+        """
+        if isinstance(exc, PyJWKClientConnectionError):
+            raise AuthError(
+                code="jwks_fetch_failed",
+                message="JWKS fetch failed",
+                status_code=401,
+            ) from exc
+
+        if isinstance(exc, PyJWKClientError):
+            message = str(exc).lower()
+            if (
+                "unable to find a signing key" in message
+                and "matches" in message
+            ):
                 raise AuthError(
-                    code="jwks_fetch_failed",
-                    message="JWKS fetch failed",
+                    code="key_not_found",
+                    message="No matching signing key",
                     status_code=401,
                 ) from exc
-
-            # Handle other PyJWKClient errors (key not found, malformed JWKS).
-            # NOTE: PyJWT does not provide a dedicated exception class for "key not
-            # found" errors. PyJWKClientError is raised for both kid lookup failures
-            # and other client issues. We differentiate by matching error message
-            # substrings ("unable to find", "kid"). This creates coupling to PyJWT's
-            # internal message format - verify these patterns when upgrading PyJWT.
-            # See tests/test_verifier.py for regression tests that validate these patterns.
-            if isinstance(exc, PyJWKClientError):
-                message = str(exc).lower()
-                if "unable to find" in message or "kid" in message:
-                    raise AuthError(
-                        code="key_not_found",
-                        message="No matching signing key",
-                        status_code=401,
-                    ) from exc
-                raise AuthError(
-                    code="jwks_error",
-                    message="JWKS lookup failed",
-                    status_code=401,
-                ) from exc
-
-            # Catch-all for unexpected exceptions.
             raise AuthError(
                 code="jwks_error",
                 message="JWKS lookup failed",
                 status_code=401,
             ) from exc
+
+        raise AuthError(
+            code="jwks_error",
+            message="JWKS lookup failed",
+            status_code=401,
+        ) from exc
+
+    def _clear_signing_key_cache(self) -> None:
+        """Clear the underlying PyJWT per-kid cache when available."""
+        cache_clear = getattr(self._client.get_signing_key, "cache_clear", None)
+        if callable(cache_clear):
+            cache_clear()

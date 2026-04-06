@@ -12,6 +12,9 @@ The helpers in this module are intentionally side-effect free except for
 raising ``AuthError`` on policy violations.
 """
 
+import base64
+import binascii
+import json
 from collections.abc import Sequence
 from typing import Any
 
@@ -20,6 +23,56 @@ from jwt.types import Options
 
 from .config import AuthConfig
 from .errors import AuthError
+
+
+def _parse_unverified_header(token: str | bytes) -> dict[str, Any]:
+    """Parse the unverified JOSE header from a compact JWT string.
+
+    Args:
+        token: Encoded JWT as ``str`` or UTF-8 ``bytes``.
+
+    Returns:
+        Parsed header object.
+
+    Raises:
+        AuthError: If the token structure or header JSON is malformed.
+    """
+    if isinstance(token, bytes):
+        try:
+            token = token.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise AuthError(
+                code="malformed_token",
+                message="Malformed token",
+                status_code=401,
+            ) from exc
+
+    parts = token.split(".")
+    if len(parts) != 3 or not parts[0]:
+        raise AuthError(
+            code="malformed_token",
+            message="Malformed token",
+            status_code=401,
+        )
+
+    padded = parts[0] + "=" * (-len(parts[0]) % 4)
+    try:
+        header_bytes = base64.urlsafe_b64decode(padded.encode("ascii"))
+        header = json.loads(header_bytes)
+    except (UnicodeEncodeError, ValueError, binascii.Error) as exc:
+        raise AuthError(
+            code="malformed_token",
+            message="Malformed token",
+            status_code=401,
+        ) from exc
+
+    if not isinstance(header, dict):
+        raise AuthError(
+            code="malformed_token",
+            message="Malformed token",
+            status_code=401,
+        )
+    return header
 
 
 def parse_scope_claim(value: Any) -> set[str]:
@@ -142,7 +195,7 @@ def map_decode_error(exc: Exception) -> AuthError:
 
 
 def parse_and_validate_header(
-    token: str,
+    token: str | bytes,
     *,
     allowed_algorithms: Sequence[str],
 ) -> tuple[dict[str, Any], str]:
@@ -152,7 +205,7 @@ def parse_and_validate_header(
     enforce fail-closed semantics and prevent unsafe key source behavior.
 
     Args:
-        token: Encoded JWT.
+        token: Encoded JWT as ``str`` or UTF-8 ``bytes``.
         allowed_algorithms: Allowed signing algorithms configured by the user.
 
     Returns:
@@ -162,14 +215,7 @@ def parse_and_validate_header(
         AuthError: If the token header is malformed or violates security
             policy.
     """
-    try:
-        header = jwt.get_unverified_header(token)
-    except jwt.DecodeError as exc:
-        raise AuthError(
-            code="malformed_token",
-            message="Malformed token",
-            status_code=401,
-        ) from exc
+    header = _parse_unverified_header(token)
 
     # Header hardening: never allow token-provided key URL hints.
     if "jku" in header or "x5u" in header or "crit" in header:

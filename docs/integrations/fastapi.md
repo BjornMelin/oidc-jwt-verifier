@@ -30,8 +30,12 @@ auth = create_async_bearer_dependency(verifier, realm="api")
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    yield
-    await verifier.aclose()
+    try:
+        if not await verifier.healthcheck(refresh=True):
+            raise RuntimeError("JWKS endpoint is not ready")
+        yield
+    finally:
+        await verifier.aclose()
 
 app = FastAPI(lifespan=lifespan)
 
@@ -80,5 +84,7 @@ Helpers convert `AuthError` to `fastapi.HTTPException` and preserve RFC 6750 res
 ## Notes
 
 - Reuse verifier instances across requests.
+- Use `healthcheck()` during startup or controlled readiness probes, not on
+  every request.
 - Keep `HTTPBearer(auto_error=False)` behavior from helper defaults for uniform error mapping.
 - Close `AsyncJWTVerifier` at shutdown when it owns its HTTP resources.

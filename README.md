@@ -14,6 +14,7 @@ It provides:
 
 - A hardened sync verifier (`JWTVerifier`)
 - A native async verifier (`AsyncJWTVerifier`)
+- Public JWKS lifecycle/readiness APIs on both sync and async clients
 - First-party FastAPI and Starlette integration helpers
 
 ## Install
@@ -70,6 +71,32 @@ async def verify(token: str) -> dict[str, object]:
     async with AsyncJWTVerifier(config) as verifier:
         return await verifier.verify_access_token(token)
 ```
+
+## JWKS lifecycle and readiness
+
+Use the verifier-level helpers for startup validation and cache priming:
+
+```python
+from oidc_jwt_verifier import AuthConfig, JWTVerifier
+
+config = AuthConfig(
+    issuer="https://example-issuer/",
+    audience="https://example-api",
+    jwks_url="https://example-issuer/.well-known/jwks.json",
+)
+
+verifier = JWTVerifier(config)
+if not verifier.healthcheck(refresh=True):
+    raise RuntimeError("JWKS endpoint is not ready")
+
+signing_keys = verifier.get_signing_keys()
+```
+
+If you need direct client access, use `JWKSClient` or `AsyncJWKSClient` from
+`oidc_jwt_verifier.jwks` and `oidc_jwt_verifier.async_jwks`. The sync and async
+lifecycle/readiness APIs are intentionally parallel public surfaces.
+
+These are startup/readiness APIs. Do not call them on every request.
 
 ## FastAPI integration
 
@@ -168,6 +195,7 @@ Primary docs are built with MkDocs in `docs/`.
 - Starlette integration: `docs/integrations/starlette.md`
 - Configuration and security: `docs/configuration.md`, `docs/security.md`
 - API reference: `docs/reference.md`
+- Migration guidance: `docs/migration.md`
 
 ## Contributing
 

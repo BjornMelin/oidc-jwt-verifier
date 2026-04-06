@@ -37,8 +37,12 @@ async def protected(request: Request) -> JSONResponse:
 
 @asynccontextmanager
 async def lifespan(_: Starlette):
-    yield
-    await verifier.aclose()
+    try:
+        if not await verifier.healthcheck(refresh=True):
+            raise RuntimeError("JWKS endpoint is not ready")
+        yield
+    finally:
+        await verifier.aclose()
 
 app = Starlette(routes=[Route("/protected", protected)], lifespan=lifespan)
 app.add_middleware(
@@ -94,3 +98,6 @@ When verification fails, helper responses include:
 - `realm`: optional RFC 6750 realm
 - `exempt_paths`: exact path matches that skip authentication
 - `claims_state_key`: request state key for decoded claims (default: `"auth_claims"`)
+
+Use `healthcheck()` during startup or controlled readiness probes, not on every
+request.
