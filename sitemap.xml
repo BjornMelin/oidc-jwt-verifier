@@ -2,62 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/alternatives/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/changelog/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/configuration/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/errors/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/getting-started/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/migration/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/reference/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/security/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/architecture/adr/ADR-async-capabilities-strategy/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/architecture/spec/SPEC-async-capabilities-fastapi-starlette/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/integrations/fastapi/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/integrations/starlette/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/usage/async/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
     <url>
          <loc>https://oidc-jwt-verifier.bjornmelin.io/usage/sync/</loc>
-         <lastmod>2026-02-12</lastmod>
+         <lastmod>2026-04-06</lastmod>
     </url>
 </urlset>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1125,15 +1125,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#015-2026-02-12" class="md-nav__link">
+  <a href="#016-2026-04-06" class="md-nav__link">
     <span class="md-ellipsis">
       
-        0.1.5 (2026-02-12)
+        0.1.6 (2026-04-06)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0.1.5 (2026-02-12)">
+    <nav class="md-nav" aria-label="0.1.6 (2026-04-06)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1164,6 +1164,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#015-2026-02-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.1.5 (2026-02-12)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.1.5 (2026-02-12)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#014-2026-02-12" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1176,7 +1215,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#features_1" class="md-nav__link">
+  <a href="#features_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Features
@@ -1204,7 +1243,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#bug-fixes_1" class="md-nav__link">
+  <a href="#bug-fixes_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Bug Fixes
@@ -1232,7 +1271,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#bug-fixes_2" class="md-nav__link">
+  <a href="#bug-fixes_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Bug Fixes
@@ -1260,7 +1299,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#features_2" class="md-nav__link">
+  <a href="#features_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Features
@@ -1271,7 +1310,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bug-fixes_3" class="md-nav__link">
+  <a href="#bug-fixes_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Bug Fixes
@@ -1331,14 +1370,27 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h2 id="015-2026-02-12"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.4...v0.1.5">0.1.5</a> (2026-02-12)<a class="headerlink" href="#015-2026-02-12" title="Permanent link">&para;</a></h2>
+<h2 id="016-2026-04-06"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.5...v0.1.6">0.1.6</a> (2026-04-06)<a class="headerlink" href="#016-2026-04-06" title="Permanent link">&para;</a></h2>
 <h3 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h3>
+<ul>
+<li>add jwks lifecycle readiness APIs (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/bc6cbd743ea65ba564b185daffc15dea53671efa">bc6cbd7</a>)</li>
+<li><strong>jwks:</strong> implement cache clearing for signing keys on refresh and add tests for key rotation (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/4536a847e5c0f27ff7c612cf3e76b8d2430dd432">4536a84</a>)</li>
+<li><strong>policy:</strong> enhance _parse_unverified_header to accept bytes and improve error handling for malformed tokens (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/7d823454f96779c27fcdb40f153726c9b4b5e672">7d82345</a>)</li>
+</ul>
+<h3 id="bug-fixes">Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>accept bytes tokens in public verifiers (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/79989f6bbf2b707bf972b0cce1f167f32a2521b0">79989f6</a>)</li>
+<li>cover bytes header parsing and async key misses (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/7423aeb4fca5e913a7386e5bed55e24ee8428ca3">7423aeb</a>)</li>
+<li>stabilize forbidden header parsing (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/76d9db8d2dd4e5b0b0f37e4c215373010cdc54f9">76d9db8</a>)</li>
+</ul>
+<h2 id="015-2026-02-12"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.4...v0.1.5">0.1.5</a> (2026-02-12)<a class="headerlink" href="#015-2026-02-12" title="Permanent link">&para;</a></h2>
+<h3 id="features_1">Features<a class="headerlink" href="#features_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>integrations:</strong> add fastapi and starlette auth helpers (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/cdbae89f2b66bb346e371695e42489812944b691">cdbae89</a>)</li>
 <li><strong>verifier:</strong> add async support and framework integrations (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/e69dbcd1914c8607a351b97161a2dd10bd0152ee">e69dbcd</a>)</li>
 <li><strong>verifier:</strong> add native async verifier and shared policy core (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/a8e6f403a2eaec8ed4b80c7d77c234300ddc6fb6">a8e6f40</a>)</li>
 </ul>
-<h3 id="bug-fixes">Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">&para;</a></h3>
+<h3 id="bug-fixes_1">Bug Fixes<a class="headerlink" href="#bug-fixes_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>async:</strong> address PR <a href="https://github.com/BjornMelin/oidc-jwt-verifier/issues/10">#10</a> review feedback (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/b77433c9c2d33e64cd5277626747d52ab7c21eb5">b77433c</a>)</li>
 <li>commit all pending changes (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/aaa743c37cebde3f77f19c21260b5dba5a360f20">aaa743c</a>)</li>
@@ -1346,29 +1398,29 @@
 <li><strong>integrations:</strong> resolve PR <a href="https://github.com/BjornMelin/oidc-jwt-verifier/issues/10">#10</a> review threads (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/b506f9836cc7b45af099989d7b1361e7553ced78">b506f98</a>)</li>
 </ul>
 <h2 id="014-2026-02-12"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.3...v0.1.4">0.1.4</a> (2026-02-12)<a class="headerlink" href="#014-2026-02-12" title="Permanent link">&para;</a></h2>
-<h3 id="features_1">Features<a class="headerlink" href="#features_1" title="Permanent link">&para;</a></h3>
+<h3 id="features_2">Features<a class="headerlink" href="#features_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>jwt:</strong> enforce minimum cryptographic key length (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/459c16097941ccee194752deee559171dc18afeb">459c160</a>)</li>
 <li><strong>verifier:</strong> align with PyJWT 2.11 typing and key checks (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/7bcd8bfff1ab60b5e940b662cdb04fc0df9047a7">7bcd8bf</a>)</li>
 </ul>
 <h2 id="013-2025-12-18"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.2...v0.1.3">0.1.3</a> (2025-12-18)<a class="headerlink" href="#013-2025-12-18" title="Permanent link">&para;</a></h2>
-<h3 id="bug-fixes_1">Bug Fixes<a class="headerlink" href="#bug-fixes_1" title="Permanent link">&para;</a></h3>
+<h3 id="bug-fixes_2">Bug Fixes<a class="headerlink" href="#bug-fixes_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>docs:</strong> add missing Documentation badge to docs/index.md (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/dfdf6ae2f9c96ca1a1974c9af6d204241b6e1c69">dfdf6ae</a>)</li>
 </ul>
 <h2 id="012-2025-12-18"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.1...v0.1.2">0.1.2</a> (2025-12-18)<a class="headerlink" href="#012-2025-12-18" title="Permanent link">&para;</a></h2>
-<h3 id="bug-fixes_2">Bug Fixes<a class="headerlink" href="#bug-fixes_2" title="Permanent link">&para;</a></h3>
+<h3 id="bug-fixes_3">Bug Fixes<a class="headerlink" href="#bug-fixes_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>docs:</strong> resolve MkDocs Material rendering issues and modernize deployment (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/89fefb02c1e5d5b56428a79c90aacec0c72e3574">89fefb0</a>)</li>
 <li><strong>docs:</strong> resolve MkDocs Material rendering issues and modernize deployment (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/201892060a9ee52d508bd0da2b5a50dca7b103f7">2018920</a>)</li>
 </ul>
 <h2 id="011-2025-12-18"><a href="https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.0...v0.1.1">0.1.1</a> (2025-12-18)<a class="headerlink" href="#011-2025-12-18" title="Permanent link">&para;</a></h2>
-<h3 id="features_2">Features<a class="headerlink" href="#features_2" title="Permanent link">&para;</a></h3>
+<h3 id="features_3">Features<a class="headerlink" href="#features_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li>add core JWT verification library with automated release pipeline (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/61862b5c86e5eb4bcaa30ee42ea10c9240f3d582">61862b5</a>)</li>
 <li><strong>jwt-verifier:</strong> add core JWT verification library (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/cf676291eb18400e52424b7efe6d63ef343ace20">cf67629</a>)</li>
 </ul>
-<h3 id="bug-fixes_3">Bug Fixes<a class="headerlink" href="#bug-fixes_3" title="Permanent link">&para;</a></h3>
+<h3 id="bug-fixes_4">Bug Fixes<a class="headerlink" href="#bug-fixes_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li>address additional PR review comments (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/f8132f8f86eb6e3a1a12baaf32f485eb6a85436a">f8132f8</a>)</li>
 <li>address PR review comments (<a href="https://github.com/BjornMelin/oidc-jwt-verifier/commit/b12bf0a4db21d0647e95139d32b1641812beebf4">b12bf0a</a>)</li>
