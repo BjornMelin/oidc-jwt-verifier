@@ -38,15 +38,16 @@ def jwks_server(jwks: dict[str, Any]) -> Iterator[LocalJWKS]:
             self.end_headers()
             self.wfile.write(body)
 
-        def log_message(self, fmt: str, *args: object) -> None:
-            return
+        def log_message(self, format: str, *args: Any) -> None:
+            del format, args
 
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
 
     try:
-        host, port = server.server_address
+        host = server.server_address[0]
+        port = server.server_address[1]
         yield LocalJWKS(
             jwks=jwks,
             url=f"http://{host}:{port}/jwks.json",

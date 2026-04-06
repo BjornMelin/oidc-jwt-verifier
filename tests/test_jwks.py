@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
+from jwt.exceptions import PyJWKClientConnectionError, PyJWKClientError
 
 from oidc_jwt_verifier import AuthConfig, AuthError
 from oidc_jwt_verifier.jwks import JWKSClient
@@ -59,9 +60,24 @@ def test_get_signing_key_supports_direct_lookup_and_forced_refresh() -> None:
     assert local.request_count.value == 2
 
 
+def test_get_signing_key_refresh_miss_raises_key_not_found() -> None:
+    """Forced refresh miss returns the stable key_not_found error."""
+    _, public_key = make_rsa_keypair()
+    jwks = {"keys": [rsa_public_key_to_jwk(public_key, kid="test-key-1")]}
+
+    with jwks_server(jwks) as local:
+        client = JWKSClient.from_config(_make_config(local.url))
+
+        with pytest.raises(AuthError) as excinfo:
+            client.get_signing_key("missing-key", refresh=True)
+
+    assert excinfo.value.code == "key_not_found"
+    assert excinfo.value.status_code == 401
+
+
 def test_get_signing_keys_raises_auth_error_for_malformed_jwks() -> None:
     """Malformed JWKS payloads map to AuthError."""
-    malformed_jwks: Any = ["not", "a", "jwks", "object"]
+    malformed_jwks: dict[str, Any] = {"keys": "not-a-list"}
 
     with jwks_server(malformed_jwks) as local:
         client = JWKSClient.from_config(_make_config(local.url))
@@ -70,6 +86,47 @@ def test_get_signing_keys_raises_auth_error_for_malformed_jwks() -> None:
             client.get_signing_keys()
 
     assert excinfo.value.code == "jwks_error"
+
+
+def test_get_signing_keys_maps_non_lookup_client_errors_to_jwks_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Non-lookup PyJWK client errors remain jwks_error."""
+    client = JWKSClient.from_config(
+        _make_config("https://issuer.example/jwks.json")
+    )
+
+    def fail_lookup(*, refresh: bool = False) -> list[object]:
+        del refresh
+        raise PyJWKClientError("kid must be present in every key")
+
+    monkeypatch.setattr(client._client, "get_signing_keys", fail_lookup)
+
+    with pytest.raises(AuthError) as excinfo:
+        client.get_signing_keys()
+
+    assert excinfo.value.code == "jwks_error"
+    assert excinfo.value.status_code == 401
+
+
+def test_get_signing_keys_fetch_failure_raises_jwks_fetch_failed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Fetch failures return the stable jwks_fetch_failed error."""
+    client = JWKSClient.from_config(
+        _make_config("https://issuer.example/jwks.json")
+    )
+
+    def fail_fetch() -> dict[str, object]:
+        raise PyJWKClientConnectionError("boom")
+
+    monkeypatch.setattr(client._client, "fetch_data", fail_fetch)
+
+    with pytest.raises(AuthError) as excinfo:
+        client.get_signing_keys(refresh=True)
+
+    assert excinfo.value.code == "jwks_fetch_failed"
+    assert excinfo.value.status_code == 401
 
 
 def test_healthcheck_returns_true_for_reachable_jwks() -> None:
@@ -89,18 +146,25 @@ def test_healthcheck_returns_true_for_reachable_jwks() -> None:
     assert local.request_count.value == 2
 
 
-def test_healthcheck_returns_false_on_fetch_failure() -> None:
+def test_healthcheck_returns_false_on_fetch_failure(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     """Healthcheck fails closed when the JWKS endpoint is unreachable."""
     client = JWKSClient.from_config(
-        _make_config("http://127.0.0.1:1/jwks.json")
+        _make_config("https://issuer.example/jwks.json")
     )
+
+    def fail_fetch() -> dict[str, object]:
+        raise PyJWKClientConnectionError("boom")
+
+    monkeypatch.setattr(client._client, "fetch_data", fail_fetch)
 
     assert client.healthcheck() is False
 
 
 def test_healthcheck_returns_false_on_malformed_jwks() -> None:
     """Healthcheck fails closed when the JWKS payload is malformed."""
-    malformed_jwks: Any = ["not", "a", "jwks", "object"]
+    malformed_jwks: dict[str, Any] = {"keys": "not-a-list"}
 
     with jwks_server(malformed_jwks) as local:
         client = JWKSClient.from_config(_make_config(local.url))

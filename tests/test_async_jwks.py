@@ -9,6 +9,8 @@ import pytest
 
 pytest.importorskip("httpx")
 
+import httpx
+
 from oidc_jwt_verifier import AuthConfig, AuthError
 from oidc_jwt_verifier.async_jwks import AsyncJWKSClient
 from tests.conftest import jwks_server
@@ -69,9 +71,26 @@ async def test_get_signing_key_supports_direct_lookup_and_forced_refresh() -> (
 
 
 @pytest.mark.asyncio
+async def test_get_signing_key_refresh_miss_raises_key_not_found() -> None:
+    """Forced refresh miss returns the stable key_not_found error."""
+    _, public_key = make_rsa_keypair()
+    jwks = {"keys": [rsa_public_key_to_jwk(public_key, kid="test-key-1")]}
+
+    with jwks_server(jwks) as local:
+        client = AsyncJWKSClient.from_config(_make_config(local.url))
+
+        with pytest.raises(AuthError) as excinfo:
+            await client.get_signing_key("missing-key", refresh=True)
+        await client.aclose()
+
+    assert excinfo.value.code == "key_not_found"
+    assert excinfo.value.status_code == 401
+
+
+@pytest.mark.asyncio
 async def test_get_signing_keys_raises_auth_error_for_malformed_jwks() -> None:
     """Malformed JWKS payloads map to AuthError."""
-    malformed_jwks: Any = ["not", "a", "jwks", "object"]
+    malformed_jwks: dict[str, Any] = {"keys": "not-a-list"}
 
     with jwks_server(malformed_jwks) as local:
         client = AsyncJWKSClient.from_config(_make_config(local.url))
@@ -81,6 +100,29 @@ async def test_get_signing_keys_raises_auth_error_for_malformed_jwks() -> None:
         await client.aclose()
 
     assert excinfo.value.code == "jwks_error"
+
+
+@pytest.mark.asyncio
+async def test_get_signing_keys_fetch_failure_raises_jwks_fetch_failed() -> (
+    None
+):
+    """Fetch failures return the stable jwks_fetch_failed error."""
+
+    def fail_connect(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("boom", request=request)
+
+    transport = httpx.MockTransport(fail_connect)
+    async with httpx.AsyncClient(transport=transport) as http_client:
+        client = AsyncJWKSClient.from_config(
+            _make_config("https://issuer.example/jwks.json"),
+            http_client=http_client,
+        )
+
+        with pytest.raises(AuthError) as excinfo:
+            await client.get_signing_keys(refresh=True)
+
+    assert excinfo.value.code == "jwks_fetch_failed"
+    assert excinfo.value.status_code == 401
 
 
 @pytest.mark.asyncio
@@ -105,18 +147,24 @@ async def test_healthcheck_returns_true_for_reachable_jwks() -> None:
 @pytest.mark.asyncio
 async def test_healthcheck_returns_false_on_fetch_failure() -> None:
     """Healthcheck fails closed when the JWKS endpoint is unreachable."""
-    client = AsyncJWKSClient.from_config(
-        _make_config("http://127.0.0.1:1/jwks.json")
-    )
 
-    assert await client.healthcheck() is False
-    await client.aclose()
+    def fail_connect(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("boom", request=request)
+
+    transport = httpx.MockTransport(fail_connect)
+    async with httpx.AsyncClient(transport=transport) as http_client:
+        client = AsyncJWKSClient.from_config(
+            _make_config("https://issuer.example/jwks.json"),
+            http_client=http_client,
+        )
+
+        assert await client.healthcheck() is False
 
 
 @pytest.mark.asyncio
 async def test_healthcheck_returns_false_on_malformed_jwks() -> None:
     """Healthcheck fails closed when the JWKS payload is malformed."""
-    malformed_jwks: Any = ["not", "a", "jwks", "object"]
+    malformed_jwks: dict[str, Any] = {"keys": "not-a-list"}
 
     with jwks_server(malformed_jwks) as local:
         client = AsyncJWKSClient.from_config(_make_config(local.url))

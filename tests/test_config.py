@@ -336,4 +336,4 @@ def test_config_is_frozen() -> None:
     )
 
     with pytest.raises(AttributeError):
-        config.issuer = "https://new-issuer.example/"  # type: ignore[misc]
+        config.__setattr__("issuer", "https://new-issuer.example/")

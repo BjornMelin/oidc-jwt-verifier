@@ -11,7 +11,7 @@ Examples:
 
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import Any
 
 from starlette.concurrency import run_in_threadpool
 from starlette.requests import Request
@@ -101,10 +101,7 @@ async def verify_request_bearer_token(
     """
     token = extract_bearer_token(request.headers.get("Authorization"))
     if isinstance(verifier, JWTVerifier):
-        return cast(
-            "dict[str, Any]",
-            await run_in_threadpool(verifier.verify_access_token, token),
-        )
+        return await run_in_threadpool(verifier.verify_access_token, token)
     return await verifier.verify_access_token(token)
 
 
@@ -154,10 +151,6 @@ class BearerAuthMiddleware:
 
         Returns:
             None: This middleware does not return a value directly.
-
-        Raises:
-            AuthError: Never propagated to the caller. ``AuthError`` is
-                handled internally and converted into an RFC 6750 response.
 
         Examples:
             >>> # Invoked by Starlette's ASGI runtime, not called directly.

@@ -9,8 +9,9 @@ The client never fetches JWKS from URLs specified in token headers;
 all fetches use the URL configured in ``AuthConfig``.
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import NoReturn
+from typing import NoReturn, cast
 
 from jwt import PyJWK, PyJWKClient
 from jwt.exceptions import PyJWKClientConnectionError, PyJWKClientError
@@ -160,7 +161,11 @@ class JWKSClient:
         """
         try:
             if not refresh:
-                return self._client.get_signing_key(kid)
+                get_signing_key = cast(
+                    "Callable[[str], PyJWK]",
+                    self._client.get_signing_key,
+                )
+                return get_signing_key(kid)
 
             signing_keys = self._client.get_signing_keys(refresh=True)
             signing_key = self._client.match_kid(signing_keys, kid)
@@ -240,7 +245,10 @@ class JWKSClient:
 
         if isinstance(exc, PyJWKClientError):
             message = str(exc).lower()
-            if "unable to find" in message or "kid" in message:
+            if (
+                "unable to find a signing key" in message
+                and "matches" in message
+            ):
                 raise AuthError(
                     code="key_not_found",
                     message="No matching signing key",

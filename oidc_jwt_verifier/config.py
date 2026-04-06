@@ -10,6 +10,7 @@ algorithm confusion attacks.
 
 from collections.abc import Sequence
 from dataclasses import dataclass
+from typing import cast
 
 
 def _normalize_str_sequence(value: str | Sequence[str]) -> tuple[str, ...]:
@@ -251,8 +252,7 @@ class AuthConfig:
             >>> config.audiences
             ('https://api.example.com',)
         """
-        # __post_init__ normalizes audience to tuple
-        return self.audience  # type: ignore[return-value]
+        return cast("tuple[str, ...]", self.audience)
 
     @property
     def allowed_algorithms(self) -> tuple[str, ...]:
@@ -275,8 +275,7 @@ class AuthConfig:
             >>> config.allowed_algorithms
             ('RS256', 'ES256')
         """
-        # __post_init__ normalizes allowed_algs to tuple
-        return self.allowed_algs  # type: ignore[return-value]
+        return cast("tuple[str, ...]", self.allowed_algs)
 
     @property
     def required_scope_set(self) -> set[str]:
