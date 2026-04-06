@@ -16,6 +16,7 @@ import httpx
 import jwt
 from jwt import PyJWK, PyJWKSet
 
+from oidc_jwt_verifier._policy import _parse_unverified_jwt_header
 from oidc_jwt_verifier.config import AuthConfig
 from oidc_jwt_verifier.errors import AuthError
 
@@ -351,7 +352,7 @@ class AsyncJWKSClient:
             AuthError: If token/header is malformed or ``kid`` is missing.
         """
         try:
-            header = jwt.get_unverified_header(token)
+            header = _parse_unverified_jwt_header(token)
         except jwt.DecodeError as exc:
             raise AuthError(
                 code="jwks_error",

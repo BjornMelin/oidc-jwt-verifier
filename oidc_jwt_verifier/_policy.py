@@ -12,6 +12,9 @@ The helpers in this module are intentionally side-effect free except for
 raising ``AuthError`` on policy violations.
 """
 
+import base64
+import binascii
+import json
 from collections.abc import Sequence
 from typing import Any
 
@@ -84,6 +87,39 @@ def parse_permissions_claim(value: Any) -> set[str]:
     if isinstance(value, str):
         return {permission for permission in value.split() if permission}
     return set()
+
+
+def _parse_unverified_jwt_header(token: str | bytes) -> dict[str, Any]:
+    """Parse a JWT header segment without validating ``crit`` headers.
+
+    Args:
+        token: Encoded JWT as text or ASCII bytes.
+
+    Returns:
+        The decoded header object.
+
+    Raises:
+        jwt.DecodeError: If the token header segment is malformed.
+    """
+    token_text = token.decode("ascii") if isinstance(token, bytes) else token
+    header_segment = token_text.split(".", 1)[0]
+    if not header_segment:
+        raise jwt.DecodeError("Invalid token header")
+
+    padded = header_segment + "=" * (-len(header_segment) % 4)
+    try:
+        raw_header = base64.b64decode(
+            padded.encode("ascii"),
+            altchars=b"-_",
+            validate=True,
+        )
+        header = json.loads(raw_header)
+    except (UnicodeDecodeError, ValueError, TypeError, binascii.Error) as exc:
+        raise jwt.DecodeError("Invalid token header") from exc
+
+    if not isinstance(header, dict):
+        raise jwt.DecodeError("Invalid token header")
+    return header
 
 
 def map_decode_error(exc: Exception) -> AuthError:
@@ -163,7 +199,7 @@ def parse_and_validate_header(
             policy.
     """
     try:
-        header = jwt.get_unverified_header(token)
+        header = _parse_unverified_jwt_header(token)
     except jwt.DecodeError as exc:
         raise AuthError(
             code="malformed_token",

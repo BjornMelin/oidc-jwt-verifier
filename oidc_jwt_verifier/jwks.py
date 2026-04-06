@@ -11,9 +11,11 @@ all fetches use the URL configured in ``AuthConfig``.
 
 from dataclasses import dataclass
 
+import jwt
 from jwt import PyJWK, PyJWKClient
 from jwt.exceptions import PyJWKClientConnectionError, PyJWKClientError
 
+from ._policy import _parse_unverified_jwt_header
 from .config import AuthConfig
 from .errors import AuthError
 
@@ -130,7 +132,24 @@ class JWKSClient:
             AuthError: No matching signing key
         """
         try:
-            return self._client.get_signing_key_from_jwt(token)
+            header = _parse_unverified_jwt_header(token)
+        except jwt.DecodeError as exc:
+            raise AuthError(
+                code="jwks_error",
+                message="JWKS lookup failed",
+                status_code=401,
+            ) from exc
+
+        kid = header.get("kid")
+        if not isinstance(kid, str) or not kid:
+            raise AuthError(
+                code="key_not_found",
+                message="No matching signing key",
+                status_code=401,
+            )
+
+        try:
+            return self._client.get_signing_key(kid)
         except Exception as exc:
             # Handle connection errors (network failures, timeouts).
             if isinstance(exc, PyJWKClientConnectionError):

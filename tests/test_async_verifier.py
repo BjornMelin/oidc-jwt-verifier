@@ -90,8 +90,18 @@ async def test_async_jwks_client_accepts_bytes_token() -> None:
     assert signing_key.key_id == kid
 
 
+@pytest.mark.parametrize(
+    "extra_header",
+    [
+        {"jku": "https://evil.example/jwks.json"},
+        {"x5u": "https://evil.example/cert.pem"},
+        {"crit": ["exp"]},
+    ],
+)
 @pytest.mark.asyncio
-async def test_async_forbidden_header_rejected_before_jwks_fetch() -> None:
+async def test_async_forbidden_header_rejected_before_jwks_fetch(
+    extra_header: dict[str, Any],
+) -> None:
     """Forbidden headers fail before any JWKS fetch in async path."""
     private_pem, public_key = make_rsa_keypair()
     kid = "test-key-1"
@@ -113,7 +123,7 @@ async def test_async_forbidden_header_rejected_before_jwks_fetch() -> None:
             payload,
             private_pem,
             algorithm="RS256",
-            headers={"kid": kid, "jku": "https://evil.example/jwks.json"},
+            headers={"kid": kid, **extra_header},
         )
 
         with pytest.raises(AuthError) as excinfo:
