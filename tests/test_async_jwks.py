@@ -88,6 +88,24 @@ async def test_get_signing_key_refresh_miss_raises_key_not_found() -> None:
 
 
 @pytest.mark.asyncio
+async def test_get_signing_key_miss_raises_key_not_found() -> None:
+    """Missing key lookup falls back to the stable key_not_found error."""
+    _, public_key = make_rsa_keypair()
+    jwks = {"keys": [rsa_public_key_to_jwk(public_key, kid="test-key-1")]}
+
+    with jwks_server(jwks) as local:
+        client = AsyncJWKSClient.from_config(_make_config(local.url))
+
+        with pytest.raises(AuthError) as excinfo:
+            await client.get_signing_key("missing-key")
+        await client.aclose()
+
+    assert excinfo.value.code == "key_not_found"
+    assert excinfo.value.status_code == 401
+    assert local.request_count.value == 2
+
+
+@pytest.mark.asyncio
 async def test_get_signing_keys_raises_auth_error_for_malformed_jwks() -> None:
     """Malformed JWKS payloads map to AuthError."""
     malformed_jwks: dict[str, Any] = {"keys": "not-a-list"}

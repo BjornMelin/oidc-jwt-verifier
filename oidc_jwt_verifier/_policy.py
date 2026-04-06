@@ -195,7 +195,7 @@ def map_decode_error(exc: Exception) -> AuthError:
 
 
 def parse_and_validate_header(
-    token: str,
+    token: str | bytes,
     *,
     allowed_algorithms: Sequence[str],
 ) -> tuple[dict[str, Any], str]:
@@ -205,7 +205,7 @@ def parse_and_validate_header(
     enforce fail-closed semantics and prevent unsafe key source behavior.
 
     Args:
-        token: Encoded JWT.
+        token: Encoded JWT as ``str`` or UTF-8 ``bytes``.
         allowed_algorithms: Allowed signing algorithms configured by the user.
 
     Returns:

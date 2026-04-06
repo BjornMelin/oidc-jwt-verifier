@@ -10,7 +10,10 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 from oidc_jwt_verifier import AuthConfig, AuthError, JWTVerifier
-from oidc_jwt_verifier._policy import _parse_unverified_header
+from oidc_jwt_verifier._policy import (
+    _parse_unverified_header,
+    parse_and_validate_header,
+)
 from oidc_jwt_verifier.jwks import JWKSClient
 from oidc_jwt_verifier.verifier import (
     _parse_permissions_claim,
@@ -1056,6 +1059,21 @@ def test_parse_unverified_header_accepts_bytes_token() -> None:
     header = _parse_unverified_header(token.encode("utf-8"))
 
     assert header == {"alg": "RS256", "kid": "kid-1"}
+
+
+def test_parse_and_validate_header_accepts_bytes_token() -> None:
+    """Header validation accepts UTF-8 bytes tokens."""
+    header_json = json.dumps(
+        {"alg": "RS256", "kid": "kid-1"}, separators=(",", ":")
+    ).encode("utf-8")
+    token = f"{_b64url(header_json)}.payload.signature"
+
+    header, alg = parse_and_validate_header(
+        token.encode("utf-8"), allowed_algorithms=("RS256",)
+    )
+
+    assert header == {"alg": "RS256", "kid": "kid-1"}
+    assert alg == "RS256"
 
 
 def test_parse_unverified_header_invalid_utf8_bytes_raises_malformed_token() -> (
