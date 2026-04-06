@@ -214,7 +214,7 @@ class JWTVerifier:
             }
         )
 
-    def verify_access_token(self, token: str) -> dict[str, Any]:
+    def verify_access_token(self, token: str | bytes) -> dict[str, Any]:
         """Verify an access token and return its claims.
 
         Performs the complete verification chain:
@@ -232,8 +232,8 @@ class JWTVerifier:
         audience matches any audience in the token.
 
         Args:
-            token: The encoded JWT access token string. Leading and
-                trailing whitespace is stripped.
+            token: The encoded JWT access token as ``str`` or UTF-8
+                ``bytes``. Leading and trailing whitespace is stripped.
 
         Returns:
             The decoded token payload as a dictionary. Contains all
@@ -292,6 +292,16 @@ class JWTVerifier:
                 ...
             AuthError: Token is expired
         """
+        if isinstance(token, bytes):
+            try:
+                token = token.decode("utf-8")
+            except UnicodeDecodeError as exc:
+                raise AuthError(
+                    code="malformed_token",
+                    message="Malformed token",
+                    status_code=401,
+                ) from exc
+
         token = token.strip()
         if not token:
             raise AuthError(

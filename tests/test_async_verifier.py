@@ -91,6 +91,34 @@ async def test_async_jwks_client_accepts_bytes_token() -> None:
 
 
 @pytest.mark.asyncio
+async def test_async_verify_access_token_accepts_bytes_token() -> None:
+    """AsyncJWTVerifier accepts UTF-8 bytes tokens on the public API."""
+    private_pem, public_key = make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [rsa_public_key_to_jwk(public_key, kid=kid)]}
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    payload = valid_payload(issuer=issuer, audience=audience)
+
+    with jwks_server(jwks) as local:
+        verifier = AsyncJWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+            )
+        )
+        token = encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        claims = await verifier.verify_access_token(token.encode("utf-8"))
+        await verifier.aclose()
+
+    assert claims["iss"] == issuer
+    assert local.request_count.value == 1
+
+
+@pytest.mark.asyncio
 async def test_async_forbidden_header_rejected_before_jwks_fetch() -> None:
     """Forbidden headers fail before any JWKS fetch in async path."""
     private_pem, public_key = make_rsa_keypair()

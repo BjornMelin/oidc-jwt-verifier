@@ -72,11 +72,11 @@ class AsyncJWTVerifier:
         )
         self._owns_jwks = jwks_client is None
 
-    async def verify_access_token(self, token: str) -> dict[str, Any]:
+    async def verify_access_token(self, token: str | bytes) -> dict[str, Any]:
         """Verify a JWT access token and return its claims.
 
         Args:
-            token: Encoded JWT string.
+            token: Encoded JWT as ``str`` or UTF-8 ``bytes``.
 
         Returns:
             Decoded JWT payload.
@@ -84,6 +84,16 @@ class AsyncJWTVerifier:
         Raises:
             AuthError: On authentication or authorization failure.
         """
+        if isinstance(token, bytes):
+            try:
+                token = token.decode("utf-8")
+            except UnicodeDecodeError as exc:
+                raise AuthError(
+                    code="malformed_token",
+                    message="Malformed token",
+                    status_code=401,
+                ) from exc
+
         normalized = token.strip()
         if not normalized:
             raise AuthError(

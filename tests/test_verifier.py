@@ -139,6 +139,43 @@ def test_jwks_client_accepts_bytes_token() -> None:
         assert signing_key.key_id == kid
 
 
+def test_verify_access_token_accepts_bytes_token() -> None:
+    """JWTVerifier accepts UTF-8 bytes tokens on the public API."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+        "nbf": int((now - timedelta(seconds=1)).timestamp()),
+    }
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                allowed_algs=("RS256",),
+                jwks_timeout_s=1.0,
+                jwks_cache_ttl_s=300,
+                jwks_max_cached_keys=8,
+            )
+        )
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        claims = verifier.verify_access_token(token.encode("utf-8"))
+
+    assert claims["iss"] == issuer
+    assert local.request_count.value == 1
+
+
 def test_wrong_issuer_rejected() -> None:
     private_pem, public_key = _make_rsa_keypair()
     kid = "test-key-1"
