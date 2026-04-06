@@ -10,6 +10,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 from oidc_jwt_verifier import AuthConfig, AuthError, JWTVerifier
+from oidc_jwt_verifier._policy import _parse_unverified_header
 from oidc_jwt_verifier.jwks import JWKSClient
 from oidc_jwt_verifier.verifier import (
     _parse_permissions_claim,
@@ -1030,3 +1031,61 @@ def test_parse_permissions_claim_edge_cases(
 ) -> None:
     """Permissions claim parsing handles various input formats."""
     assert _parse_permissions_claim(perms_value) == expected
+
+
+def test_parse_unverified_header_invalid_base64url_raises_malformed_token() -> (
+    None
+):
+    """Invalid base64url header segment is rejected as malformed."""
+    token = "%%%.."
+
+    with pytest.raises(AuthError) as excinfo:
+        _parse_unverified_header(token)
+
+    assert excinfo.value.code == "malformed_token"
+    assert excinfo.value.status_code == 401
+
+
+def test_parse_unverified_header_accepts_bytes_token() -> None:
+    """Bytes JWT input is normalized before header parsing."""
+    header_json = json.dumps(
+        {"alg": "RS256", "kid": "kid-1"}, separators=(",", ":")
+    ).encode("utf-8")
+    token = f"{_b64url(header_json)}.payload.signature"
+
+    header = _parse_unverified_header(token.encode("utf-8"))
+
+    assert header == {"alg": "RS256", "kid": "kid-1"}
+
+
+def test_parse_unverified_header_invalid_utf8_bytes_raises_malformed_token() -> (
+    None
+):
+    """Undecodable bytes input is rejected as malformed."""
+    with pytest.raises(AuthError) as excinfo:
+        _parse_unverified_header(b"\xff.payload.signature")
+
+    assert excinfo.value.code == "malformed_token"
+    assert excinfo.value.status_code == 401
+
+
+def test_parse_unverified_header_invalid_json_raises_malformed_token() -> None:
+    """Valid base64url but invalid JSON header is rejected as malformed."""
+    token = f"{_b64url(b'not-json')}.payload.signature"
+
+    with pytest.raises(AuthError) as excinfo:
+        _parse_unverified_header(token)
+
+    assert excinfo.value.code == "malformed_token"
+    assert excinfo.value.status_code == 401
+
+
+def test_parse_unverified_header_non_dict_json_raises_malformed_token() -> None:
+    """Decoded JSON headers must be objects, not arrays or scalars."""
+    token = f"{_b64url(b'[1,2,3]')}.payload.signature"
+
+    with pytest.raises(AuthError) as excinfo:
+        _parse_unverified_header(token)
+
+    assert excinfo.value.code == "malformed_token"
+    assert excinfo.value.status_code == 401

@@ -25,11 +25,11 @@ from .config import AuthConfig
 from .errors import AuthError
 
 
-def _parse_unverified_header(token: str) -> dict[str, Any]:
+def _parse_unverified_header(token: str | bytes) -> dict[str, Any]:
     """Parse the unverified JOSE header from a compact JWT string.
 
     Args:
-        token: Encoded JWT.
+        token: Encoded JWT as ``str`` or UTF-8 ``bytes``.
 
     Returns:
         Parsed header object.
@@ -37,6 +37,16 @@ def _parse_unverified_header(token: str) -> dict[str, Any]:
     Raises:
         AuthError: If the token structure or header JSON is malformed.
     """
+    if isinstance(token, bytes):
+        try:
+            token = token.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise AuthError(
+                code="malformed_token",
+                message="Malformed token",
+                status_code=401,
+            ) from exc
+
     parts = token.split(".")
     if len(parts) != 3 or not parts[0]:
         raise AuthError(
