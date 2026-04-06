@@ -167,6 +167,7 @@ class JWKSClient:
                 )
                 return get_signing_key(kid)
 
+            self._clear_signing_key_cache()
             signing_keys = self._client.get_signing_keys(refresh=True)
             signing_key = self._client.match_kid(signing_keys, kid)
             if signing_key is None:
@@ -196,6 +197,8 @@ class JWKSClient:
             True
         """
         try:
+            if refresh:
+                self._clear_signing_key_cache()
             return self._client.get_signing_keys(refresh=refresh)
         except Exception as exc:
             self._raise_auth_error(exc)
@@ -265,3 +268,9 @@ class JWKSClient:
             message="JWKS lookup failed",
             status_code=401,
         ) from exc
+
+    def _clear_signing_key_cache(self) -> None:
+        """Clear the underlying PyJWT per-kid cache when available."""
+        cache_clear = getattr(self._client.get_signing_key, "cache_clear", None)
+        if callable(cache_clear):
+            cache_clear()

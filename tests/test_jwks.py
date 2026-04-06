@@ -60,6 +60,29 @@ def test_get_signing_key_supports_direct_lookup_and_forced_refresh() -> None:
     assert local.request_count.value == 2
 
 
+def test_get_signing_key_refresh_clears_per_kid_cache_for_rotated_key() -> None:
+    """Forced refresh returns rotated key material for an existing kid."""
+    _, first_public_key = make_rsa_keypair()
+    _, rotated_public_key = make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [rsa_public_key_to_jwk(first_public_key, kid=kid)]}
+
+    with jwks_server(jwks) as local:
+        client = JWKSClient.from_config(_make_config(local.url))
+
+        cached = client.get_signing_key(kid)
+        local.jwks["keys"] = [
+            rsa_public_key_to_jwk(rotated_public_key, kid=kid)
+        ]
+        refreshed = client.get_signing_key(kid, refresh=True)
+
+    assert cached.key_id == kid
+    assert refreshed.key_id == kid
+    assert cached.key.public_numbers() != refreshed.key.public_numbers()
+    assert refreshed.key.public_numbers() == rotated_public_key.public_numbers()
+    assert local.request_count.value == 2
+
+
 def test_get_signing_key_refresh_miss_raises_key_not_found() -> None:
     """Forced refresh miss returns the stable key_not_found error."""
     _, public_key = make_rsa_keypair()
@@ -107,6 +130,34 @@ def test_get_signing_keys_maps_non_lookup_client_errors_to_jwks_error(
 
     assert excinfo.value.code == "jwks_error"
     assert excinfo.value.status_code == 401
+
+
+def test_get_signing_keys_refresh_clears_cached_direct_lookup_for_same_kid() -> (
+    None
+):
+    """JWKS refresh invalidates cached direct lookup entries for the same kid."""
+    _, first_public_key = make_rsa_keypair()
+    _, rotated_public_key = make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [rsa_public_key_to_jwk(first_public_key, kid=kid)]}
+
+    with jwks_server(jwks) as local:
+        client = JWKSClient.from_config(_make_config(local.url))
+
+        cached = client.get_signing_key(kid)
+        local.jwks["keys"] = [
+            rsa_public_key_to_jwk(rotated_public_key, kid=kid)
+        ]
+        refreshed_keys = client.get_signing_keys(refresh=True)
+        refreshed = client.get_signing_key(kid)
+
+    assert cached.key.public_numbers() != refreshed.key.public_numbers()
+    assert (
+        refreshed_keys[0].key.public_numbers()
+        == rotated_public_key.public_numbers()
+    )
+    assert refreshed.key.public_numbers() == rotated_public_key.public_numbers()
+    assert local.request_count.value == 2
 
 
 def test_get_signing_keys_fetch_failure_raises_jwks_fetch_failed(
