@@ -30,10 +30,12 @@ auth = create_async_bearer_dependency(verifier, realm="api")
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    if not await verifier.healthcheck(refresh=True):
-        raise RuntimeError("JWKS endpoint is not ready")
-    yield
-    await verifier.aclose()
+    try:
+        if not await verifier.healthcheck(refresh=True):
+            raise RuntimeError("JWKS endpoint is not ready")
+        yield
+    finally:
+        await verifier.aclose()
 
 app = FastAPI(lifespan=lifespan)
 

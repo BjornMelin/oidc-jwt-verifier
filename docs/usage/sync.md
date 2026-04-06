@@ -33,7 +33,8 @@ except AuthError as error:
 
 ## JWKS Warmup and Readiness
 
-`JWTVerifier` exposes the same lifecycle/readiness surface as `JWKSClient`.
+`JWTVerifier` exposes verifier-level lifecycle/readiness helpers for
+`get_signing_keys()` and `healthcheck()`.
 Use these methods during startup or controlled readiness checks, not on every
 request.
 
@@ -56,8 +57,8 @@ signing_keys = verifier.get_signing_keys()
 
 If you need direct client-level access, import `JWKSClient` from
 `oidc_jwt_verifier.jwks` and use the parallel methods
-`get_signing_keys(refresh=...)`, `get_signing_key(kid, refresh=...)`, and
-`healthcheck(refresh=...)`.
+`get_signing_keys(refresh=…)`, `get_signing_key(kid, refresh=…)`, and
+`healthcheck(refresh=…)`.
 
 ## Multi-Audience, Scope, and Permission Enforcement
 

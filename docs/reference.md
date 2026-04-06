@@ -9,7 +9,7 @@ Available in the base install:
 - [`AuthConfig`][oidc_jwt_verifier.AuthConfig]
 - [`AuthError`][oidc_jwt_verifier.AuthError]
 - [`JWTVerifier`][oidc_jwt_verifier.JWTVerifier]
-- `oidc_jwt_verifier.jwks.JWKSClient`
+- [`JWKSClient`][oidc_jwt_verifier.jwks.JWKSClient]
 
 ::: oidc_jwt_verifier.AuthConfig
     options:

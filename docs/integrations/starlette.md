@@ -37,10 +37,12 @@ async def protected(request: Request) -> JSONResponse:
 
 @asynccontextmanager
 async def lifespan(_: Starlette):
-    if not await verifier.healthcheck(refresh=True):
-        raise RuntimeError("JWKS endpoint is not ready")
-    yield
-    await verifier.aclose()
+    try:
+        if not await verifier.healthcheck(refresh=True):
+            raise RuntimeError("JWKS endpoint is not ready")
+        yield
+    finally:
+        await verifier.aclose()
 
 app = Starlette(routes=[Route("/protected", protected)], lifespan=lifespan)
 app.add_middleware(

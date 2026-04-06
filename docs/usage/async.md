@@ -55,9 +55,9 @@ In this mode, `verifier.aclose()` does not close your injected `http_client`.
 
 ## JWKS Warmup and Readiness
 
-`AsyncJWTVerifier` exposes the same lifecycle/readiness surface as
-`AsyncJWKSClient`. Use these methods during startup or controlled readiness
-checks, not on every request.
+`AsyncJWTVerifier` exposes verifier-level readiness helpers for
+`healthcheck()` and `get_signing_keys()`. Use these methods during startup or
+controlled readiness checks, not on every request.
 
 ```python
 from oidc_jwt_verifier import AuthConfig
