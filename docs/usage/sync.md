@@ -31,6 +31,34 @@ except AuthError as error:
 - Reuse it across requests.
 - Avoid creating a new verifier for each request.
 
+## JWKS Warmup and Readiness
+
+`JWTVerifier` exposes the same lifecycle/readiness surface as `JWKSClient`.
+Use these methods during startup or controlled readiness checks, not on every
+request.
+
+```python
+from oidc_jwt_verifier import AuthConfig, JWTVerifier
+
+config = AuthConfig(
+    issuer="https://issuer.example/",
+    audience="https://api.example",
+    jwks_url="https://issuer.example/.well-known/jwks.json",
+)
+
+verifier = JWTVerifier(config)
+
+if not verifier.healthcheck(refresh=True):
+    raise RuntimeError("JWKS endpoint is not ready")
+
+signing_keys = verifier.get_signing_keys()
+```
+
+If you need direct client-level access, import `JWKSClient` from
+`oidc_jwt_verifier.jwks` and use the parallel methods
+`get_signing_keys(refresh=...)`, `get_signing_key(kid, refresh=...)`, and
+`healthcheck(refresh=...)`.
+
 ## Multi-Audience, Scope, and Permission Enforcement
 
 `AuthConfig` supports:

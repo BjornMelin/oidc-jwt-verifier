@@ -53,6 +53,29 @@ verifier = AsyncJWTVerifier(
 
 In this mode, `verifier.aclose()` does not close your injected `http_client`.
 
+## JWKS Warmup and Readiness
+
+`AsyncJWTVerifier` exposes the same lifecycle/readiness surface as
+`AsyncJWKSClient`. Use these methods during startup or controlled readiness
+checks, not on every request.
+
+```python
+from oidc_jwt_verifier import AuthConfig
+from oidc_jwt_verifier.async_verifier import AsyncJWTVerifier
+
+config = AuthConfig(
+    issuer="https://issuer.example/",
+    audience="https://api.example",
+    jwks_url="https://issuer.example/.well-known/jwks.json",
+)
+
+async with AsyncJWTVerifier(config) as verifier:
+    if not await verifier.healthcheck(refresh=True):
+        raise RuntimeError("JWKS endpoint is not ready")
+
+    signing_keys = await verifier.get_signing_keys()
+```
+
 ## Async JWKS Client (Advanced)
 
 Most applications only need `AsyncJWTVerifier`.  
@@ -69,4 +92,7 @@ client = AsyncJWKSClient.from_config(
         jwks_url="https://issuer.example/.well-known/jwks.json",
     )
 )
+
+healthy = await client.healthcheck(refresh=True)
+signing_keys = await client.get_signing_keys()
 ```

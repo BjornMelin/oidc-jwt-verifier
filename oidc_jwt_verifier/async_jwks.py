@@ -150,7 +150,9 @@ class AsyncJWKSClient:
         kid = self._extract_kid(token_str)
         return await self.get_signing_key(kid)
 
-    async def get_signing_key(self, kid: str) -> PyJWK:
+    async def get_signing_key(
+        self, kid: str, *, refresh: bool = False
+    ) -> PyJWK:
         """Resolve a signing key by ``kid``.
 
         Performs lookup against cache first, then fetches/retries JWKS when
@@ -158,6 +160,7 @@ class AsyncJWKSClient:
 
         Args:
             kid: JWT key identifier.
+            refresh: Whether to force a JWKS refresh before lookup.
 
         Returns:
             Matching ``PyJWK``.
@@ -168,6 +171,16 @@ class AsyncJWKSClient:
         Examples:
             >>> # signing_key = await client.get_signing_key("kid-123")
         """
+        if refresh:
+            key = await self._find_key_via_jwks(kid, refresh=True)
+            if key is not None:
+                return key
+            raise AuthError(
+                code="key_not_found",
+                message="No matching signing key",
+                status_code=401,
+            )
+
         cached = await self._try_get_key_from_caches(kid)
         if cached is not None:
             return cached
@@ -185,6 +198,62 @@ class AsyncJWKSClient:
             message="No matching signing key",
             status_code=401,
         )
+
+    async def get_signing_keys(self, *, refresh: bool = False) -> list[PyJWK]:
+        """Get signing keys from cache or network.
+
+        Args:
+            refresh: Force JWKS refetch.
+
+        Returns:
+            Parsed signing keys from JWKS.
+
+        Raises:
+            AuthError: On network, parsing, or missing-key failures.
+
+        Examples:
+            >>> # signing_keys = await client.get_signing_keys(refresh=True)
+        """
+        if not refresh:
+            async with self._lock:
+                jwk_set = self._get_cached_jwk_set_unlocked()
+                if jwk_set is not None:
+                    return self._extract_signing_keys(jwk_set)
+
+        jwk_set = await self._fetch_and_parse_jwk_set()
+        signing_keys = self._extract_signing_keys(jwk_set)
+
+        async with self._lock:
+            self._jwk_set_cache = jwk_set
+            ttl_s = self._config.jwks_cache_ttl_s
+            self._jwk_set_expiry_monotonic = time.monotonic() + ttl_s
+            self._key_cache.clear()
+
+        return signing_keys
+
+    async def healthcheck(self, *, refresh: bool = False) -> bool:
+        """Return whether the configured JWKS is currently usable.
+
+        This is a fail-closed convenience API for startup checks and
+        readiness probes. It does not log or expose failure detail.
+
+        Args:
+            refresh: Whether to force a JWKS refresh before the check.
+
+        Returns:
+            ``True`` when at least one signing key can be resolved from the
+            configured JWKS endpoint; otherwise ``False``.
+
+        Examples:
+            >>> # await client.healthcheck(refresh=True)
+        """
+        try:
+            await self.get_signing_keys(refresh=refresh)
+        except AuthError:
+            return False
+        except Exception:
+            return False
+        return True
 
     async def _try_get_key_from_caches(self, kid: str) -> PyJWK | None:
         """Try key and JWKS caches before network fetch.
@@ -224,7 +293,7 @@ class AsyncJWKSClient:
         Returns:
             Matching key if found; otherwise ``None``.
         """
-        keys = await self._get_signing_keys(refresh=refresh)
+        keys = await self.get_signing_keys(refresh=refresh)
         key = self._match_kid(keys, kid)
         if key is None:
             return None
@@ -232,35 +301,6 @@ class AsyncJWKSClient:
         async with self._lock:
             self._put_key_cache_unlocked(kid, key)
         return key
-
-    async def _get_signing_keys(self, *, refresh: bool) -> list[PyJWK]:
-        """Get signing keys from cache or network.
-
-        Args:
-            refresh: Force JWKS refetch.
-
-        Returns:
-            Parsed signing keys from JWKS.
-
-        Raises:
-            AuthError: On network/parsing errors or missing signing keys.
-        """
-        if not refresh:
-            async with self._lock:
-                jwk_set = self._get_cached_jwk_set_unlocked()
-                if jwk_set is not None:
-                    return self._extract_signing_keys(jwk_set)
-
-        jwk_set = await self._fetch_and_parse_jwk_set()
-        signing_keys = self._extract_signing_keys(jwk_set)
-
-        async with self._lock:
-            self._jwk_set_cache = jwk_set
-            ttl_s = self._config.jwks_cache_ttl_s
-            self._jwk_set_expiry_monotonic = time.monotonic() + ttl_s
-            self._key_cache.clear()
-
-        return signing_keys
 
     async def _fetch_and_parse_jwk_set(self) -> PyJWKSet:
         """Fetch JWKS document and parse it into ``PyJWKSet``.

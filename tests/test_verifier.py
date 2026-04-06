@@ -518,9 +518,68 @@ def test_malformed_token_structure_rejected(token: str) -> None:
 
     with pytest.raises(AuthError) as excinfo:
         verifier.verify_access_token(token)
-
     assert excinfo.value.code == "malformed_token"
     assert excinfo.value.status_code == 401
+
+
+def test_verifier_get_signing_keys_delegates_to_jwks_client() -> None:
+    """Verifier exposes JWKS lifecycle access through its owned client."""
+    private_pem, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    issuer = "https://issuer.example/"
+    audience = "https://api.example"
+    now = datetime.now(tz=timezone.utc)
+    payload = {
+        "iss": issuer,
+        "aud": audience,
+        "exp": int((now + timedelta(seconds=60)).timestamp()),
+    }
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer=issuer,
+                audience=audience,
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+            )
+        )
+        token = _encode_rs256(payload, private_pem=private_pem, kid=kid)
+
+        claims = verifier.verify_access_token(token)
+        cached = verifier.get_signing_keys()
+        refreshed = verifier.get_signing_keys(refresh=True)
+
+    assert claims["iss"] == issuer
+    assert [key.key_id for key in cached] == [kid]
+    assert [key.key_id for key in refreshed] == [kid]
+    assert local.request_count.value == 2
+
+
+def test_verifier_healthcheck_delegates_refresh_behavior() -> None:
+    """Verifier healthcheck exposes cached and refresh-ready JWKS checks."""
+    _, public_key = _make_rsa_keypair()
+    kid = "test-key-1"
+    jwks = {"keys": [_rsa_public_key_to_jwk(public_key, kid=kid)]}
+
+    with jwks_server(jwks) as local:
+        verifier = JWTVerifier(
+            AuthConfig(
+                issuer="https://issuer.example/",
+                audience="https://api.example",
+                jwks_url=local.url,
+                jwks_timeout_s=1.0,
+            )
+        )
+
+        healthy = verifier.healthcheck()
+        refreshed = verifier.healthcheck(refresh=True)
+
+    assert healthy is True
+    assert refreshed is True
+    assert local.request_count.value == 2
 
 
 @pytest.mark.parametrize("missing_claim", ["exp", "iss", "aud"])
