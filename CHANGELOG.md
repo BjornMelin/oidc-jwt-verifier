@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.6](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.5...v0.1.6) (2026-04-06)
+
+
+### Features
+
+* add jwks lifecycle readiness APIs ([bc6cbd7](https://github.com/BjornMelin/oidc-jwt-verifier/commit/bc6cbd743ea65ba564b185daffc15dea53671efa))
+* **jwks:** implement cache clearing for signing keys on refresh and add tests for key rotation ([4536a84](https://github.com/BjornMelin/oidc-jwt-verifier/commit/4536a847e5c0f27ff7c612cf3e76b8d2430dd432))
+* **policy:** enhance _parse_unverified_header to accept bytes and improve error handling for malformed tokens ([7d82345](https://github.com/BjornMelin/oidc-jwt-verifier/commit/7d823454f96779c27fcdb40f153726c9b4b5e672))
+
+
+### Bug Fixes
+
+* accept bytes tokens in public verifiers ([79989f6](https://github.com/BjornMelin/oidc-jwt-verifier/commit/79989f6bbf2b707bf972b0cce1f167f32a2521b0))
+* cover bytes header parsing and async key misses ([7423aeb](https://github.com/BjornMelin/oidc-jwt-verifier/commit/7423aeb4fca5e913a7386e5bed55e24ee8428ca3))
+* stabilize forbidden header parsing ([76d9db8](https://github.com/BjornMelin/oidc-jwt-verifier/commit/76d9db8d2dd4e5b0b0f37e4c215373010cdc54f9))
+
 ## [0.1.5](https://github.com/BjornMelin/oidc-jwt-verifier/compare/v0.1.4...v0.1.5) (2026-02-12)
 
 
